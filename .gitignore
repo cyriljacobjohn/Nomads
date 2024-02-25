@@ -1,0 +1,31 @@
+# Xcode
+build/
+DerivedData/
+*.xcodeproj/
+!*.xcodeproj/project.pbxproj
+*.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+xcuserdata/
+*.swiftpm/
+.swiftpm/
+Package.resolved
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Carthage
+Carthage/Build/
+
+# User-specific files
+.DS_Store
+*.xcuserstate
+
+# Temporary files
+*~
+.*.sw[mnpcod]
+
+# Miscellaneous
+.env
+.vscode/
+.idea/
