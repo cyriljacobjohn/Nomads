@@ -2,7 +2,7 @@
 //  WelcomeScreenView.swift
 //  login
 //
-//  Created by Abu Anwar MD Abdullah on 23/4/21.
+//  Created by Sebastian Oberg on 2/21/2024.
 //
 
 import SwiftUI
