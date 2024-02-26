@@ -36,16 +36,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		885230E4263272E100DBCF3F /* login.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = login.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		885230E4263272E100DBCF3F /* UMI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UMI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		885230E7263272E100DBCF3F /* loginApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loginApp.swift; sourceTree = "<group>"; };
 		885230E9263272E100DBCF3F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		885230EB263272E200DBCF3F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		885230EE263272E200DBCF3F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		885230F0263272E200DBCF3F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		885230F5263272E200DBCF3F /* loginTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = loginTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		885230F5263272E200DBCF3F /* UMITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UMITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		885230F9263272E200DBCF3F /* loginTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loginTests.swift; sourceTree = "<group>"; };
 		885230FB263272E200DBCF3F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		88523100263272E200DBCF3F /* loginUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = loginUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		88523100263272E200DBCF3F /* UMIUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UMIUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		88523104263272E200DBCF3F /* loginUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loginUITests.swift; sourceTree = "<group>"; };
 		88523106263272E200DBCF3F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8852311626329DCF00DBCF3F /* WelcomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeScreenView.swift; sourceTree = "<group>"; };
@@ -93,9 +93,9 @@
 		885230E5263272E100DBCF3F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				885230E4263272E100DBCF3F /* login.app */,
-				885230F5263272E200DBCF3F /* loginTests.xctest */,
-				88523100263272E200DBCF3F /* loginUITests.xctest */,
+				885230E4263272E100DBCF3F /* UMI.app */,
+				885230F5263272E200DBCF3F /* UMITests.xctest */,
+				88523100263272E200DBCF3F /* UMIUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -160,9 +160,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		885230E3263272E100DBCF3F /* login */ = {
+		885230E3263272E100DBCF3F /* UMI */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 88523109263272E200DBCF3F /* Build configuration list for PBXNativeTarget "login" */;
+			buildConfigurationList = 88523109263272E200DBCF3F /* Build configuration list for PBXNativeTarget "UMI" */;
 			buildPhases = (
 				885230E0263272E100DBCF3F /* Sources */,
 				885230E1263272E100DBCF3F /* Frameworks */,
@@ -172,14 +172,14 @@
 			);
 			dependencies = (
 			);
-			name = login;
+			name = UMI;
 			productName = login;
-			productReference = 885230E4263272E100DBCF3F /* login.app */;
+			productReference = 885230E4263272E100DBCF3F /* UMI.app */;
 			productType = "com.apple.product-type.application";
 		};
-		885230F4263272E200DBCF3F /* loginTests */ = {
+		885230F4263272E200DBCF3F /* UMITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8852310C263272E200DBCF3F /* Build configuration list for PBXNativeTarget "loginTests" */;
+			buildConfigurationList = 8852310C263272E200DBCF3F /* Build configuration list for PBXNativeTarget "UMITests" */;
 			buildPhases = (
 				885230F1263272E200DBCF3F /* Sources */,
 				885230F2263272E200DBCF3F /* Frameworks */,
@@ -190,14 +190,14 @@
 			dependencies = (
 				885230F7263272E200DBCF3F /* PBXTargetDependency */,
 			);
-			name = loginTests;
+			name = UMITests;
 			productName = loginTests;
-			productReference = 885230F5263272E200DBCF3F /* loginTests.xctest */;
+			productReference = 885230F5263272E200DBCF3F /* UMITests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		885230FF263272E200DBCF3F /* loginUITests */ = {
+		885230FF263272E200DBCF3F /* UMIUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8852310F263272E200DBCF3F /* Build configuration list for PBXNativeTarget "loginUITests" */;
+			buildConfigurationList = 8852310F263272E200DBCF3F /* Build configuration list for PBXNativeTarget "UMIUITests" */;
 			buildPhases = (
 				885230FC263272E200DBCF3F /* Sources */,
 				885230FD263272E200DBCF3F /* Frameworks */,
@@ -208,9 +208,9 @@
 			dependencies = (
 				88523102263272E200DBCF3F /* PBXTargetDependency */,
 			);
-			name = loginUITests;
+			name = UMIUITests;
 			productName = loginUITests;
-			productReference = 88523100263272E200DBCF3F /* loginUITests.xctest */;
+			productReference = 88523100263272E200DBCF3F /* UMIUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -235,7 +235,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 885230DF263272E100DBCF3F /* Build configuration list for PBXProject "login" */;
+			buildConfigurationList = 885230DF263272E100DBCF3F /* Build configuration list for PBXProject "UMI" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -248,9 +248,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				885230E3263272E100DBCF3F /* login */,
-				885230F4263272E200DBCF3F /* loginTests */,
-				885230FF263272E200DBCF3F /* loginUITests */,
+				885230E3263272E100DBCF3F /* UMI */,
+				885230F4263272E200DBCF3F /* UMITests */,
+				885230FF263272E200DBCF3F /* UMIUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -315,12 +315,12 @@
 /* Begin PBXTargetDependency section */
 		885230F7263272E200DBCF3F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 885230E3263272E100DBCF3F /* login */;
+			target = 885230E3263272E100DBCF3F /* UMI */;
 			targetProxy = 885230F6263272E200DBCF3F /* PBXContainerItemProxy */;
 		};
 		88523102263272E200DBCF3F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 885230E3263272E100DBCF3F /* login */;
+			target = 885230E3263272E100DBCF3F /* UMI */;
 			targetProxy = 88523101263272E200DBCF3F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -501,7 +501,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/login.app/login";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UMI.app/UMI";
 			};
 			name = Debug;
 		};
@@ -522,7 +522,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/login.app/login";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UMI.app/UMI";
 			};
 			name = Release;
 		};
@@ -567,7 +567,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		885230DF263272E100DBCF3F /* Build configuration list for PBXProject "login" */ = {
+		885230DF263272E100DBCF3F /* Build configuration list for PBXProject "UMI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				88523107263272E200DBCF3F /* Debug */,
@@ -576,7 +576,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		88523109263272E200DBCF3F /* Build configuration list for PBXNativeTarget "login" */ = {
+		88523109263272E200DBCF3F /* Build configuration list for PBXNativeTarget "UMI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8852310A263272E200DBCF3F /* Debug */,
@@ -585,7 +585,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8852310C263272E200DBCF3F /* Build configuration list for PBXNativeTarget "loginTests" */ = {
+		8852310C263272E200DBCF3F /* Build configuration list for PBXNativeTarget "UMITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8852310D263272E200DBCF3F /* Debug */,
@@ -594,7 +594,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8852310F263272E200DBCF3F /* Build configuration list for PBXNativeTarget "loginUITests" */ = {
+		8852310F263272E200DBCF3F /* Build configuration list for PBXNativeTarget "UMIUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				88523110263272E200DBCF3F /* Debug */,
