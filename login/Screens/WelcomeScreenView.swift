@@ -13,10 +13,11 @@ struct WelcomeScreenView: View {
             ZStack {
                 Color("BgColor").edgesIgnoringSafeArea(.all)
                 VStack {
-//                    Spacer()
-//                    Image(uiImage: #imageLiteral(resourceName: "onboard"))
-//                    Spacer()
-                    
+                    Spacer()
+                    Text("UMI")
+                        .font(.custom("Sarina-Regular", size: 50))
+                        .foregroundColor(Color("PrimaryColor"))
+                    Spacer()
                     
                     PrimaryButton(title: "Get Started")
                     
