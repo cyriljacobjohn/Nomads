@@ -1,7 +1,7 @@
 # Xcode
 build/
 DerivedData/
-*.xcodeproj/
+*.xcodeproj/*
 !*.xcodeproj/project.pbxproj
 *.xcworkspace/
 !*.xcworkspace/contents.xcworkspacedata
