@@ -11,8 +11,6 @@
 		885230EA263272E100DBCF3F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885230E9263272E100DBCF3F /* ContentView.swift */; };
 		885230EC263272E200DBCF3F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 885230EB263272E200DBCF3F /* Assets.xcassets */; };
 		885230EF263272E200DBCF3F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 885230EE263272E200DBCF3F /* Preview Assets.xcassets */; };
-		885230FA263272E200DBCF3F /* loginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885230F9263272E200DBCF3F /* loginTests.swift */; };
-		88523105263272E200DBCF3F /* loginUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88523104263272E200DBCF3F /* loginUITests.swift */; };
 		8852311726329DCF00DBCF3F /* WelcomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8852311626329DCF00DBCF3F /* WelcomeScreenView.swift */; };
 		8852311F2632A4D500DBCF3F /* SignInScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8852311E2632A4D500DBCF3F /* SignInScreenView.swift */; };
 		9EA269F72B8AA7AD0057754A /* Sarina-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9EA269F62B8AA7AD0057754A /* Sarina-Regular.ttf */; };
@@ -43,11 +41,7 @@
 		885230EE263272E200DBCF3F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		885230F0263272E200DBCF3F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		885230F5263272E200DBCF3F /* UMITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UMITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		885230F9263272E200DBCF3F /* loginTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loginTests.swift; sourceTree = "<group>"; };
-		885230FB263272E200DBCF3F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		88523100263272E200DBCF3F /* UMIUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UMIUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		88523104263272E200DBCF3F /* loginUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loginUITests.swift; sourceTree = "<group>"; };
-		88523106263272E200DBCF3F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8852311626329DCF00DBCF3F /* WelcomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeScreenView.swift; sourceTree = "<group>"; };
 		8852311E2632A4D500DBCF3F /* SignInScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInScreenView.swift; sourceTree = "<group>"; };
 		88934F432634232200B116CA /* ui.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ui.png; sourceTree = "<group>"; };
@@ -84,8 +78,6 @@
 			children = (
 				88934F432634232200B116CA /* ui.png */,
 				885230E6263272E100DBCF3F /* login */,
-				885230F8263272E200DBCF3F /* loginTests */,
-				88523103263272E200DBCF3F /* loginUITests */,
 				885230E5263272E100DBCF3F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -120,24 +112,6 @@
 				885230EE263272E200DBCF3F /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		885230F8263272E200DBCF3F /* loginTests */ = {
-			isa = PBXGroup;
-			children = (
-				885230F9263272E200DBCF3F /* loginTests.swift */,
-				885230FB263272E200DBCF3F /* Info.plist */,
-			);
-			path = loginTests;
-			sourceTree = "<group>";
-		};
-		88523103263272E200DBCF3F /* loginUITests */ = {
-			isa = PBXGroup;
-			children = (
-				88523104263272E200DBCF3F /* loginUITests.swift */,
-				88523106263272E200DBCF3F /* Info.plist */,
-			);
-			path = loginUITests;
 			sourceTree = "<group>";
 		};
 		8852311526329DBA00DBCF3F /* Screens */ = {
@@ -298,7 +272,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				885230FA263272E200DBCF3F /* loginTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,7 +279,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88523105263272E200DBCF3F /* loginUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
