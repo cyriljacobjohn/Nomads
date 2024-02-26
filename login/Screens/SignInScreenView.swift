@@ -13,28 +13,15 @@ struct SignInScreenView: View {
         ZStack {
             Color("BgColor").edgesIgnoringSafeArea(.all)
             VStack {
-                Spacer()
+                Text("Sign In")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding(.bottom, 30)
                 
-                VStack {
-                    Text("Sign In")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .padding(.bottom, 30)
-                    
-                    SocalLoginButton(image: Image(uiImage: #imageLiteral(resourceName: "apple")), text: Text("Sign in with Apple"))
-                    
-                    SocalLoginButton(image: Image(uiImage: #imageLiteral(resourceName: "google")), text: Text("Sign in with Google").foregroundColor(Color("PrimaryColor")))
-                        .padding(.vertical)
- 
-                }
+                SocalLoginButton(image: Image(uiImage: #imageLiteral(resourceName: "apple")), text: Text("Sign in with Apple"))
                 
-                Spacer()
-                Divider()
-                Spacer()
-                Text("Terms & Conditions.")
-                    .foregroundColor(Color("PrimaryColor"))
-                Spacer()
-                
+                SocalLoginButton(image: Image(uiImage: #imageLiteral(resourceName: "google")), text: Text("Sign in with Google").foregroundColor(Color("PrimaryColor")))
+                    .padding(.vertical)
             }
             .padding()
         }

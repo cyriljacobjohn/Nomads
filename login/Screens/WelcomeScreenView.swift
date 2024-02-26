@@ -15,7 +15,7 @@ struct WelcomeScreenView: View {
                 VStack {
                     Spacer()
                     Text("UMI")
-                        .font(.custom("Sarina-Regular", size: 50))
+                        .font(.custom("Sarina-Regular", size: 60))
                         .foregroundColor(Color("PrimaryColor"))
                     Spacer()
                     
@@ -36,12 +36,6 @@ struct WelcomeScreenView: View {
                                 .padding(.vertical)
                         })
                         .navigationBarHidden(true)
-                    
-                    HStack {
-                        Text("New around here? ")
-                        Text("Sign in")
-                            .foregroundColor(Color("PrimaryColor"))
-                    }
                 }
                 .padding()
             }
