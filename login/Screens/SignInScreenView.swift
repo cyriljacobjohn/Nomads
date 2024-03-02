@@ -1,6 +1,6 @@
 //
 //  SignInScreenView.swift
-//  login
+//  UMI
 //
 //  Created by Sebastian Oberg 2/21/24.
 //
@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SignInScreenView: View {
-    @State private var email: String = "" // by default it's empty
     var body: some View {
         ZStack {
             Color("BgColor").edgesIgnoringSafeArea(.all)
@@ -16,7 +15,7 @@ struct SignInScreenView: View {
                 Text("Sign In")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .padding(.bottom, 30)
+                    .padding(.bottom, 20)
                 
                 SocalLoginButton(image: Image(uiImage: #imageLiteral(resourceName: "apple")), text: Text("Sign in with Apple"))
                 
@@ -33,7 +32,6 @@ struct SignInScreenView_Previews: PreviewProvider {
         SignInScreenView()
     }
 }
-
 
 struct SocalLoginButton: View {
     var image: Image

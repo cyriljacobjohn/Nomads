@@ -1,6 +1,6 @@
 //
 //  WelcomeScreenView.swift
-//  login
+//  UMI
 //
 //  Created by Sebastian Oberg on 2/21/2024.
 //
@@ -19,10 +19,23 @@ struct WelcomeScreenView: View {
                         .foregroundColor(Color("PrimaryColor"))
                     Spacer()
                     
-                    PrimaryButton(title: "Get Started")
+                    NavigationLink(
+                        destination: SignUpScreenView().navigationBarHidden(false),
+                        label: {
+                            Text("Get Started")
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundColor(Color.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color("PrimaryColor"))
+                                .cornerRadius(50.0)
+                                .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
+                        })
+                                
                     
                     NavigationLink(
-                        destination: SignInScreenView().navigationBarHidden(true),
+                        destination: SignInScreenView().navigationBarHidden(false),
                         label: {
                             Text("Sign In")
                                 .font(.title3)
@@ -35,7 +48,6 @@ struct WelcomeScreenView: View {
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
                                 .padding(.vertical)
                         })
-                        .navigationBarHidden(true)
                 }
                 .padding()
             }

@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  login
+//  UMI
 //
 //  Created by Sebastian Oberg on 2/21/24.
 //
