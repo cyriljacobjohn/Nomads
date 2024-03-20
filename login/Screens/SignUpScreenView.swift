@@ -1,28 +1,37 @@
 //
-//  SignUpScreenView.swift
+//  SignInScreenView.swift
 //  UMI
 //
-//  Created by Sebastian Oberg on 3/1/24.
+//  Created by Sebastian Oberg 2/21/24.
 //
 
 import SwiftUI
 
 struct SignUpScreenView: View {
     var body: some View {
-        ZStack {
-            Color("BgColor").edgesIgnoringSafeArea(.all)
-            VStack {
-                Text("Sign Up")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding(.bottom, 20)
+        NavigationView {
+            ZStack {
+                Color("BgColor").edgesIgnoringSafeArea(.all)
                 
-                SocalLoginButton(image: Image(uiImage: #imageLiteral(resourceName: "apple")), text: Text("Sign up with Apple"))
-                
-                SocalLoginButton(image: Image(uiImage: #imageLiteral(resourceName: "google")), text: Text("Sign up with Google").foregroundColor(Color("PrimaryColor")))
-                    .padding(.vertical)
+                VStack {
+                    VStack {
+                        VStack {
+                            Text("Sign Up")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .padding(.bottom, 20)
+                            
+                            SocalLoginButton(image: Image(uiImage: #imageLiteral(resourceName: "apple")), text: Text("Sign in with Apple"))
+                            
+                            SocalLoginButton(image: Image(uiImage: #imageLiteral(resourceName: "google")), text: Text("Sign in with Google").foregroundColor(Color("PrimaryColor")))
+                                .padding(.vertical)
+
+                        }
+                        .padding(.horizontal)
+                    }
+                }
+                .padding()
             }
-            .padding()
         }
     }
 }

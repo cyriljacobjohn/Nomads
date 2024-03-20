@@ -9,20 +9,29 @@ import SwiftUI
 
 struct SignInScreenView: View {
     var body: some View {
-        ZStack {
-            Color("BgColor").edgesIgnoringSafeArea(.all)
-            VStack {
-                Text("Sign In")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding(.bottom, 20)
+        NavigationView {
+            ZStack {
+                Color("BgColor").edgesIgnoringSafeArea(.all)
                 
-                SocalLoginButton(image: Image(uiImage: #imageLiteral(resourceName: "apple")), text: Text("Sign in with Apple"))
-                
-                SocalLoginButton(image: Image(uiImage: #imageLiteral(resourceName: "google")), text: Text("Sign in with Google").foregroundColor(Color("PrimaryColor")))
-                    .padding(.vertical)
+                VStack {
+                    VStack {
+                        VStack {
+                            Text("Sign In")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .padding(.bottom, 20)
+                            
+                            SocalLoginButton(image: Image(uiImage: #imageLiteral(resourceName: "apple")), text: Text("Sign in with Apple"))
+                            
+                            SocalLoginButton(image: Image(uiImage: #imageLiteral(resourceName: "google")), text: Text("Sign in with Google").foregroundColor(Color("PrimaryColor")))
+                                .padding(.vertical)
+
+                        }
+                        .padding(.horizontal)
+                    }
+                }
+                .padding()
             }
-            .padding()
         }
     }
 }
@@ -32,6 +41,7 @@ struct SignInScreenView_Previews: PreviewProvider {
         SignInScreenView()
     }
 }
+
 
 struct SocalLoginButton: View {
     var image: Image
