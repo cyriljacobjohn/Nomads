@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HairGenderSelectionScreenView: View {
-    @State private var selectedButton: Int? = nil
+    @State private var selectedHairGender: Int? = nil
 
     var body: some View {
         NavigationView {
@@ -31,10 +31,10 @@ struct HairGenderSelectionScreenView: View {
                             // Button 1
                             Button(action: {
                                 withAnimation(.easeInOut(duration: 0.2)) {
-                                    self.selectedButton = 1
+                                    self.selectedHairGender = 1
                                 }
                             }) {
-                                buttonText("Feminine", isSelected: self.selectedButton == 1)
+                                buttonText("Feminine", isSelected: self.selectedHairGender == 1)
                             }
                             .buttonStyle(PlainButtonStyle())
                             .padding(.bottom, -15)
@@ -42,10 +42,10 @@ struct HairGenderSelectionScreenView: View {
                             // Button 2
                             Button(action: {
                                 withAnimation(.easeInOut(duration: 0.2)) {
-                                    self.selectedButton = 2
+                                    self.selectedHairGender = 2
                                 }
                             }) {
-                                buttonText("Masculine", isSelected: self.selectedButton == 2)
+                                buttonText("Masculine", isSelected: self.selectedHairGender == 2)
                             }
                             .buttonStyle(PlainButtonStyle())
                             .padding(.bottom, -15)
@@ -53,10 +53,10 @@ struct HairGenderSelectionScreenView: View {
                             // Button 3
                             Button(action: {
                                 withAnimation(.easeInOut(duration: 0.2)) {
-                                    self.selectedButton = 3
+                                    self.selectedHairGender = 3
                                 }
                             }) {
-                                buttonText("Androgynous", isSelected: self.selectedButton == 3)
+                                buttonText("Androgynous", isSelected: self.selectedHairGender == 3)
                             }
                             .buttonStyle(PlainButtonStyle())
 

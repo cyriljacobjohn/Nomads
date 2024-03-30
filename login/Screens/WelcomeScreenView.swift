@@ -20,8 +20,7 @@ struct WelcomeScreenView: View {
                     Spacer()
                     
                     NavigationLink(
-//                        destination: SignUpScreenView().navigationBarHidden(false),
-                        destination: NameEntryScreenView().navigationBarHidden(false),
+                        destination: SignUpScreenView().navigationBarHidden(true),
                         label: {
                             Text("Get Started")
                                 .font(.title3)
@@ -36,7 +35,7 @@ struct WelcomeScreenView: View {
                                 
                     
                     NavigationLink(
-                        destination: SignInScreenView().navigationBarHidden(false),
+                        destination: SignInScreenView().navigationBarHidden(true),
                         label: {
                             Text("Sign In")
                                 .font(.title3)
