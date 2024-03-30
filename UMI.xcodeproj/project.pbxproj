@@ -41,6 +41,8 @@
 		9E91FB732BA88BCA006160AE /* Sansita-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E91FB6B2BA88BCA006160AE /* Sansita-Italic.ttf */; };
 		9E91FB742BA88BCA006160AE /* Sansita-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E91FB6C2BA88BCA006160AE /* Sansita-ExtraBold.ttf */; };
 		9E91FB752BA88BCA006160AE /* Sansita-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E91FB6D2BA88BCA006160AE /* Sansita-BoldItalic.ttf */; };
+		9EA198112BB8A3E4001DE054 /* CurrentHairScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA198102BB8A3E4001DE054 /* CurrentHairScreenView.swift */; };
+		9EA198132BB8AC9C001DE054 /* HairInspoScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA198122BB8AC9C001DE054 /* HairInspoScreenView.swift */; };
 		9EA269F72B8AA7AD0057754A /* Sarina-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9EA269F62B8AA7AD0057754A /* Sarina-Regular.ttf */; };
 		9EB3BADB2B929CE200AFF043 /* SignUpScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB3BADA2B929CE200AFF043 /* SignUpScreenView.swift */; };
 		9ED31FB62BAB6EE00002D645 /* HairIDScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED31FB52BAB6EE00002D645 /* HairIDScreenView.swift */; };
@@ -103,6 +105,8 @@
 		9E91FB6B2BA88BCA006160AE /* Sansita-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sansita-Italic.ttf"; sourceTree = "<group>"; };
 		9E91FB6C2BA88BCA006160AE /* Sansita-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sansita-ExtraBold.ttf"; sourceTree = "<group>"; };
 		9E91FB6D2BA88BCA006160AE /* Sansita-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sansita-BoldItalic.ttf"; sourceTree = "<group>"; };
+		9EA198102BB8A3E4001DE054 /* CurrentHairScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentHairScreenView.swift; sourceTree = "<group>"; };
+		9EA198122BB8AC9C001DE054 /* HairInspoScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HairInspoScreenView.swift; sourceTree = "<group>"; };
 		9EA269F62B8AA7AD0057754A /* Sarina-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sarina-Regular.ttf"; sourceTree = "<group>"; };
 		9EB3BADA2B929CE200AFF043 /* SignUpScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpScreenView.swift; sourceTree = "<group>"; };
 		9ED31FB52BAB6EE00002D645 /* HairIDScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HairIDScreenView.swift; sourceTree = "<group>"; };
@@ -183,6 +187,8 @@
 				9E91FB3E2BA88171006160AE /* NameEntryScreenView.swift */,
 				9E67A5B42BAA295D000D20CB /* HairGenderSelectionScreenView.swift */,
 				9ED31FB52BAB6EE00002D645 /* HairIDScreenView.swift */,
+				9EA198102BB8A3E4001DE054 /* CurrentHairScreenView.swift */,
+				9EA198122BB8AC9C001DE054 /* HairInspoScreenView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -380,11 +386,13 @@
 			files = (
 				9E67A5B52BAA295D000D20CB /* HairGenderSelectionScreenView.swift in Sources */,
 				9E91FB3F2BA88171006160AE /* NameEntryScreenView.swift in Sources */,
+				9EA198112BB8A3E4001DE054 /* CurrentHairScreenView.swift in Sources */,
 				8852311F2632A4D500DBCF3F /* SignInScreenView.swift in Sources */,
 				8852311726329DCF00DBCF3F /* WelcomeScreenView.swift in Sources */,
 				885230EA263272E100DBCF3F /* ContentView.swift in Sources */,
 				9ED31FB62BAB6EE00002D645 /* HairIDScreenView.swift in Sources */,
 				9EB3BADB2B929CE200AFF043 /* SignUpScreenView.swift in Sources */,
+				9EA198132BB8AC9C001DE054 /* HairInspoScreenView.swift in Sources */,
 				885230E8263272E100DBCF3F /* loginApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

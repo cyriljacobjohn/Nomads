@@ -87,7 +87,7 @@ struct SignInScreenView: View {
                         }
                         .padding(.bottom, 20)
 
-                        NavigationLink("", destination: Text("Main Screen").navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                        NavigationLink("", destination: Text("Landing Screen").navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
                     .padding()
                 }
