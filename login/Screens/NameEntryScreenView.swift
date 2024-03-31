@@ -99,7 +99,7 @@ struct NameEntryScreenView: View {
                         Alert(title: Text("Error"), message: Text("Please fill in all fields."), dismissButton: .default(Text("OK")))
                     }
 
-                    NavigationLink("", destination: HairGenderSelectionScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                    NavigationLink("", destination: RaceEthnicityScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                 }
                 .padding()
             }

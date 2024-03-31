@@ -11,6 +11,7 @@ struct HairIDScreenView: View {
     @State private var selectedHairThickness: Int? = nil
     @State private var selectedHairType: Int? = nil
     @State private var colorHistory: String = ""
+    @State private var navigateToCurlPatternScreen = false
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
 
@@ -106,6 +107,7 @@ struct HairIDScreenView: View {
                         Alert(title: Text("Error"), message: Text("Please fill in all fields."), dismissButton: .default(Text("OK")))
                     }
 
+                    NavigationLink("", destination: CurlPatternScreenView().navigationBarHidden(true), isActive: $navigateToCurlPatternScreen)
                     NavigationLink("", destination: CurrentHairScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                 }
                 .padding()
@@ -129,14 +131,19 @@ struct HairIDScreenView: View {
         if selectedHairThickness == nil || selectedHairType == nil || colorHistory.isEmpty {
             showingAlert = true
         } else {
-            sendDataToBackend()
-            shouldNavigateToNextScreen = true
+            if selectedHairType == 2 || selectedHairType == 3 { // Assuming 2 and 3 represent Curly and Wavy
+                navigateToCurlPatternScreen = true
+            } else {
+                sendDataToBackendForStraightHair()
+                shouldNavigateToNextScreen = true
+            }
         }
     }
 
-    private func sendDataToBackend() {
-        // Implement the backend communication logic here
-        print("Sending data to backend: Thickness \(String(describing: selectedHairThickness)), Type \(String(describing: selectedHairType)), Color History \(colorHistory)")
+    private func sendDataToBackendForStraightHair() {
+        // This method is called when the selected hair type is Straight (none or 0)
+        print("Sending curl pattern for straight hair to backend: none or 0")
+        // Implement the actual backend call here
     }
 }
 
