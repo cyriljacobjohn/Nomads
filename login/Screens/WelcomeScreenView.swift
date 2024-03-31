@@ -60,3 +60,5 @@ struct WelcomeScreenView_Previews: PreviewProvider {
         WelcomeScreenView()
     }
 }
+
+// TODO: Look at how to capture sessions!!

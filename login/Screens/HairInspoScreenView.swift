@@ -100,8 +100,7 @@ struct HairInspoScreenView: View {
                     .alert(isPresented: $showingAlert) {
                         Alert(title: Text("Error"), message: Text("Please upload 4 images before continuing."), dismissButton: .default(Text("OK")))
                     }
-                    
-                    NavigationLink("", destination: Text("Next Screen Placeholder").navigationBarHidden(true), isActive: $navigateToNextScreen)
+                    NavigationLink("", destination: ForYouScreenView().navigationBarHidden(true), isActive: $navigateToNextScreen)
                 }
                 .padding()
             }

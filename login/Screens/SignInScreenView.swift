@@ -87,7 +87,7 @@ struct SignInScreenView: View {
                         }
                         .padding(.bottom, 20)
 
-                        NavigationLink("", destination: Text("Landing Screen").navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                        NavigationLink("", destination: ForYouScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
                     .padding()
                 }
@@ -107,6 +107,7 @@ struct SignInScreenView: View {
 
     private func validateUser() {
         // Implement validation logic here, communicate with backend
+        print("Sending data to backend: Email: \(email), Password: \(password)")
     }
 }
 

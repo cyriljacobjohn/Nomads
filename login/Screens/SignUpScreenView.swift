@@ -124,6 +124,7 @@ struct SignUpScreenView: View {
 
     private func registerUser() {
         // Implement registration logic here, communicate with backend
+        print("Sending data to backend: Email: \(email), Password: \(password)")
     }
 }
 

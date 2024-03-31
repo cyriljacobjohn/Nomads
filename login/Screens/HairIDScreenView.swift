@@ -108,7 +108,7 @@ struct HairIDScreenView: View {
                     }
 
                     NavigationLink("", destination: CurlPatternScreenView().navigationBarHidden(true), isActive: $navigateToCurlPatternScreen)
-                    NavigationLink("", destination: CurrentHairScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                    NavigationLink("", destination: PreferenceScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                 }
                 .padding()
             }
