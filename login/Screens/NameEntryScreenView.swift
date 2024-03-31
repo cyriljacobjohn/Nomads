@@ -10,7 +10,9 @@ import SwiftUI
 struct NameEntryScreenView: View {
     @State private var name: String = ""
     @State private var address: String = ""
-    @State private var distance: Double = 0
+    @State private var distance: Double = 1
+    @State private var shouldNavigateToNextScreen = false
+    @State private var showingAlert = false
 
     var body: some View {
         NavigationView {
@@ -68,11 +70,11 @@ struct NameEntryScreenView: View {
                                 .padding(.top)
                                 .padding(.bottom, 10)
                             
-                            Slider(value: $distance, in: 0...100, step: 1)
+                            Slider(value: $distance, in: 1...100, step: 1)
 
                             HStack {
                                 Spacer()
-                                Text("\(Int(distance)) miles from my address")
+                                Text("\(Int(distance)) mile(s) from my address")
                                     .font(.custom("Poppins-Italic", size: 18))
                                     .padding(.bottom, 20)
                             }
@@ -82,24 +84,40 @@ struct NameEntryScreenView: View {
                     
                     Spacer()
                     
-                    NavigationLink( // Back already included for navigation links
-                        destination: HairGenderSelectionScreenView().navigationBarHidden(true),
-                        label: {
-                            Text("Continue")
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundColor(Color("PrimaryColor"))
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.white)
-                                .cornerRadius(50.0)
-                                .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
-                                .padding(.vertical)
-                        })
+                    Button(action: continueAction) {
+                        Text("Continue")
+                            .font(.title3)
+                            .foregroundColor(name.isEmpty || address.isEmpty ? Color("PrimaryColor") : Color.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(name.isEmpty || address.isEmpty ? Color.white : Color("PrimaryColor"))
+                            .cornerRadius(50.0)
+                            .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
+                    }
+                    .padding(.vertical)
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Error"), message: Text("Please fill in all fields."), dismissButton: .default(Text("OK")))
+                    }
+
+                    NavigationLink("", destination: HairGenderSelectionScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                 }
                 .padding()
             }
         }
+    }
+
+    private func continueAction() {
+        if name.isEmpty || address.isEmpty {
+            showingAlert = true
+        } else {
+            sendDataToBackend()
+            shouldNavigateToNextScreen = true
+        }
+    }
+
+    private func sendDataToBackend() {
+        // TODO: Implement logic to send data to backend
+        print("Sending data to backend: Name: \(name), Address: \(address), Distance: \(distance)")
     }
 }
 
@@ -108,5 +126,3 @@ struct NameEntryScreenView_Previews: PreviewProvider {
         NameEntryScreenView()
     }
 }
-
-// TODO: Validate to ensure not empty and send to backend

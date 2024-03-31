@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
-import UIKit // For textboxes
 
 struct HairIDScreenView: View {
     @State private var selectedHairThickness: Int? = nil
     @State private var selectedHairType: Int? = nil
     @State private var colorHistory: String = ""
+    @State private var shouldNavigateToNextScreen = false
+    @State private var showingAlert = false
 
     var body: some View {
         NavigationView {
@@ -41,32 +42,17 @@ struct HairIDScreenView: View {
                                 .padding(.bottom, -10)
                             
                             HStack(spacing: 10) {
-                                Button(action: {
-                                    withAnimation(.easeInOut(duration: 0.2)) {
-                                        self.selectedHairThickness = 1
-                                    }
-                                }) {
+                                Button(action: { selectHairThickness(1) }) {
                                     HorizontalButtonText("Fine", isSelected: self.selectedHairThickness == 1)
                                 }
-                                .buttonStyle(PlainButtonStyle())
                                 
-                                Button(action: {
-                                    withAnimation(.easeInOut(duration: 0.2)) {
-                                        self.selectedHairThickness = 2
-                                    }
-                                }) {
+                                Button(action: { selectHairThickness(2) }) {
                                     HorizontalButtonText("Medium", isSelected: self.selectedHairThickness == 2)
                                 }
-                                .buttonStyle(PlainButtonStyle())
                                 
-                                Button(action: {
-                                    withAnimation(.easeInOut(duration: 0.2)) {
-                                        self.selectedHairThickness = 3
-                                    }
-                                }) {
+                                Button(action: { selectHairThickness(3) }) {
                                     HorizontalButtonText("Coarse", isSelected: self.selectedHairThickness == 3)
                                 }
-                                .buttonStyle(PlainButtonStyle())
                             }
                             
                             Text("Hair Type")
@@ -74,50 +60,17 @@ struct HairIDScreenView: View {
                                 .padding(.bottom, -10)
                             
                             HStack(spacing: 10) {
-                                Button(action: {
-                                    withAnimation(.easeInOut(duration: 0.2)) {
-                                        self.selectedHairType = 1
-                                    }
-                                }) {
-                                    VStack {
-                                        Image("straightHairIcon")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 60, height: 60)
-                                        HorizontalButtonText("Straight", isSelected: self.selectedHairType == 1)
-                                    }
+                                Button(action: { selectHairType(1) }) {
+                                    HairTypeButton("Straight", "straightHairIcon", isSelected: self.selectedHairType == 1)
                                 }
-                                .buttonStyle(PlainButtonStyle())
                                 
-                                Button(action: {
-                                    withAnimation(.easeInOut(duration: 0.2)) {
-                                        self.selectedHairType = 2
-                                    }
-                                }) {
-                                    VStack {
-                                        Image("curlyHairIcon")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 60, height: 60)
-                                        HorizontalButtonText("Curly", isSelected: self.selectedHairType == 2)
-                                    }
+                                Button(action: { selectHairType(2) }) {
+                                    HairTypeButton("Curly", "curlyHairIcon", isSelected: self.selectedHairType == 2)
                                 }
-                                .buttonStyle(PlainButtonStyle())
                                 
-                                Button(action: {
-                                    withAnimation(.easeInOut(duration: 0.2)) {
-                                        self.selectedHairType = 3
-                                    }
-                                }) {
-                                    VStack {
-                                        Image("wavyHairIcon")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 60, height: 60)
-                                        HorizontalButtonText("Wavy", isSelected: self.selectedHairType == 3)
-                                    }
+                                Button(action: { selectHairType(3) }) {
+                                    HairTypeButton("Wavy", "wavyHairIcon", isSelected: self.selectedHairType == 3)
                                 }
-                                .buttonStyle(PlainButtonStyle())
                             }
                             .padding(.vertical, 10)
                             
@@ -129,34 +82,61 @@ struct HairIDScreenView: View {
                                 .frame(height: 90)
                                 .padding(4)
                                 .background(Color.white.opacity(0.7))
-                                .cornerRadius(5.0)
+                                .cornerRadius(10.0)
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
-                            
-                            
                         }
                         .padding(.horizontal)
                     }
                     
                     Spacer()
                     
-                    NavigationLink(
-                        destination: Text("Next Screen Placeholder").navigationBarHidden(true),
-                        label: {
-                            Text("Continue")
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundColor(Color("PrimaryColor"))
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.white)
-                                .cornerRadius(50.0)
-                                .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
-                                .padding(.vertical)
-                        })
+                    Button(action: continueAction) {
+                        Text("Continue")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundColor(selectedHairThickness != nil && selectedHairType != nil && !colorHistory.isEmpty ? Color.white : Color("PrimaryColor"))
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(selectedHairThickness != nil && selectedHairType != nil && !colorHistory.isEmpty ? Color("PrimaryColor") : Color.white)
+                            .cornerRadius(50.0)
+                            .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
+                    }
+                    .padding(.vertical)
+                    .alert(isPresented: $showingAlert) {
+                        Alert(title: Text("Error"), message: Text("Please fill in all fields."), dismissButton: .default(Text("OK")))
+                    }
+
+                    NavigationLink("", destination: CurrentHairScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                 }
                 .padding()
             }
         }
+    }
+
+    private func selectHairThickness(_ thickness: Int) {
+        withAnimation(.easeInOut(duration: 0.2)) {
+            self.selectedHairThickness = thickness
+        }
+    }
+
+    private func selectHairType(_ type: Int) {
+        withAnimation(.easeInOut(duration: 0.2)) {
+            self.selectedHairType = type
+        }
+    }
+
+    private func continueAction() {
+        if selectedHairThickness == nil || selectedHairType == nil || colorHistory.isEmpty {
+            showingAlert = true
+        } else {
+            sendDataToBackend()
+            shouldNavigateToNextScreen = true
+        }
+    }
+
+    private func sendDataToBackend() {
+        // Implement the backend communication logic here
+        print("Sending data to backend: Thickness \(String(describing: selectedHairThickness)), Type \(String(describing: selectedHairType)), Color History \(colorHistory)")
     }
 }
 
@@ -179,4 +159,12 @@ private func HorizontalButtonText(_ text: String, isSelected: Bool) -> some View
         .padding(.vertical, 5)
 }
 
-// TODO: Validate to ensure not empty and send to backend
+private func HairTypeButton(_ text: String, _ imageName: String, isSelected: Bool) -> some View {
+    VStack {
+        Image(imageName)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 60, height: 60)
+        HorizontalButtonText(text, isSelected: isSelected)
+    }
+}

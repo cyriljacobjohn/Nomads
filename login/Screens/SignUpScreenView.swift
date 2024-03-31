@@ -76,16 +76,15 @@ struct SignUpScreenView: View {
                         .padding(.horizontal)
                         
                         Spacer()
-//                        Spacer().frame(height: 30)
 
                         Button(action: handleSignUp) {
                             Text("Sign Up")
                                 .font(.title3)
                                 .fontWeight(.bold)
-                                .foregroundColor(Color.white)
+                                .foregroundColor(email.isEmpty || password.isEmpty || confirmPassword.isEmpty ? Color("PrimaryColor") : Color.white)
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(Color("PrimaryColor"))
+                                .background(email.isEmpty || password.isEmpty || confirmPassword.isEmpty ? Color.white : Color("PrimaryColor"))
                                 .cornerRadius(50.0)
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                         }
