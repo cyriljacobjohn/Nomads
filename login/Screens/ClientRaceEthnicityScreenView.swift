@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct RaceEthnicityScreenView: View {
+struct ClientRaceEthnicityScreenView: View {
     @State private var selectedRaces: [Bool] = Array(repeating: false, count: 14)
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
@@ -88,7 +88,7 @@ struct RaceEthnicityScreenView: View {
                             .alert(isPresented: $showingAlert) {
                                 Alert(title: Text("Error"), message: Text("Please make a selection."), dismissButton: .default(Text("OK")))
                             }
-                            NavigationLink("", destination: HairGenderSelectionScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                            NavigationLink("", destination: ClientHairGenderSelectionScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                         }
                     .padding()
                 }
@@ -111,9 +111,9 @@ struct RaceEthnicityScreenView: View {
     }
 }
 
-struct RaceEthnicityScreenView_Previews: PreviewProvider {
+struct ClientRaceEthnicityScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        RaceEthnicityScreenView()
+        ClientRaceEthnicityScreenView()
     }
 }
 

@@ -32,17 +32,23 @@ struct ClientAdditionalInformation: View {
                                 .font(.custom("Sansita-BoldItalic", size: 50))
                                 .foregroundColor(Color("TitleTextColor"))
                                 .padding(.bottom, 20)
-                            
-                            Text("Is there anything you would like your stylist to know?")
-                                .font(.custom("Poppins-SemiBoldItalic", size: 20))
-                                .padding(.bottom, 10)
 
-                            TextEditor(text: $additionalInfo)
-                                .frame(height: 200)
-                                .padding(4)
-                                .background(Color.white.opacity(0.7))
-                                .cornerRadius(10.0)
-                                .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
+                            ZStack(alignment: .topLeading) {
+                                TextEditor(text: $additionalInfo)
+                                    .frame(height: 200)
+                                    .padding(4)
+                                    .background(Color.white.opacity(0.7))
+                                    .cornerRadius(10.0)
+                                    .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
+
+                                if additionalInfo.isEmpty {
+                                    Text(" Share anything your stylist should know, including accessibility needs and preferences for your hair and appointment.")
+                                        .font(.custom("Poppins-SemiBoldItalic", size: 15))
+                                        .foregroundColor(Color.gray.opacity(0.6))
+                                        .padding(.top, 8)
+                                        .padding(.leading, 4)
+                                }
+                            }
                         }
                         .padding(.horizontal)
                     }
@@ -64,8 +70,7 @@ struct ClientAdditionalInformation: View {
                     .alert(isPresented: $showingAlert) {
                         Alert(title: Text("Error"), message: Text("Please provide the requested information."), dismissButton: .default(Text("OK")))
                     }
-
-                    // Add your conditional NavigationLink here if needed
+                    NavigationLink("", destination: ForYouScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                 }
                 .padding()
             }

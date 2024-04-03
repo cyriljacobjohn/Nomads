@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NameEntryScreenView: View {
+struct ClientNameEntryScreenView: View {
     @State private var firstName: String = ""
     @State private var lastName: String = ""
     @State private var shouldNavigateToNextScreen = false
@@ -105,8 +105,8 @@ struct NameEntryScreenView: View {
     }
 }
 
-struct NameEntryScreenView_Previews: PreviewProvider {
+struct ClientNameEntryScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        NameEntryScreenView()
+        ClientNameEntryScreenView()
     }
 }

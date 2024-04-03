@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct CurrentHairScreenView: View {
+struct ClientCurrentHairScreenView: View {
     @State private var images: [UIImage?] = [nil, nil, nil, nil]
     @State private var showingImagePicker = false
     @State private var showingAlert = false
@@ -102,7 +102,7 @@ struct CurrentHairScreenView: View {
                         Alert(title: Text("Error"), message: Text("Please upload 4 images before continuing."), dismissButton: .default(Text("OK")))
                     }
 
-                    NavigationLink("", destination: HairInspoScreenView().navigationBarHidden(true), isActive: $navigateToHairInspoScreen)
+                    NavigationLink("", destination: ClientHairInspoScreenView().navigationBarHidden(true), isActive: $navigateToHairInspoScreen)
                 }
                 .padding()
             }
@@ -169,6 +169,6 @@ struct ImagePicker: UIViewControllerRepresentable {
 
 struct CurrentHairScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        CurrentHairScreenView()
+        ClientCurrentHairScreenView()
     }
 }

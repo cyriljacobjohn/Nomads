@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct HairIDScreenView: View {
+struct ClientHairIDScreenView: View {
     @State private var selectedHairThickness: Int? = nil
     @State private var selectedHairType: Int? = nil
-    @State private var colorHistory: String = ""
+    @State private var colorHistory: String = "None"
     @State private var navigateToCurlPatternScreen = false
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
@@ -107,8 +107,8 @@ struct HairIDScreenView: View {
                         Alert(title: Text("Error"), message: Text("Please fill in all fields."), dismissButton: .default(Text("OK")))
                     }
 
-                    NavigationLink("", destination: CurlPatternScreenView().navigationBarHidden(true), isActive: $navigateToCurlPatternScreen)
-                    NavigationLink("", destination: PreferenceScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                    NavigationLink("", destination: ClientCurlPatternScreenView().navigationBarHidden(true), isActive: $navigateToCurlPatternScreen)
+                    NavigationLink("", destination: ClientPreferenceScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                 }
                 .padding()
             }
@@ -147,9 +147,9 @@ struct HairIDScreenView: View {
     }
 }
 
-struct HairIDScreenView_Previews: PreviewProvider {
+struct ClientHairIDScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        HairIDScreenView()
+        ClientHairIDScreenView()
     }
 }
 

@@ -1,28 +1,26 @@
 //
-//  CurlPatternScreenView.swift
+//  PreferenceScreenView.swift
 //  UMI
 //
-//  Created by Sebastian Oberg on 3/30/24.
+//  Created by Cyril John on 3/30/24.
 //
 
 
 import SwiftUI
 
-struct CurlPatternScreenView: View {
-    @State private var selectedCurlPattern: Int? = nil
+struct ClientPreferenceScreenView: View {
+    @State private var selectedRaces: [Bool] = Array(repeating: false, count: 6)
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
 
-    let curlPatterns = [
-        ("2A", 10),
-        ("2B", 11),
-        ("2C", 12),
-        ("3A", 13),
-        ("3B", 14),
-        ("3C", 15),
-        ("4A", 16),
-        ("4B", 17),
-        ("4C", 18)
+    let races = [
+        "High Fades",
+        "Low Fades",
+        "Long Feminine Cuts",
+        "Long Masculine Cuts",
+        "Blonde Services",
+        "Braids",
+        // Add more if needed
     ]
 
     private var columns: [GridItem] {
@@ -33,49 +31,50 @@ struct CurlPatternScreenView: View {
         NavigationView {
             ZStack {
                 Color("BgColor").edgesIgnoringSafeArea(.all)
-                
-                ScrollView {
-                    VStack {
-                        Text("UMI")
-                            .font(.custom("Sarina-Regular", size: 35))
-                            .foregroundColor(Color("PrimaryColor"))
-                            .padding(.top)
 
-                        VStack(alignment: .leading) {
-                            Text("Curl Pattern Selection")
-                                .font(.custom("Sansita-BoldItalic", size: 50))
-                                .foregroundColor(Color("TitleTextColor"))
-                                .padding(.bottom, 20)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            Text("Select one:")
-                                .font(.custom("Poppins-SemiBoldItalic", size: 20))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.bottom, 10)
-                        }
+                VStack {
+                    Text("UMI")
+                        .font(.custom("Sarina-Regular", size: 35))
+                        .foregroundColor(Color("PrimaryColor"))
+                        .padding(.top, 20)
 
+                    Spacer()
+
+                    VStack(alignment: .leading) {
+                        Text("I'm Looking")
+                            .font(.custom("Sansita-BoldItalic", size: 50))
+                            .foregroundColor(Color("TitleTextColor"))
+                        
+                        Text("For")
+                            .font(.custom("Sansita-BoldItalic", size: 50))
+                            .foregroundColor(Color("TitleTextColor"))
+                            .padding(.bottom, 20)
+                        
+                        Text("Select all that apply:")
+                            .font(.custom("Poppins-SemiBoldItalic", size: 20))
+                        
                         LazyVGrid(columns: columns, spacing: 15) {
-                            ForEach(curlPatterns, id: \.1) { pattern in
+                            ForEach(races.indices, id: \.self) { index in
                                 Button(action: {
                                     withAnimation(.easeInOut(duration: 0.2)) {
-                                        self.selectedCurlPattern = pattern.1
+                                        self.selectedRaces[index].toggle()
                                     }
                                 }) {
-                                    buttonText(pattern.0, isSelected: self.selectedCurlPattern == pattern.1)
+                                    buttonText(races[index], isSelected: self.selectedRaces[index])
                                 }
-                                .padding(.bottom)
+                                .padding(.bottom, 5)
                             }
                         }
                         .padding(.horizontal)
-
+                        
                         Button(action: continueAction) {
                             Text("Continue")
                                 .font(.title3)
                                 .fontWeight(.bold)
-                                .foregroundColor(selectedCurlPattern != nil ? Color.white : Color("PrimaryColor"))
+                                .foregroundColor(selectedRaces.contains(true) ? Color.white : Color("PrimaryColor"))
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(selectedCurlPattern != nil ? Color("PrimaryColor") : Color.white)
+                                .background(selectedRaces.contains(true) ? Color("PrimaryColor") : Color.white)
                                 .cornerRadius(50.0)
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
                         }
@@ -83,17 +82,16 @@ struct CurlPatternScreenView: View {
                         .alert(isPresented: $showingAlert) {
                             Alert(title: Text("Error"), message: Text("Please make a selection."), dismissButton: .default(Text("OK")))
                         }
+                        NavigationLink("", destination: ClientCurrentHairScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
                     .padding()
-                    
-                    NavigationLink("", destination: CurrentHairScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen) // Update the destination view
                 }
             }
         }
     }
 
     private func continueAction() {
-        if selectedCurlPattern == nil {
+        if !selectedRaces.contains(true) {
             showingAlert = true
         } else {
             sendDataToBackend()
@@ -103,13 +101,13 @@ struct CurlPatternScreenView: View {
 
     private func sendDataToBackend() {
         // Implement the actual backend call here
-        print("Sending selected curl pattern to backend: \(String(describing: selectedCurlPattern))")
+        print("Sending selected races to backend: \(selectedRaces)")
     }
 }
 
-struct CurlPatternScreenView_Previews: PreviewProvider {
+struct ClientPreferenceScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        CurlPatternScreenView()
+        ClientPreferenceScreenView()
     }
 }
 
@@ -123,4 +121,5 @@ private func buttonText(_ text: String, isSelected: Bool) -> some View {
         .background(isSelected ? Color("PrimaryColor") : Color.white.opacity(0.7))
         .cornerRadius(50.0)
         .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
+        .padding(.vertical, 5)
 }

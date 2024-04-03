@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HairGenderSelectionScreenView: View {
+struct ClientHairGenderSelectionScreenView: View {
     @State private var selectedHairGender: Int? = nil
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
@@ -65,7 +65,7 @@ struct HairGenderSelectionScreenView: View {
                         Alert(title: Text("Error"), message: Text("Please make a selection."), dismissButton: .default(Text("OK")))
                     }
 
-                    NavigationLink("", destination: HairIDScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                    NavigationLink("", destination: ClientHairIDScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                 }
                 .padding()
             }
@@ -93,9 +93,9 @@ struct HairGenderSelectionScreenView: View {
     }
 }
 
-struct HairGenderSelectionScreenView_Previews: PreviewProvider {
+struct ClientHairGenderSelectionScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        HairGenderSelectionScreenView()
+        ClientHairGenderSelectionScreenView()
     }
 }
 

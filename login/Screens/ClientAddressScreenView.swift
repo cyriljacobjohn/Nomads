@@ -15,6 +15,7 @@ struct ClientAddressScreenView: View {
     @State private var state: String = ""
     @State private var zipCode: String = ""
     @State private var country: String = ""
+    @State private var distance: Double = 1
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
     @State private var alertMessage = "Please fill in all fields."
@@ -43,6 +44,16 @@ struct ClientAddressScreenView: View {
                             addressField(label: "State", placeholder: "NY", text: $state)
                             addressField(label: "Zip Code", placeholder: "10001", text: $zipCode)
                             addressField(label: "Country", placeholder: "USA", text: $country)
+                            
+                            Text("Distance Preferences")
+                                .font(.custom("Poppins-SemiBoldItalic", size: 20))
+                                .padding(.top)
+                                .padding(.bottom, 10)
+                            
+                            Slider(value: $distance, in: 1...100, step: 1)
+                            Text("\(Int(distance)) mile(s) from my address")
+                                .font(.custom("Poppins-Italic", size: 18))
+                                .padding(.bottom, 20)
                         }
                         .padding(.horizontal)
 
@@ -61,7 +72,7 @@ struct ClientAddressScreenView: View {
                             Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                         }
 
-                        NavigationLink("", destination: RaceEthnicityScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                        NavigationLink("", destination: ClientRaceEthnicityScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
                     .padding()
                 }
@@ -82,11 +93,11 @@ struct ClientAddressScreenView: View {
         let address = "\(street), \(city), \(state), \(zipCode), \(country)"
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(address) { (placemarks, error) in
-            if let error = error {
-                alertMessage = "Please enter a valid address."
+            if error != nil {
+                alertMessage = "Please enter valid address."
                 showingAlert = true
             } else if let location = placemarks?.first?.location {
-                sendDataToBackend(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                sendDataToBackend()
                 shouldNavigateToNextScreen = true
             } else {
                 alertMessage = "No valid location found for the address provided."
@@ -95,9 +106,10 @@ struct ClientAddressScreenView: View {
         }
     }
 
-    private func sendDataToBackend(latitude: Double, longitude: Double) {
-        print("Sending coordinates to backend: Latitude: \(latitude), Longitude: \(longitude)")
-        // Implement your backend communication logic here
+    private func sendDataToBackend() {
+        let backendData = "Street: \(street), City: \(city), State: \(state), Zip Code: \(zipCode), Country: \(country), Distance: \(distance) miles"
+        print("Sending data to backend: \(backendData)")
+        // Implement your backend communication logic here, sending `backendData`
     }
 
     private func addressField(label: String, placeholder: String, text: Binding<String>) -> some View {
@@ -124,3 +136,4 @@ struct ClientAddressScreenView_Previews: PreviewProvider {
         ClientAddressScreenView()
     }
 }
+

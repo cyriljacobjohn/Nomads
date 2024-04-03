@@ -65,7 +65,7 @@ struct AccountTypeSelectionView: View {
                     // Conditional NavigationLink based on account type selection
                     Group {
                         if selectAccountType == 1 {
-                            NavigationLink(destination: NameEntryScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen) {
+                            NavigationLink(destination: ClientNameEntryScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen) {
                                 EmptyView()
                             }
                         } else if selectAccountType == 2 {
