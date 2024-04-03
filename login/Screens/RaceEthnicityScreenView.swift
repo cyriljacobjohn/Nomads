@@ -25,7 +25,7 @@ struct RaceEthnicityScreenView: View {
             "Middle Eastern",
             "Native American or Alaska Native",
             "Native Hawaiian or Other Pacific Islander",
-            "Romani (Gypsy)",
+            "Romani",
             "Scandinavian",
             "Slavic",
             "Turkic",

@@ -13,6 +13,7 @@
 		885230EF263272E200DBCF3F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 885230EE263272E200DBCF3F /* Preview Assets.xcassets */; };
 		8852311726329DCF00DBCF3F /* WelcomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8852311626329DCF00DBCF3F /* WelcomeScreenView.swift */; };
 		8852311F2632A4D500DBCF3F /* SignInScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8852311E2632A4D500DBCF3F /* SignInScreenView.swift */; };
+		9E405EB62BBB354E0093E231 /* ClientAddressScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E405EB52BBB354E0093E231 /* ClientAddressScreenView.swift */; };
 		9E43C1B82BB91D6B00102213 /* CurlPatternScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E43C1B72BB91D6B00102213 /* CurlPatternScreenView.swift */; };
 		9E67A5B52BAA295D000D20CB /* HairGenderSelectionScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E67A5B42BAA295D000D20CB /* HairGenderSelectionScreenView.swift */; };
 		9E91FB3F2BA88171006160AE /* NameEntryScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E91FB3E2BA88171006160AE /* NameEntryScreenView.swift */; };
@@ -42,10 +43,12 @@
 		9E91FB732BA88BCA006160AE /* Sansita-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E91FB6B2BA88BCA006160AE /* Sansita-Italic.ttf */; };
 		9E91FB742BA88BCA006160AE /* Sansita-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E91FB6C2BA88BCA006160AE /* Sansita-ExtraBold.ttf */; };
 		9E91FB752BA88BCA006160AE /* Sansita-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E91FB6D2BA88BCA006160AE /* Sansita-BoldItalic.ttf */; };
+		9E9887372BBDD5AC00ACAD2A /* ClientAdditionalInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9887362BBDD5AC00ACAD2A /* ClientAdditionalInformation.swift */; };
 		9EA198112BB8A3E4001DE054 /* CurrentHairScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA198102BB8A3E4001DE054 /* CurrentHairScreenView.swift */; };
 		9EA198132BB8AC9C001DE054 /* HairInspoScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA198122BB8AC9C001DE054 /* HairInspoScreenView.swift */; };
 		9EA198152BB9033F001DE054 /* RaceEthnicityScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA198142BB9033F001DE054 /* RaceEthnicityScreenView.swift */; };
 		9EA269F72B8AA7AD0057754A /* Sarina-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9EA269F62B8AA7AD0057754A /* Sarina-Regular.ttf */; };
+		9EA7C44E2BBA3C0800D3C870 /* GetRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA7C44D2BBA3C0800D3C870 /* GetRequestView.swift */; };
 		9EB3BADB2B929CE200AFF043 /* SignUpScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB3BADA2B929CE200AFF043 /* SignUpScreenView.swift */; };
 		9ED31FB62BAB6EE00002D645 /* HairIDScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED31FB52BAB6EE00002D645 /* HairIDScreenView.swift */; };
 		9EF047CB2BBA054600AE839F /* ForYouScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF047CA2BBA054600AE839F /* ForYouScreenView.swift */; };
@@ -83,6 +86,7 @@
 		8852311626329DCF00DBCF3F /* WelcomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeScreenView.swift; sourceTree = "<group>"; };
 		8852311E2632A4D500DBCF3F /* SignInScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInScreenView.swift; sourceTree = "<group>"; };
 		88934F432634232200B116CA /* ui.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ui.png; sourceTree = "<group>"; };
+		9E405EB52BBB354E0093E231 /* ClientAddressScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientAddressScreenView.swift; sourceTree = "<group>"; };
 		9E43C1B72BB91D6B00102213 /* CurlPatternScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurlPatternScreenView.swift; sourceTree = "<group>"; };
 		9E67A5B42BAA295D000D20CB /* HairGenderSelectionScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HairGenderSelectionScreenView.swift; sourceTree = "<group>"; };
 		9E91FB3E2BA88171006160AE /* NameEntryScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameEntryScreenView.swift; sourceTree = "<group>"; };
@@ -112,10 +116,12 @@
 		9E91FB6B2BA88BCA006160AE /* Sansita-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sansita-Italic.ttf"; sourceTree = "<group>"; };
 		9E91FB6C2BA88BCA006160AE /* Sansita-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sansita-ExtraBold.ttf"; sourceTree = "<group>"; };
 		9E91FB6D2BA88BCA006160AE /* Sansita-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sansita-BoldItalic.ttf"; sourceTree = "<group>"; };
+		9E9887362BBDD5AC00ACAD2A /* ClientAdditionalInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientAdditionalInformation.swift; sourceTree = "<group>"; };
 		9EA198102BB8A3E4001DE054 /* CurrentHairScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentHairScreenView.swift; sourceTree = "<group>"; };
 		9EA198122BB8AC9C001DE054 /* HairInspoScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HairInspoScreenView.swift; sourceTree = "<group>"; };
 		9EA198142BB9033F001DE054 /* RaceEthnicityScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaceEthnicityScreenView.swift; sourceTree = "<group>"; };
 		9EA269F62B8AA7AD0057754A /* Sarina-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sarina-Regular.ttf"; sourceTree = "<group>"; };
+		9EA7C44D2BBA3C0800D3C870 /* GetRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRequestView.swift; sourceTree = "<group>"; };
 		9EB3BADA2B929CE200AFF043 /* SignUpScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpScreenView.swift; sourceTree = "<group>"; };
 		9ED31FB52BAB6EE00002D645 /* HairIDScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HairIDScreenView.swift; sourceTree = "<group>"; };
 		9EF047CA2BBA054600AE839F /* ForYouScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForYouScreenView.swift; sourceTree = "<group>"; };
@@ -207,6 +213,9 @@
 				9EF047CC2BBA077700AE839F /* PreferenceScreenView.swift */,
 				9EF047CE2BBA083D00AE839F /* AccountTypeSelectionView.swift */,
 				9EF047D02BBA08A100AE839F /* StylistViewProfile.swift */,
+				9EA7C44D2BBA3C0800D3C870 /* GetRequestView.swift */,
+				9E405EB52BBB354E0093E231 /* ClientAddressScreenView.swift */,
+				9E9887362BBDD5AC00ACAD2A /* ClientAdditionalInformation.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -402,9 +411,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9EA7C44E2BBA3C0800D3C870 /* GetRequestView.swift in Sources */,
 				9E67A5B52BAA295D000D20CB /* HairGenderSelectionScreenView.swift in Sources */,
 				9E91FB3F2BA88171006160AE /* NameEntryScreenView.swift in Sources */,
 				9EF047CB2BBA054600AE839F /* ForYouScreenView.swift in Sources */,
+				9E405EB62BBB354E0093E231 /* ClientAddressScreenView.swift in Sources */,
 				9EF047CD2BBA077700AE839F /* PreferenceScreenView.swift in Sources */,
 				9EA198112BB8A3E4001DE054 /* CurrentHairScreenView.swift in Sources */,
 				8852311F2632A4D500DBCF3F /* SignInScreenView.swift in Sources */,
@@ -415,6 +426,7 @@
 				9EB3BADB2B929CE200AFF043 /* SignUpScreenView.swift in Sources */,
 				9EF047D12BBA08A100AE839F /* StylistViewProfile.swift in Sources */,
 				9EA198132BB8AC9C001DE054 /* HairInspoScreenView.swift in Sources */,
+				9E9887372BBDD5AC00ACAD2A /* ClientAdditionalInformation.swift in Sources */,
 				9E43C1B82BB91D6B00102213 /* CurlPatternScreenView.swift in Sources */,
 				9EA198152BB9033F001DE054 /* RaceEthnicityScreenView.swift in Sources */,
 				885230E8263272E100DBCF3F /* loginApp.swift in Sources */,
@@ -578,6 +590,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"login/Preview Content\"";
+				DEVELOPMENT_TEAM = X6D94Q885L;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = login/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -599,6 +612,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"login/Preview Content\"";
+				DEVELOPMENT_TEAM = X6D94Q885L;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = login/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;

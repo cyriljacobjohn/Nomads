@@ -101,7 +101,7 @@ struct SignUpScreenView: View {
                         }
                         .padding(.bottom, 20)
 
-                        NavigationLink("", destination: NameEntryScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                        NavigationLink("", destination: AccountTypeSelectionView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
                     .padding()
                 }
