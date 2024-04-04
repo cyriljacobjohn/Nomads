@@ -1,14 +1,13 @@
 //
-//  PreferenceScreenView.swift
+//  StylistSpecialtyScreenView.swift
 //  UMI
 //
-//  Created by Cyril John on 3/30/24.
+//  Created by Sebastian Oberg on 4/4/24.
 //
-
 
 import SwiftUI
 
-struct ClientPreferenceScreenView: View {
+struct StylistSpecialtyScreenView: View {
     @State private var selectedRaces: [Bool] = Array(repeating: false, count: 6)
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
@@ -41,11 +40,7 @@ struct ClientPreferenceScreenView: View {
                     Spacer()
 
                     VStack(alignment: .leading) {
-                        Text("I'm Looking")
-                            .font(.custom("Sansita-BoldItalic", size: 50))
-                            .foregroundColor(Color("TitleTextColor"))
-                        
-                        Text("For")
+                        Text("What Do You Specialize In?")
                             .font(.custom("Sansita-BoldItalic", size: 50))
                             .foregroundColor(Color("TitleTextColor"))
                             .padding(.bottom, 20)
@@ -82,7 +77,7 @@ struct ClientPreferenceScreenView: View {
                         .alert(isPresented: $showingAlert) {
                             Alert(title: Text("Error"), message: Text("Please make a selection."), dismissButton: .default(Text("OK")))
                         }
-                        NavigationLink("", destination: ClientCurrentHairScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                        NavigationLink("", destination: StylistAdditionalInformationScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
                     .padding()
                 }
@@ -101,13 +96,13 @@ struct ClientPreferenceScreenView: View {
 
     private func sendDataToBackend() {
         // Implement the actual backend call here
-        print("Sending selected preferences to backend: \(selectedRaces)")
+        print("Sending selected specialties to backend: \(selectedRaces)")
     }
 }
 
-struct ClientPreferenceScreenView_Previews: PreviewProvider {
+struct StylistSpecialtyScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        ClientPreferenceScreenView()
+        StylistSpecialtyScreenView()
     }
 }
 

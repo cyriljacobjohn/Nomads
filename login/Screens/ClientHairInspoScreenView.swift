@@ -100,7 +100,7 @@ struct ClientHairInspoScreenView: View {
                     .alert(isPresented: $showingAlert) {
                         Alert(title: Text("Error"), message: Text("Please upload 4 images before continuing."), dismissButton: .default(Text("OK")))
                     }                    
-                    NavigationLink("", destination: ClientAdditionalInformation().navigationBarHidden(true), isActive: $navigateToNextScreen)
+                    NavigationLink("", destination: ClientAdditionalInformationScreenView().navigationBarHidden(true), isActive: $navigateToNextScreen)
                 }
                 .padding()
             }

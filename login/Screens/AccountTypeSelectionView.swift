@@ -69,7 +69,7 @@ struct AccountTypeSelectionView: View {
                                 EmptyView()
                             }
                         } else if selectAccountType == 2 {
-                            NavigationLink(destination: Text("Stylist page under construction").navigationBarHidden(true), isActive: $shouldNavigateToNextScreen) {
+                            NavigationLink(destination: StylistNameEntryScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen) {
                                 EmptyView()
                             }
                         }

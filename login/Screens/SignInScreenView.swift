@@ -87,7 +87,7 @@ struct SignInScreenView: View {
                         }
                         .padding(.bottom, 20)
 
-                        NavigationLink("", destination: ForYouScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                        NavigationLink("", destination: StylistForYouScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
                     .padding()
                 }
@@ -116,3 +116,5 @@ struct SignInScreenView_Previews: PreviewProvider {
         SignInScreenView()
     }
 }
+
+// TODO: Need to add logic: If uid is stylist, then go to stylist login. Else, client login
