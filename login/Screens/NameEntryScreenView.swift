@@ -83,7 +83,7 @@ struct NameEntryScreenView: View {
                     Spacer()
                     
                     NavigationLink( // Back already included for navigation links
-                        destination: HairGenderSelectionScreenView().navigationBarHidden(true),
+                        destination: AccountTypeSelectionView().navigationBarHidden(true),
                         label: {
                             Text("Continue")
                                 .font(.title3)
