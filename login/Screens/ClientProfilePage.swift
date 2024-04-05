@@ -31,6 +31,7 @@ struct ClientProfileView: View {
                 if let client = client {
                     ProfileNavigationBar(name: client.name)
                     CustomSegmentedControl(selectedSegment: $selectedSegment, segments: ["View ", "Edit "])
+                        .padding()
                     
                     ScrollView {
                         VStack(alignment: .leading) {
@@ -44,12 +45,14 @@ struct ClientProfileView: View {
                                 
                                 
                                 ClientDescriptionView(title:"What I'm looking for", description: client.description)
+                                    .padding(.bottom)
                                     
                     
                                 ClientProfileCardView(client: client)
                                     .padding(.bottom)
                                 
                                 ClientInterestsView(interests: client.interests)
+                                    .padding(.bottom)
                                 
                                 // Replace the second instance of ClientDescriptionView with ClientColorHistoryView
                                 ClientColorHistoryView(title:"Color History", colorHistory: client.colorHistory)
@@ -70,7 +73,7 @@ struct ClientProfileView: View {
                                 // ... Add your existing code for edit section
                             }
                         }
-                        .padding()
+                        .padding(.horizontal)
                     }
                 } else {
                     Text("Loading...")
@@ -115,17 +118,16 @@ struct ClientDescriptionView: View {
             Text(title)
                 .font(.custom("Poppins-Regular", size: 15))
                 .foregroundColor(Color("PrimaryColor"))
-
             Text(description)
                 .font(.custom("Poppins-SemiBold", size: 25))
+                .fixedSize(horizontal: false, vertical: true) // Ensure text wraps correctly
         }
-        
         .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)// Apply padding on all sides
         .background(Color.white)
         .cornerRadius(10)
         .shadow(radius: 1)
-        .frame(maxWidth: .infinity)
-        
+        .frame(maxWidth: .infinity) // Stretch to the full width
     }
 }
 
@@ -144,18 +146,17 @@ struct ClientProfileCardView: View {
 //            }
             
             VStack(alignment: .leading, spacing: 16) {
-                ProfileSectionView(iconName: "person", text: client.hairGender) // Use proper SF Symbols
+                ProfileSectionView(iconName: "figure", text: client.hairGender) // Use proper SF Symbols
                 Divider()
-                ProfileSectionView(iconName: "star.fill", text: client.hairThickness)
+                ProfileSectionView(iconName: "line.horizontal.3.decrease", text: client.hairThickness)
                 Divider()
-                ProfileSectionView(iconName: "dollarsign.circle", text: client.hairType)
+                ProfileSectionView(iconName: "waveform.path.ecg.rectangle", text: client.hairType)
             }
             .padding(.horizontal)
             .padding(.bottom)
             
         }
         .padding(.top)
-        
         .background(RoundedRectangle(cornerRadius: 10).fill(Color.white))
         .shadow(radius: 1)
         .frame(maxWidth: .infinity) // Stretch to the ends
@@ -210,16 +211,17 @@ struct ClientColorHistoryView: View {
             Text(title)
                 .font(.custom("Poppins-Regular", size: 15))
                 .foregroundColor(Color("PrimaryColor"))
-
             Text(colorHistory)
                 .font(.custom("Poppins-SemiBold", size: 25))
+                .fixedSize(horizontal: false, vertical: true) // Ensure text wraps correctly
         }
-        .padding() // Apply top and bottom padding here
-        .background(Color.white)
-        .cornerRadius(10)
-        .shadow(radius: 1)
-        .frame(maxWidth: .infinity)
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.gray, lineWidth: 0.5 )) // Outer border
+        
+         // Stretch to the full width
     }
+    
 }
 
 struct ClientProfileSectionView: View {

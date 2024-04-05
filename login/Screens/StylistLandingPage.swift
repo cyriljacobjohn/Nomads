@@ -200,7 +200,7 @@ struct SpecialtiesView: View {
             LazyVGrid(columns: columns, alignment: .leading, spacing: 10) {
                 ForEach(specialties, id: \.self) { specialty in
                     Text(specialty)
-                        .font(.custom("Poppins-Regular", size: 15))
+                        .font(.custom("Poppins-SemiBold", size: 15))
                         .foregroundColor(.white)
                         .padding()
                         .frame(maxWidth: .infinity)

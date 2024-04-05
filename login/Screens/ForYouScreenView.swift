@@ -125,9 +125,9 @@ struct CustomNavigationBar: View {
                 Button(action: {
                     // Action for search button
                 }) {
-                    Image(systemName: "person")
+                    Image(systemName: "line.horizontal.3.decrease.circle.fill")
                         .imageScale(.large)
-                        .accentColor(.black)
+                        .accentColor(Color("PrimaryColor"))
                 }
                 .frame(width: 80, alignment: .trailing) // Right-aligned button
             }

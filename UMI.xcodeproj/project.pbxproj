@@ -13,7 +13,10 @@
 		23363E8E2BBAC3D600CA22E8 /* StylistLandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23363E8D2BBAC3D600CA22E8 /* StylistLandingPage.swift */; };
 		233F482F2BB7467100CAF26F /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233F482E2BB7467100CAF26F /* AuthManager.swift */; };
 		233F48312BB76A7400CAF26F /* stylist-client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233F48302BB76A7400CAF26F /* stylist-client.swift */; };
+		234A71222BC0B8F300D60524 /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234A71212BC0B8F300D60524 /* TabView.swift */; };
 		23F364E52BBF316300E6DBA9 /* ClientProfilePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F364E42BBF316300E6DBA9 /* ClientProfilePage.swift */; };
+		23F364E72BBF82B600E6DBA9 /* FavoritesPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F364E62BBF82B600E6DBA9 /* FavoritesPage.swift */; };
+		23F364EB2BBF9F1E00E6DBA9 /* MyReviewsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F364EA2BBF9F1E00E6DBA9 /* MyReviewsPage.swift */; };
 		885230E8263272E100DBCF3F /* loginApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885230E7263272E100DBCF3F /* loginApp.swift */; };
 		885230EA263272E100DBCF3F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885230E9263272E100DBCF3F /* ContentView.swift */; };
 		885230EC263272E200DBCF3F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 885230EB263272E200DBCF3F /* Assets.xcassets */; };
@@ -77,7 +80,10 @@
 		23363E8D2BBAC3D600CA22E8 /* StylistLandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylistLandingPage.swift; sourceTree = "<group>"; };
 		233F482E2BB7467100CAF26F /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		233F48302BB76A7400CAF26F /* stylist-client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "stylist-client.swift"; sourceTree = "<group>"; };
+		234A71212BC0B8F300D60524 /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
 		23F364E42BBF316300E6DBA9 /* ClientProfilePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientProfilePage.swift; sourceTree = "<group>"; };
+		23F364E62BBF82B600E6DBA9 /* FavoritesPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesPage.swift; sourceTree = "<group>"; };
+		23F364EA2BBF9F1E00E6DBA9 /* MyReviewsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyReviewsPage.swift; sourceTree = "<group>"; };
 		885230E4263272E100DBCF3F /* UMI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UMI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		885230E7263272E100DBCF3F /* loginApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loginApp.swift; sourceTree = "<group>"; };
 		885230E9263272E100DBCF3F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -204,6 +210,8 @@
 				232D26DA2BB9034100237BA3 /* StylistViewProfile.swift */,
 				23363E8D2BBAC3D600CA22E8 /* StylistLandingPage.swift */,
 				23F364E42BBF316300E6DBA9 /* ClientProfilePage.swift */,
+				23F364E62BBF82B600E6DBA9 /* FavoritesPage.swift */,
+				23F364EA2BBF9F1E00E6DBA9 /* MyReviewsPage.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -400,6 +408,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				232D26D92BB89B2300237BA3 /* ForYouScreenView.swift in Sources */,
+				23F364EB2BBF9F1E00E6DBA9 /* MyReviewsPage.swift in Sources */,
 				9E67A5B52BAA295D000D20CB /* HairGenderSelectionScreenView.swift in Sources */,
 				232D26D52BB87B0200237BA3 /* PreferenceScreenView.swift in Sources */,
 				23F364E52BBF316300E6DBA9 /* ClientProfilePage.swift in Sources */,
@@ -409,10 +418,12 @@
 				8852311F2632A4D500DBCF3F /* SignInScreenView.swift in Sources */,
 				23363E8E2BBAC3D600CA22E8 /* StylistLandingPage.swift in Sources */,
 				8852311726329DCF00DBCF3F /* WelcomeScreenView.swift in Sources */,
+				234A71222BC0B8F300D60524 /* TabView.swift in Sources */,
 				885230EA263272E100DBCF3F /* ContentView.swift in Sources */,
 				9ED31FB62BAB6EE00002D645 /* HairIDScreenView.swift in Sources */,
 				9EB3BADB2B929CE200AFF043 /* SignUpScreenView.swift in Sources */,
 				885230E8263272E100DBCF3F /* loginApp.swift in Sources */,
+				23F364E72BBF82B600E6DBA9 /* FavoritesPage.swift in Sources */,
 				232D26DB2BB9034100237BA3 /* StylistViewProfile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
