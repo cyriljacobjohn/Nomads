@@ -48,7 +48,6 @@
 		9EA198132BB8AC9C001DE054 /* ClientHairInspoScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA198122BB8AC9C001DE054 /* ClientHairInspoScreenView.swift */; };
 		9EA198152BB9033F001DE054 /* ClientRaceEthnicityScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA198142BB9033F001DE054 /* ClientRaceEthnicityScreenView.swift */; };
 		9EA269F72B8AA7AD0057754A /* Sarina-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9EA269F62B8AA7AD0057754A /* Sarina-Regular.ttf */; };
-		9EA7C44E2BBA3C0800D3C870 /* GetRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA7C44D2BBA3C0800D3C870 /* GetRequestView.swift */; };
 		9EABBFB42BBF0ED800EB9846 /* StylistNameEntryScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EABBFB32BBF0ED800EB9846 /* StylistNameEntryScreenView.swift */; };
 		9EABBFB62BBF0F3600EB9846 /* StylistAddressScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EABBFB52BBF0F3600EB9846 /* StylistAddressScreenView.swift */; };
 		9EABBFB82BBF100300EB9846 /* StylistPriceScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EABBFB72BBF100300EB9846 /* StylistPriceScreenView.swift */; };
@@ -128,7 +127,6 @@
 		9EA198122BB8AC9C001DE054 /* ClientHairInspoScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientHairInspoScreenView.swift; sourceTree = "<group>"; };
 		9EA198142BB9033F001DE054 /* ClientRaceEthnicityScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientRaceEthnicityScreenView.swift; sourceTree = "<group>"; };
 		9EA269F62B8AA7AD0057754A /* Sarina-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sarina-Regular.ttf"; sourceTree = "<group>"; };
-		9EA7C44D2BBA3C0800D3C870 /* GetRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRequestView.swift; sourceTree = "<group>"; };
 		9EABBFB32BBF0ED800EB9846 /* StylistNameEntryScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylistNameEntryScreenView.swift; sourceTree = "<group>"; };
 		9EABBFB52BBF0F3600EB9846 /* StylistAddressScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylistAddressScreenView.swift; sourceTree = "<group>"; };
 		9EABBFB72BBF100300EB9846 /* StylistPriceScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylistPriceScreenView.swift; sourceTree = "<group>"; };
@@ -213,7 +211,6 @@
 		8852311526329DBA00DBCF3F /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				9EA7C44D2BBA3C0800D3C870 /* GetRequestView.swift */,
 				8852311626329DCF00DBCF3F /* WelcomeScreenView.swift */,
 				9EB3BADA2B929CE200AFF043 /* SignUpScreenView.swift */,
 				8852311E2632A4D500DBCF3F /* SignInScreenView.swift */,
@@ -433,7 +430,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9EABBFBE2BBF34BA00EB9846 /* StylistSpecialtyScreenView.swift in Sources */,
-				9EA7C44E2BBA3C0800D3C870 /* GetRequestView.swift in Sources */,
 				9E67A5B52BAA295D000D20CB /* ClientHairGenderSelectionScreenView.swift in Sources */,
 				9EABBFB42BBF0ED800EB9846 /* StylistNameEntryScreenView.swift in Sources */,
 				9E91FB3F2BA88171006160AE /* ClientNameEntryScreenView.swift in Sources */,
