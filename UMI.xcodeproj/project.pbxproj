@@ -56,6 +56,7 @@
 		9EABBFBE2BBF34BA00EB9846 /* StylistSpecialtyScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EABBFBD2BBF34BA00EB9846 /* StylistSpecialtyScreenView.swift */; };
 		9EABBFC02BBF350400EB9846 /* StylistAdditionalInformationScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EABBFBF2BBF350400EB9846 /* StylistAdditionalInformationScreenView.swift */; };
 		9EB3BADB2B929CE200AFF043 /* SignUpScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB3BADA2B929CE200AFF043 /* SignUpScreenView.swift */; };
+		9ECD2CB72BBF6EAE0069D627 /* UserRegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ECD2CB62BBF6EAE0069D627 /* UserRegistrationViewModel.swift */; };
 		9ED31FB62BAB6EE00002D645 /* ClientHairIDScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED31FB52BAB6EE00002D645 /* ClientHairIDScreenView.swift */; };
 		9EF047CB2BBA054600AE839F /* StylistForYouScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF047CA2BBA054600AE839F /* StylistForYouScreenView.swift */; };
 		9EF047CD2BBA077700AE839F /* ClientPreferenceScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF047CC2BBA077700AE839F /* ClientPreferenceScreenView.swift */; };
@@ -135,6 +136,7 @@
 		9EABBFBD2BBF34BA00EB9846 /* StylistSpecialtyScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylistSpecialtyScreenView.swift; sourceTree = "<group>"; };
 		9EABBFBF2BBF350400EB9846 /* StylistAdditionalInformationScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylistAdditionalInformationScreenView.swift; sourceTree = "<group>"; };
 		9EB3BADA2B929CE200AFF043 /* SignUpScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpScreenView.swift; sourceTree = "<group>"; };
+		9ECD2CB62BBF6EAE0069D627 /* UserRegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRegistrationViewModel.swift; sourceTree = "<group>"; };
 		9ED31FB52BAB6EE00002D645 /* ClientHairIDScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientHairIDScreenView.swift; sourceTree = "<group>"; };
 		9EF047CA2BBA054600AE839F /* StylistForYouScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylistForYouScreenView.swift; sourceTree = "<group>"; };
 		9EF047CC2BBA077700AE839F /* ClientPreferenceScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientPreferenceScreenView.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				9EABBFB92BBF14B700EB9846 /* StylistContactScreenView.swift */,
 				9EABBFBD2BBF34BA00EB9846 /* StylistSpecialtyScreenView.swift */,
 				9EABBFBF2BBF350400EB9846 /* StylistAdditionalInformationScreenView.swift */,
+				9ECD2CB62BBF6EAE0069D627 /* UserRegistrationViewModel.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -453,6 +456,7 @@
 				9E9887372BBDD5AC00ACAD2A /* ClientAdditionalInformationScreenView.swift in Sources */,
 				9E43C1B82BB91D6B00102213 /* ClientCurlPatternScreenView.swift in Sources */,
 				9EA198152BB9033F001DE054 /* ClientRaceEthnicityScreenView.swift in Sources */,
+				9ECD2CB72BBF6EAE0069D627 /* UserRegistrationViewModel.swift in Sources */,
 				885230E8263272E100DBCF3F /* loginApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

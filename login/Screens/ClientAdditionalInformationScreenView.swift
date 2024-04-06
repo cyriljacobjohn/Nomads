@@ -65,6 +65,7 @@ struct ClientAdditionalInformationScreenView: View {
                     }
 
                     // Add your conditional NavigationLink here if needed
+                    NavigationLink("", destination: StylistForYouScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                 }
                 .padding()
             }

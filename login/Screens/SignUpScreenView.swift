@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct SignUpScreenView: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
+    @StateObject private var viewModel = UserRegistrationViewModel()
     @State private var confirmPassword: String = ""
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
@@ -38,7 +37,7 @@ struct SignUpScreenView: View {
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
                             
-                            TextField("Enter Email", text: $email)
+                            TextField("Enter Email", text: $viewModel.email)
                                 .font(.title3)
                                 .padding()
                                 .frame(maxWidth: .infinity)
@@ -51,7 +50,7 @@ struct SignUpScreenView: View {
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
                             
-                            SecureField("Enter Password", text: $password)
+                            SecureField("Enter Password", text: $viewModel.password)
                                 .font(.title3)
                                 .padding()
                                 .frame(maxWidth: .infinity)
@@ -81,10 +80,10 @@ struct SignUpScreenView: View {
                             Text("Sign Up")
                                 .font(.title3)
                                 .fontWeight(.bold)
-                                .foregroundColor(email.isEmpty || password.isEmpty || confirmPassword.isEmpty ? Color("PrimaryColor") : Color.white)
+                                .foregroundColor(viewModel.email.isEmpty || viewModel.password.isEmpty || confirmPassword.isEmpty ? Color("PrimaryColor") : Color.white)
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(email.isEmpty || password.isEmpty || confirmPassword.isEmpty ? Color.white : Color("PrimaryColor"))
+                                .background(viewModel.email.isEmpty || viewModel.password.isEmpty || confirmPassword.isEmpty ? Color.white : Color("PrimaryColor"))
                                 .cornerRadius(50.0)
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                         }
@@ -92,14 +91,6 @@ struct SignUpScreenView: View {
                         .alert(isPresented: $showingAlert) {
                             Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                         }
-
-                        NavigationLink(destination: SignInScreenView().navigationBarHidden(true)) {
-                            Text("Already registered? ")
-                                .foregroundColor(Color.black) +
-                            Text("Sign in")
-                                .foregroundColor(Color("PrimaryColor"))
-                        }
-                        .padding(.bottom, 20)
 
                         NavigationLink("", destination: AccountTypeSelectionView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
@@ -110,21 +101,30 @@ struct SignUpScreenView: View {
     }
 
     private func handleSignUp() {
-        if email.isEmpty || password.isEmpty || confirmPassword.isEmpty {
+        if viewModel.email.isEmpty || viewModel.password.isEmpty || confirmPassword.isEmpty {
             alertMessage = "Please fill in all fields."
             showingAlert = true
-        } else if password != confirmPassword {
+        } else if viewModel.password != confirmPassword {
             alertMessage = "Passwords do not match."
             showingAlert = true
         } else {
             registerUser()
-            shouldNavigateToNextScreen = true
         }
     }
 
     private func registerUser() {
-        // Implement registration logic here, communicate with backend
-        print("Sending data to backend: Email: \(email), Password: \(password)")
+        viewModel.signUp { success in
+            DispatchQueue.main.async {
+                if success {
+                    // Navigate to the next screen
+                    shouldNavigateToNextScreen = true
+                } else {
+                    // Handle errors, e.g., show an alert
+                    alertMessage = "Failed to register. Please try again later."
+                    showingAlert = true
+                }
+            }
+        }
     }
 }
 

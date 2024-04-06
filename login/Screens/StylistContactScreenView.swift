@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct StylistContactScreenView: View {
-    @State private var instagram: String = "1"
-    @State private var twitter: String = "1"
-    @State private var linkedTree: String = "1"
+    @State private var instagram: String = ""
+    @State private var twitter: String = ""
+    @State private var linkedTree: String = ""
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
     @State private var phoneNumRaw: String = ""
