@@ -11,6 +11,7 @@ struct ClientAdditionalInformationScreenView: View {
     @EnvironmentObject var viewModel: UserRegistrationViewModel
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
+    @State private var alertMessage = ""
 
     var body: some View {
         NavigationView {
@@ -58,10 +59,10 @@ struct ClientAdditionalInformationScreenView: View {
                     }
                     .padding(.vertical)
                     .alert(isPresented: $showingAlert) {
-                        Alert(title: Text("Error"), message: Text("Please fill in the field."), dismissButton: .default(Text("OK")))
+                        Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                     }
 
-                    NavigationLink("", destination: Text("Next View"), isActive: $shouldNavigateToNextScreen)
+                    NavigationLink("", destination: ClientCurrentHairScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                 }
                 .padding()
             }
@@ -70,14 +71,15 @@ struct ClientAdditionalInformationScreenView: View {
 
     private func continueAction() {
         if viewModel.stylistsShouldKnow.isEmpty {
+            alertMessage = "Please fill in all fields."
             showingAlert = true
         } else {
             viewModel.createClientAccount { success in
                 DispatchQueue.main.async {
                     if success {
-                        print("Client account created successfully.")
                         shouldNavigateToNextScreen = true
                     } else {
+                        alertMessage = "An error occurred while creating the client account."
                         showingAlert = true
                     }
                 }
@@ -91,4 +93,3 @@ struct ClientAdditionalInformationScreenView_Previews: PreviewProvider {
         ClientAdditionalInformationScreenView().environmentObject(UserRegistrationViewModel())
     }
 }
-

@@ -80,7 +80,9 @@ class UserRegistrationViewModel: ObservableObject {
 
     func createClientAccount(completion: @escaping (Bool) -> Void) {
         guard let url = URL(string: "http://127.0.0.1:5000/client/create-client"), !uid.isEmpty else {
-            completion(false)
+            DispatchQueue.main.async {
+                completion(false)
+            }
             return
         }
         
@@ -88,7 +90,9 @@ class UserRegistrationViewModel: ObservableObject {
         print("Client Data: \(clientData)")
 
         guard let jsonData = try? JSONSerialization.data(withJSONObject: clientData) else {
-            completion(false)
+            DispatchQueue.main.async {
+                completion(false)
+            }
             return
         }
 
@@ -98,20 +102,43 @@ class UserRegistrationViewModel: ObservableObject {
         request.httpBody = jsonData
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            if let error = error {
+                print("Error during URLSessionDataTask: \(error.localizedDescription)")
                 DispatchQueue.main.async {
                     completion(false)
                 }
                 return
             }
-            
-            DispatchQueue.main.async {
-                completion(true)
+
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Invalid response from server.")
+                DispatchQueue.main.async {
+                    completion(false)
+                }
+                return
+            }
+
+            switch httpResponse.statusCode {
+            case 200...299:
+                // Success response.
+                DispatchQueue.main.async {
+                    completion(true)
+                }
+            default:
+                // Server returned an error. Use data to get more information if needed.
+                print("Server error with status code: \(httpResponse.statusCode)")
+                if let data = data, let string = String(data: data, encoding: .utf8) {
+                    print("Server response: \(string)")
+                }
+                DispatchQueue.main.async {
+                    completion(false)
+                }
             }
         }
 
         task.resume()
     }
+
 
     
     func getClientData() -> [String: Any] {

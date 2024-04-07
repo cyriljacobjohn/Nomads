@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ClientHairIDScreenView: View {
     @EnvironmentObject var viewModel: UserRegistrationViewModel
-    @State private var shouldNavigateToNextScreen = false
+    @State private var navigateToCurlPatternScreen = false
+    @State private var navigateToPreferenceScreen = false
     @State private var showingAlert = false
 
     var body: some View {
@@ -64,19 +65,19 @@ struct ClientHairIDScreenView: View {
                         
                         HStack(spacing: 10) {
                             Button(action: {
-                                viewModel.hairProfile.hairType = 4
+                                viewModel.hairProfile.hairType = 4 // Straight hair
                             }) {
                                 HairTypeButton("Straight", "straightHairIcon", isSelected: viewModel.hairProfile.hairType == 4)
                             }
                             
                             Button(action: {
-                                viewModel.hairProfile.hairType = 6
+                                viewModel.hairProfile.hairType = 6 // Curly hair
                             }) {
                                 HairTypeButton("Curly", "curlyHairIcon", isSelected: viewModel.hairProfile.hairType == 6)
                             }
                             
                             Button(action: {
-                                viewModel.hairProfile.hairType = 5
+                                viewModel.hairProfile.hairType = 5 // Wavy hair
                             }) {
                                 HairTypeButton("Wavy", "wavyHairIcon", isSelected: viewModel.hairProfile.hairType == 5)
                             }
@@ -114,7 +115,8 @@ struct ClientHairIDScreenView: View {
                         Alert(title: Text("Error"), message: Text("Please fill in all fields."), dismissButton: .default(Text("OK")))
                     }
 
-                    NavigationLink("", destination: ClientCurlPatternScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                    NavigationLink("", destination: ClientCurlPatternScreenView().navigationBarHidden(true), isActive: $navigateToCurlPatternScreen)
+                    NavigationLink("", destination: ClientPreferenceScreenView().navigationBarHidden(true), isActive: $navigateToPreferenceScreen)
                 }
                 .padding()
             }
@@ -125,7 +127,11 @@ struct ClientHairIDScreenView: View {
         if !viewModel.hairProfile.isValid() {
             showingAlert = true
         } else {
-            shouldNavigateToNextScreen = true
+            if viewModel.hairProfile.hairType == 4 {
+                navigateToPreferenceScreen = true
+            } else {
+                navigateToCurlPatternScreen = true
+            }
         }
     }
 }
