@@ -8,9 +8,16 @@
 import SwiftUI
 
 struct ClientHairGenderSelectionScreenView: View {
+    @EnvironmentObject var viewModel: UserRegistrationViewModel
     @State private var selectedHairGender: Int? = nil
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
+
+    let hairGenderOptions = [
+        ("Feminine", 7),
+        ("Masculine", 8),
+        ("Androgynous", 9)
+    ]
 
     var body: some View {
         NavigationView {
@@ -18,34 +25,25 @@ struct ClientHairGenderSelectionScreenView: View {
                 Color("BgColor").edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    VStack {
-                        Text("UMI")
-                            .font(.custom("Sarina-Regular", size: 35))
-                            .foregroundColor(Color("PrimaryColor"))
+                    Text("UMI")
+                        .font(.custom("Sarina-Regular", size: 35))
+                        .foregroundColor(Color("PrimaryColor"))
 
-                        Spacer().frame(height: 40)
+                    Spacer().frame(height: 40)
+                    
+                    VStack(alignment: .leading) {
+                        Text("My Hair Is...")
+                            .font(.custom("Sansita-BoldItalic", size: 50))
+                            .foregroundColor(Color("TitleTextColor"))
                         
-                        VStack(alignment: .leading) {
-                            Text("My Hair Is...")
-                                .font(.custom("Sansita-BoldItalic", size: 50))
-                                .foregroundColor(Color("TitleTextColor"))
-                            
-                            Button(action: { selectHairGender(1) }) {
-                                buttonText("Feminine", isSelected: self.selectedHairGender == 1)
+                        ForEach(hairGenderOptions, id: \.1) { option in
+                            Button(action: { selectHairGender(option.1) }) {
+                                buttonText(option.0, isSelected: self.selectedHairGender == option.1)
                             }
                             .padding(.bottom, -15)
-                            
-                            Button(action: { selectHairGender(2) }) {
-                                buttonText("Masculine", isSelected: self.selectedHairGender == 2)
-                            }
-                            .padding(.bottom, -15)
-                            
-                            Button(action: { selectHairGender(3) }) {
-                                buttonText("Androgynous", isSelected: self.selectedHairGender == 3)
-                            }
                         }
-                        .padding(.horizontal)
                     }
+                    .padding(.horizontal)
                     
                     Spacer()
                     
@@ -75,6 +73,7 @@ struct ClientHairGenderSelectionScreenView: View {
     private func selectHairGender(_ gender: Int) {
         withAnimation(.easeInOut(duration: 0.2)) {
             self.selectedHairGender = gender
+            viewModel.hairProfile.hairGender = gender
         }
     }
 
@@ -82,20 +81,14 @@ struct ClientHairGenderSelectionScreenView: View {
         if selectedHairGender == nil {
             showingAlert = true
         } else {
-            sendDataToBackend()
             shouldNavigateToNextScreen = true
         }
-    }
-
-    private func sendDataToBackend() {
-        // TODO: Implement the actual backend call here
-        print("Sending selected hair gender to backend: \(String(describing: selectedHairGender))")
     }
 }
 
 struct ClientHairGenderSelectionScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        ClientHairGenderSelectionScreenView()
+        ClientHairGenderSelectionScreenView().environmentObject(UserRegistrationViewModel())
     }
 }
 

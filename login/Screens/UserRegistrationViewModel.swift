@@ -15,11 +15,16 @@ class UserRegistrationViewModel: ObservableObject {
     @Published var lastName: String = ""
     @Published var uid: String = ""
     
+    // Client specific properties
+    @Published var ethnicity: [String] = []
+    @Published var stylistsShouldKnow: String = ""
+    @Published var hairProfile: HairProfile = HairProfile()
+    @Published var interests: [Int] = []
+    
     // Account type flag
     @Published var isStylist: Bool = false
 
     // Stylist specific properties
-    @Published var clientsShouldKnow: String = ""
     @Published var specialities: [Int] = []
     @Published var avgPrice: Int = 0
     @Published var contacts: Contacts = Contacts()
@@ -27,9 +32,8 @@ class UserRegistrationViewModel: ObservableObject {
     // Address
     @Published var address: Address = Address()
 
-    // Method to handle signup
     func signUp(completion: @escaping (Bool) -> Void) {
-        guard let url = URL(string: "http://127.0.0.1:5000/client/signup-client") else {
+        guard let url = URL(string: "http://127.0.0.1:5000/client/signup-user") else {
             completion(false)
             return
         }
@@ -42,16 +46,31 @@ class UserRegistrationViewModel: ObservableObject {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = jsonData
         
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
+        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            guard let self = self, let data = data, error == nil else {
                 completion(false)
                 return
             }
             
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                // Parse the JSON data and retrieve the UID if needed
-                completion(true)
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                       let uid = json["user_uid"] as? String {
+                        DispatchQueue.main.async {
+                            self.uid = uid
+                            print("Success: UID - \(uid)")
+                        }
+                        completion(true)
+                    } else {
+                        print("Failed to parse UID from response")
+                        completion(false)
+                    }
+                } catch {
+                    print("Error parsing response: \(error.localizedDescription)")
+                    completion(false)
+                }
             } else {
+                print("Server returned status code other than 200")
                 completion(false)
             }
         }
@@ -59,42 +78,73 @@ class UserRegistrationViewModel: ObservableObject {
         task.resume()
     }
 
-
-    // Client account creation method
     func createClientAccount(completion: @escaping (Bool) -> Void) {
-        guard !uid.isEmpty else { return }
-
-        let clientData: [String: Any] = [
-            "fname": firstName,
-            "lname": lastName,
-            "uid": uid
-            // Add other client-specific fields here
-        ]
-        // Perform client account creation request
+        guard let url = URL(string: "http://127.0.0.1:5000/client/create-client"), !uid.isEmpty else {
+            completion(false)
+            return
+        }
+        
+        let clientData = getClientData()
         print("Client Data: \(clientData)")
-        completion(true)
+
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: clientData) else {
+            completion(false)
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                DispatchQueue.main.async {
+                    completion(false)
+                }
+                return
+            }
+            
+            DispatchQueue.main.async {
+                completion(true)
+            }
+        }
+
+        task.resume()
     }
 
-    // Stylist account creation method
+    
+    func getClientData() -> [String: Any] {
+        [
+            "fname": firstName,
+            "lname": lastName,
+            "address": address.dictionary,
+            "ethnicity": ethnicity,
+            "stylists_should_know": stylistsShouldKnow,
+            "hair_profile": hairProfile.dictionary,
+            "interests": interests,
+            "uid": uid
+        ]
+    }
+
     func createStylistAccount(completion: @escaping (Bool) -> Void) {
         guard !uid.isEmpty else { return }
 
         let stylistData: [String: Any] = [
             "fname": firstName,
             "lname": lastName,
-            "clients_should_know": clientsShouldKnow,
+            "clients_should_know": stylistsShouldKnow,
             "address": address.dictionary,
             "specialities": specialities,
             "avg_price": avgPrice,
             "uid": uid,
             "contacts": contacts.dictionary
         ]
-        // Perform stylist account creation request
         print("Stylist Data: \(stylistData)")
+        // Implement network call to send stylistData to backend
         completion(true)
     }
 
-    // Nested struct for address details
     struct Address {
         var street: String = ""
         var city: String = ""
@@ -108,7 +158,22 @@ class UserRegistrationViewModel: ObservableObject {
         }
     }
 
-    // Nested struct for contact details
+    struct HairProfile {
+        var thickness: Int = 0 // Use 0 as default to indicate no selection
+        var hairType: Int = 0 // Use 0 as default to indicate no selection
+        var hairGender: Int = 1
+        var colorHist: String = ""
+        var colorLevel: Int = 3
+
+        var dictionary: [String: Any] {
+            ["thickness": thickness, "hair_type": hairType, "hair_gender": hairGender, "color_hist": colorHist, "color_level": colorLevel]
+        }
+
+        func isValid() -> Bool {
+            return thickness != 0 && hairType != 0 && !colorHist.isEmpty
+        }
+    }
+
     struct Contacts {
         var phoneNum: String = ""
         var instagram: String = ""

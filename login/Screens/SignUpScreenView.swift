@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SignUpScreenView: View {
-    @StateObject private var viewModel = UserRegistrationViewModel()
+    @EnvironmentObject var viewModel: UserRegistrationViewModel
     @State private var confirmPassword: String = ""
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
@@ -58,6 +58,7 @@ struct SignUpScreenView: View {
                                 .cornerRadius(50.0)
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                                 .padding(.bottom, 20)
+                                .textContentType(.newPassword)
 
                             Text("Confirm Password")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
@@ -120,7 +121,7 @@ struct SignUpScreenView: View {
                     shouldNavigateToNextScreen = true
                 } else {
                     // Handle errors, e.g., show an alert
-                    alertMessage = "Failed to register. Please try again later."
+                    alertMessage = "Please ensure password length is more than 6 characters or email is not taken"
                     showingAlert = true
                 }
             }
@@ -130,6 +131,6 @@ struct SignUpScreenView: View {
 
 struct SignUpScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        SignUpScreenView()
+        SignUpScreenView().environmentObject(UserRegistrationViewModel())
     }
 }

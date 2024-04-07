@@ -1,14 +1,14 @@
 //
-//  ClientAdditionalInformation.swift
+//  ClientColorLevelScreenView.swift
 //  UMI
 //
-//  Created by Sebastian Oberg on 4/3/24.
+//  Created by Sebastian Oberg on 4/6/24.
 //
 
 import SwiftUI
 
-struct ClientAdditionalInformationScreenView: View {
-    @EnvironmentObject var viewModel: UserRegistrationViewModel
+struct ClientColorLevelScreenView: View {
+    @State private var colorLevel: Double = 1
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
 
@@ -25,43 +25,43 @@ struct ClientAdditionalInformationScreenView: View {
                     Spacer().frame(height: 40)
                     
                     VStack(alignment: .leading) {
-                        Text("Share Your Preferences")
+                        Text("How Dark Is Your Hair?")
                             .font(.custom("Sansita-BoldItalic", size: 50))
                             .foregroundColor(Color("TitleTextColor"))
                             .padding(.bottom, 20)
                         
-                        Text("Let us know your preferences and any accessibility needs you have")
+                        Text("Select hair color level: \n1 (darkest) to 10 (lightest)")
                             .font(.custom("Poppins-SemiBoldItalic", size: 20))
                             .padding(.bottom, 10)
+                        
+                        Slider(value: $colorLevel, in: 1...10, step: 1)
+                            .padding(.bottom, 10)
 
-                        TextEditor(text: $viewModel.stylistsShouldKnow)
-                            .frame(height: 250)
-                            .padding(4)
-                            .background(Color.white.opacity(0.7))
-                            .cornerRadius(10.0)
-                            .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
+                        Text("My hair is a \(Int(colorLevel)).")
+                            .font(.custom("Poppins-Italic", size: 18))
+                            .padding(.bottom, 20)
                     }
                     .padding(.horizontal)
                     
                     Spacer()
-                    
+
                     Button(action: continueAction) {
                         Text("Continue")
                             .font(.title3)
                             .fontWeight(.bold)
-                            .foregroundColor(!viewModel.stylistsShouldKnow.isEmpty ? Color.white : Color("PrimaryColor"))
+                            .foregroundColor(Color.white)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(!viewModel.stylistsShouldKnow.isEmpty ? Color("PrimaryColor") : Color.white.opacity(0.7))
+                            .background(Color("PrimaryColor"))
                             .cornerRadius(50.0)
                             .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
                     }
                     .padding(.vertical)
                     .alert(isPresented: $showingAlert) {
-                        Alert(title: Text("Error"), message: Text("Please fill in the field."), dismissButton: .default(Text("OK")))
+                        Alert(title: Text("Error"), message: Text("Please set an average price."), dismissButton: .default(Text("OK")))
                     }
 
-                    NavigationLink("", destination: Text("Next View"), isActive: $shouldNavigateToNextScreen)
+                    NavigationLink("", destination: ClientAdditionalInformationScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                 }
                 .padding()
             }
@@ -69,26 +69,21 @@ struct ClientAdditionalInformationScreenView: View {
     }
 
     private func continueAction() {
-        if viewModel.stylistsShouldKnow.isEmpty {
+        if colorLevel == 0 {
             showingAlert = true
         } else {
-            viewModel.createClientAccount { success in
-                DispatchQueue.main.async {
-                    if success {
-                        print("Client account created successfully.")
-                        shouldNavigateToNextScreen = true
-                    } else {
-                        showingAlert = true
-                    }
-                }
-            }
+            sendDataToBackend()
+            shouldNavigateToNextScreen = true
         }
     }
-}
 
-struct ClientAdditionalInformationScreenView_Previews: PreviewProvider {
-    static var previews: some View {
-        ClientAdditionalInformationScreenView().environmentObject(UserRegistrationViewModel())
+    private func sendDataToBackend() {
+        print("Sending color level to backend: \(colorLevel)")
     }
 }
 
+struct ClientColorLevelScreenView_Previews: PreviewProvider {
+    static var previews: some View {
+        ClientColorLevelScreenView()
+    }
+}

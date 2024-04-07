@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct ClientNameEntryScreenView: View {
-    @State private var firstName: String = ""
-    @State private var lastName: String = ""
+    @EnvironmentObject var viewModel: UserRegistrationViewModel
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
 
@@ -19,63 +18,61 @@ struct ClientNameEntryScreenView: View {
                 Color("BgColor").edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    VStack {
-                        Text("UMI")
-                            .font(.custom("Sarina-Regular", size: 35))
-                            .foregroundColor(Color("PrimaryColor"))
+                    Text("UMI")
+                        .font(.custom("Sarina-Regular", size: 35))
+                        .foregroundColor(Color("PrimaryColor"))
+                    
+                    Spacer().frame(height: 20)
+                    
+                    VStack(alignment: .leading) {
+                        Text("Let's Get")
+                            .font(.custom("Sansita-BoldItalic", size: 50))
+                            .foregroundColor(Color("TitleTextColor"))
                         
-                        Spacer().frame(height: 20)
+                        Text("Started")
+                            .font(.custom("Sansita-BoldItalic", size: 50))
+                            .foregroundColor(Color("TitleTextColor"))
+                            .padding(.bottom, 20)
+
+                        Text("First Name")
+                            .font(.custom("Poppins-SemiBoldItalic", size: 20))
+                            .padding(.bottom, 10)
                         
-                        VStack(alignment: .leading) {
-                            Text("Let's Get")
-                                .font(.custom("Sansita-BoldItalic", size: 50))
-                                .foregroundColor(Color("TitleTextColor"))
-                            
-                            Text("Started")
-                                .font(.custom("Sansita-BoldItalic", size: 50))
-                                .foregroundColor(Color("TitleTextColor"))
-                                .padding(.bottom, 20)
+                        TextField("Ayomide", text: $viewModel.firstName)
+                            .font(.title3)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.white)
+                            .cornerRadius(50.0)
+                            .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
+                            .padding(.top, -8)
+                            .padding(.bottom, 20)
 
-                            Text("First Name")
-                                .font(.custom("Poppins-SemiBoldItalic", size: 20))
-                                .padding(.bottom, 10)
-                            
-                            TextField("Ayomide", text: $firstName)
-                                .font(.title3)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.white)
-                                .cornerRadius(50.0)
-                                .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
-                                .padding(.top, -8)
-                                .padding(.bottom, 20)
-
-                            Text("Last Name")
-                                .font(.custom("Poppins-SemiBoldItalic", size: 20))
-                                .padding(.bottom, 10)
-                            
-                            TextField("Fatoye", text: $lastName)
-                                .font(.title3)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.white)
-                                .cornerRadius(50.0)
-                                .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
-                                .padding(.top, -8)
-                                .padding(.bottom, 20)
-                        }
-                        .padding(.horizontal)
+                        Text("Last Name")
+                            .font(.custom("Poppins-SemiBoldItalic", size: 20))
+                            .padding(.bottom, 10)
+                        
+                        TextField("Fatoye", text: $viewModel.lastName)
+                            .font(.title3)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.white)
+                            .cornerRadius(50.0)
+                            .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
+                            .padding(.top, -8)
+                            .padding(.bottom, 20)
                     }
+                    .padding(.horizontal)
                     
                     Spacer()
                     
                     Button(action: continueAction) {
                         Text("Continue")
                             .font(.title3)
-                            .foregroundColor(firstName.isEmpty || lastName.isEmpty ? Color("PrimaryColor") : Color.white)
+                            .foregroundColor(viewModel.firstName.isEmpty || viewModel.lastName.isEmpty ? Color("PrimaryColor") : Color.white)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(firstName.isEmpty || lastName.isEmpty ? Color.white : Color("PrimaryColor"))
+                            .background(viewModel.firstName.isEmpty || viewModel.lastName.isEmpty ? Color.white : Color("PrimaryColor"))
                             .cornerRadius(50.0)
                             .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                     }
@@ -92,21 +89,17 @@ struct ClientNameEntryScreenView: View {
     }
 
     private func continueAction() {
-        if firstName.isEmpty || lastName.isEmpty {
+        if viewModel.firstName.isEmpty || viewModel.lastName.isEmpty {
             showingAlert = true
         } else {
-            sendDataToBackend()
+            // sendDataToBackend() is not necessary here as we're directly updating the viewModel
             shouldNavigateToNextScreen = true
         }
-    }
-
-    private func sendDataToBackend() {
-        print("Sending data to backend: First Name: \(firstName), Last Name: \(lastName)")
     }
 }
 
 struct ClientNameEntryScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        ClientNameEntryScreenView()
+        ClientNameEntryScreenView().environmentObject(UserRegistrationViewModel())
     }
 }

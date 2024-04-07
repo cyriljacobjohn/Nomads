@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ClientCurlPatternScreenView: View {
-    @State private var selectedCurlPattern: Int? = nil
+    @EnvironmentObject var viewModel: UserRegistrationViewModel
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
 
@@ -58,10 +58,10 @@ struct ClientCurlPatternScreenView: View {
                             ForEach(curlPatterns, id: \.1) { pattern in
                                 Button(action: {
                                     withAnimation(.easeInOut(duration: 0.2)) {
-                                        self.selectedCurlPattern = pattern.1
+                                        updateCurlPatternSelection(with: pattern.1)
                                     }
                                 }) {
-                                    buttonText(pattern.0, isSelected: self.selectedCurlPattern == pattern.1)
+                                    buttonText(pattern.0, isSelected: self.viewModel.interests.contains(pattern.1))
                                 }
                                 .padding(.bottom)
                             }
@@ -72,10 +72,10 @@ struct ClientCurlPatternScreenView: View {
                             Text("Continue")
                                 .font(.title3)
                                 .fontWeight(.bold)
-                                .foregroundColor(selectedCurlPattern != nil ? Color.white : Color("PrimaryColor"))
+                                .foregroundColor(viewModel.interests.isEmpty ? Color("PrimaryColor") : Color.white)
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(selectedCurlPattern != nil ? Color("PrimaryColor") : Color.white)
+                                .background(viewModel.interests.isEmpty ? Color.white : Color("PrimaryColor"))
                                 .cornerRadius(50.0)
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
                         }
@@ -92,24 +92,22 @@ struct ClientCurlPatternScreenView: View {
         }
     }
 
-    private func continueAction() {
-        if selectedCurlPattern == nil {
-            showingAlert = true
-        } else {
-            sendDataToBackend()
-            shouldNavigateToNextScreen = true
-        }
+    private func updateCurlPatternSelection(with pattern: Int) {
+        viewModel.interests.append(pattern) // Appends curl pattern int to the interest array
     }
 
-    private func sendDataToBackend() {
-        // Implement the actual backend call here
-        print("Sending selected curl pattern to backend: \(String(describing: selectedCurlPattern))")
+    private func continueAction() {
+        if viewModel.interests.isEmpty {
+            showingAlert = true
+        } else {
+            shouldNavigateToNextScreen = true
+        }
     }
 }
 
 struct ClientCurlPatternScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        ClientCurlPatternScreenView()
+        ClientCurlPatternScreenView().environmentObject(UserRegistrationViewModel())
     }
 }
 

@@ -10,11 +10,7 @@ import SwiftUI
 import CoreLocation
 
 struct ClientAddressScreenView: View {
-    @State private var street: String = ""
-    @State private var city: String = ""
-    @State private var state: String = ""
-    @State private var zipCode: String = ""
-    @State private var country: String = ""
+    @EnvironmentObject var viewModel: UserRegistrationViewModel
     @State private var distance: Double = 1
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
@@ -39,11 +35,11 @@ struct ClientAddressScreenView: View {
                                 .foregroundColor(Color("TitleTextColor"))
                                 .padding(.bottom, 20)
 
-                            addressField(label: "Street", placeholder: "123 Main Street", text: $street)
-                            addressField(label: "City", placeholder: "New York", text: $city)
-                            addressField(label: "State", placeholder: "NY", text: $state)
-                            addressField(label: "Zip Code", placeholder: "10001", text: $zipCode)
-                            addressField(label: "Country", placeholder: "USA", text: $country)
+                            addressField(label: "Street", placeholder: "123 Main Street", text: $viewModel.address.street)
+                            addressField(label: "City", placeholder: "New York", text: $viewModel.address.city)
+                            addressField(label: "State", placeholder: "NY", text: $viewModel.address.state)
+                            addressField(label: "Zip Code", placeholder: "10001", text: $viewModel.address.zipCode)
+                            addressField(label: "Country", placeholder: "USA", text: $viewModel.address.country)
                             
                             Text("Distance Preferences")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
@@ -60,10 +56,10 @@ struct ClientAddressScreenView: View {
                         Button(action: continueAction) {
                             Text("Continue")
                                 .font(.title3)
-                                .foregroundColor(street.isEmpty || city.isEmpty || state.isEmpty || zipCode.isEmpty || country.isEmpty ? Color("PrimaryColor") : Color.white)
+                                .foregroundColor(viewModel.address.isEmpty() ? Color("PrimaryColor") : Color.white)
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(street.isEmpty || city.isEmpty || state.isEmpty || zipCode.isEmpty || country.isEmpty ? Color.white : Color("PrimaryColor"))
+                                .background(viewModel.address.isEmpty() ? Color.white : Color("PrimaryColor"))
                                 .cornerRadius(50.0)
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                         }
@@ -81,7 +77,7 @@ struct ClientAddressScreenView: View {
     }
 
     private func continueAction() {
-        if street.isEmpty || city.isEmpty || state.isEmpty || zipCode.isEmpty || country.isEmpty {
+        if viewModel.address.isEmpty() {
             alertMessage = "Please fill in all fields."
             showingAlert = true
         } else {
@@ -90,26 +86,20 @@ struct ClientAddressScreenView: View {
     }
 
     private func geocodeAddress() {
-        let address = "\(street), \(city), \(state), \(zipCode), \(country)"
+        let address = "\(viewModel.address.street), \(viewModel.address.city), \(viewModel.address.state), \(viewModel.address.zipCode), \(viewModel.address.country)"
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(address) { (placemarks, error) in
             if error != nil {
-                alertMessage = "Please enter valid address."
+                alertMessage = "Please enter a valid address."
                 showingAlert = true
             } else if let location = placemarks?.first?.location {
-                sendDataToBackend()
+                viewModel.address.comfortRadius = Int(distance)
                 shouldNavigateToNextScreen = true
             } else {
                 alertMessage = "No valid location found for the address provided."
                 showingAlert = true
             }
         }
-    }
-
-    private func sendDataToBackend() {
-        let backendData = "Street: \(street), City: \(city), State: \(state), Zip Code: \(zipCode), Country: \(country), Distance: \(distance) miles"
-        print("Sending data to backend: \(backendData)")
-        // Implement your backend communication logic here, sending `backendData`
     }
 
     private func addressField(label: String, placeholder: String, text: Binding<String>) -> some View {
@@ -131,9 +121,15 @@ struct ClientAddressScreenView: View {
     }
 }
 
-struct ClientAddressScreenView_Previews: PreviewProvider {
-    static var previews: some View {
-        ClientAddressScreenView()
+// Extension to check if the address is empty
+extension UserRegistrationViewModel.Address {
+    func isEmpty() -> Bool {
+        return street.isEmpty || city.isEmpty || state.isEmpty || zipCode.isEmpty || country.isEmpty
     }
 }
 
+struct ClientAddressScreenView_Previews: PreviewProvider {
+    static var previews: some View {
+        ClientAddressScreenView().environmentObject(UserRegistrationViewModel())
+    }
+}

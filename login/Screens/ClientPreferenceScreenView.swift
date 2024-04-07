@@ -9,18 +9,17 @@
 import SwiftUI
 
 struct ClientPreferenceScreenView: View {
-    @State private var selectedRaces: [Bool] = Array(repeating: false, count: 6)
+    @EnvironmentObject var viewModel: UserRegistrationViewModel
+    @State private var selectedPreferences: [Bool] = Array(repeating: false, count: 5)
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
 
-    let races = [
-        "High Fades",
-        "Low Fades",
-        "Long Feminine Cuts",
-        "Long Masculine Cuts",
-        "Blonde Services",
+    let preferences = [
+        "Fades",
+        "Long Haircuts",
+        "Color Services",
         "Braids",
-        // Add more if needed
+        "Alt Cuts"
     ]
 
     private var columns: [GridItem] {
@@ -54,13 +53,13 @@ struct ClientPreferenceScreenView: View {
                             .font(.custom("Poppins-SemiBoldItalic", size: 20))
                         
                         LazyVGrid(columns: columns, spacing: 15) {
-                            ForEach(races.indices, id: \.self) { index in
+                            ForEach(preferences.indices, id: \.self) { index in
                                 Button(action: {
                                     withAnimation(.easeInOut(duration: 0.2)) {
-                                        self.selectedRaces[index].toggle()
+                                        self.selectedPreferences[index].toggle()
                                     }
                                 }) {
-                                    buttonText(races[index], isSelected: self.selectedRaces[index])
+                                    buttonText(preferences[index], isSelected: self.selectedPreferences[index])
                                 }
                                 .padding(.bottom, 5)
                             }
@@ -71,10 +70,10 @@ struct ClientPreferenceScreenView: View {
                             Text("Continue")
                                 .font(.title3)
                                 .fontWeight(.bold)
-                                .foregroundColor(selectedRaces.contains(true) ? Color.white : Color("PrimaryColor"))
+                                .foregroundColor(selectedPreferences.contains(true) ? Color.white : Color("PrimaryColor"))
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(selectedRaces.contains(true) ? Color("PrimaryColor") : Color.white)
+                                .background(selectedPreferences.contains(true) ? Color("PrimaryColor") : Color.white)
                                 .cornerRadius(50.0)
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
                         }
@@ -82,7 +81,7 @@ struct ClientPreferenceScreenView: View {
                         .alert(isPresented: $showingAlert) {
                             Alert(title: Text("Error"), message: Text("Please make a selection."), dismissButton: .default(Text("OK")))
                         }
-                        NavigationLink("", destination: ClientCurrentHairScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                        NavigationLink("", destination: ClientColorLevelScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
                     .padding()
                 }
@@ -91,23 +90,26 @@ struct ClientPreferenceScreenView: View {
     }
 
     private func continueAction() {
-        if !selectedRaces.contains(true) {
+        if !selectedPreferences.contains(true) {
             showingAlert = true
         } else {
-            sendDataToBackend()
+            updatePreferences()
             shouldNavigateToNextScreen = true
         }
     }
 
-    private func sendDataToBackend() {
-        // Implement the actual backend call here
-        print("Sending selected preferences to backend: \(selectedRaces)")
+    private func updatePreferences() {
+        let interestMapping = [19, 20, 21, 22, 23] // Mapping preferences to their integer values
+        viewModel.interests = selectedPreferences.enumerated().compactMap { index, isSelected in
+            isSelected ? interestMapping[index] : nil
+        }
+        print("Selected Preferences: \(viewModel.interests)")
     }
 }
 
 struct ClientPreferenceScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        ClientPreferenceScreenView()
+        ClientPreferenceScreenView().environmentObject(UserRegistrationViewModel())
     }
 }
 

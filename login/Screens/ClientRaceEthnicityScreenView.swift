@@ -8,29 +8,30 @@
 
 import SwiftUI
 
+import SwiftUI
+
 struct ClientRaceEthnicityScreenView: View {
+    @EnvironmentObject var viewModel: UserRegistrationViewModel
     @State private var selectedRaces: [Bool] = Array(repeating: false, count: 14)
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
 
-    let races =
-        [
-            "Asian",
-            "Berber",
-            "Black or African",
-            "Caucasian (White)",
-            "Celtic",
-            "Hispanic or Latino",
-            "Jewish",
-            "Middle Eastern",
-            "Native American or Alaska Native",
-            "Native Hawaiian or Other Pacific Islander",
-            "Romani",
-            "Scandinavian",
-            "Slavic",
-            "Turkic",
-        ]
-
+    let races = [
+        "Asian",
+        "Berber",
+        "Black or African",
+        "Caucasian (White)",
+        "Celtic",
+        "Hispanic or Latino",
+        "Jewish",
+        "Middle Eastern",
+        "Native American or Alaska Native",
+        "Native Hawaiian or Other Pacific Islander",
+        "Romani",
+        "Scandinavian",
+        "Slavic",
+        "Turkic"
+    ]
 
     private var columns: [GridItem] {
         Array(repeating: .init(.flexible(), spacing: 15), count: 2)
@@ -46,9 +47,8 @@ struct ClientRaceEthnicityScreenView: View {
                         Text("UMI")
                             .font(.custom("Sarina-Regular", size: 35))
                             .foregroundColor(Color("PrimaryColor"))
-                    }
-
-                        Spacer()
+                        
+                        Spacer().frame(height: 20)
                         
                         VStack(alignment: .leading) {
                             Text("Race And Ethnicity")
@@ -62,7 +62,7 @@ struct ClientRaceEthnicityScreenView: View {
                             LazyVGrid(columns: columns, spacing: 15) {
                                 ForEach(races.indices, id: \.self) { index in
                                     Button(action: {
-                                        withAnimation(.easeInOut(duration: 0.2)) {
+                                        withAnimation {
                                             self.selectedRaces[index].toggle()
                                         }
                                     }) {
@@ -88,9 +88,11 @@ struct ClientRaceEthnicityScreenView: View {
                             .alert(isPresented: $showingAlert) {
                                 Alert(title: Text("Error"), message: Text("Please make a selection."), dismissButton: .default(Text("OK")))
                             }
+
                             NavigationLink("", destination: ClientHairGenderSelectionScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                         }
-                    .padding()
+                        .padding()
+                    }
                 }
             }
         }
@@ -100,20 +102,25 @@ struct ClientRaceEthnicityScreenView: View {
         if !selectedRaces.contains(true) {
             showingAlert = true
         } else {
-            sendDataToBackend()
+            updateEthnicitySelection()
             shouldNavigateToNextScreen = true
         }
     }
 
-    private func sendDataToBackend() {
-        // Implement the actual backend call here
-        print("Sending selected races to backend: \(selectedRaces)")
+    private func updateEthnicitySelection() {
+        // Map the selected booleans to their respective race strings
+        let selectedEthnicities = races.enumerated().compactMap { index, race in
+            selectedRaces[index] ? race : nil
+        }
+        
+        viewModel.ethnicity = selectedEthnicities // Assuming there is a `ethnicity` property in your ViewModel to hold this data
+        print("Selected Ethnicities: \(selectedEthnicities)")
     }
 }
 
 struct ClientRaceEthnicityScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        ClientRaceEthnicityScreenView()
+        ClientRaceEthnicityScreenView().environmentObject(UserRegistrationViewModel())
     }
 }
 

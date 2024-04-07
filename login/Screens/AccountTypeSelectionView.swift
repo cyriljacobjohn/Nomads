@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AccountTypeSelectionView: View {
+    @EnvironmentObject var viewModel: UserRegistrationViewModel
     @State private var selectAccountType: Int? = nil
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
@@ -18,32 +19,26 @@ struct AccountTypeSelectionView: View {
                 Color("BgColor").edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    VStack {
-                        Text("UMI")
-                            .font(.custom("Sarina-Regular", size: 35))
-                            .foregroundColor(Color("PrimaryColor"))
+                    Text("UMI")
+                        .font(.custom("Sarina-Regular", size: 35))
+                        .foregroundColor(Color("PrimaryColor"))
 
-                        Spacer().frame(height: 40)
-                        
-                        VStack(alignment: .leading) {
-                            Text("What's Your Account Type?")
-                                .font(.custom("Sansita-BoldItalic", size: 50))
-                                .foregroundColor(Color("TitleTextColor"))
-                            
-                            Button(action: { selectAccountType(1) }) {
-                                buttonText("Client", isSelected: self.selectAccountType == 1)
-                            }
-                            .padding(.bottom, -15)
-                            
-                            Button(action: { selectAccountType(2) }) {
-                                buttonText("Stylist", isSelected: self.selectAccountType == 2)
-                            }
-                            .padding(.bottom, -15)
-                
-                        }
-                        .padding(.horizontal)
-                    }
+                    Spacer().frame(height: 40)
                     
+                    Text("What's Your Account Type?")
+                        .font(.custom("Sansita-BoldItalic", size: 50))
+                        .foregroundColor(Color("TitleTextColor"))
+                    
+                    Button(action: { selectAccountType(1) }) {
+                        buttonText("Client", isSelected: self.selectAccountType == 1)
+                    }
+                    .padding(.bottom, -15)
+                    
+                    Button(action: { selectAccountType(2) }) {
+                        buttonText("Stylist", isSelected: self.selectAccountType == 2)
+                    }
+                    .padding(.bottom, -15)
+
                     Spacer()
                     
                     Button(action: continueAction) {
@@ -63,15 +58,13 @@ struct AccountTypeSelectionView: View {
                     }
 
                     // Conditional NavigationLink based on account type selection
-                    Group {
-                        if selectAccountType == 1 {
-                            NavigationLink(destination: ClientNameEntryScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen) {
-                                EmptyView()
-                            }
-                        } else if selectAccountType == 2 {
-                            NavigationLink(destination: StylistNameEntryScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen) {
-                                EmptyView()
-                            }
+                    if selectAccountType == 1 {
+                        NavigationLink(destination: ClientNameEntryScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen) {
+                            EmptyView()
+                        }
+                    } else if selectAccountType == 2 {
+                        NavigationLink(destination: StylistNameEntryScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen) {
+                            EmptyView()
                         }
                     }
                 }
@@ -81,8 +74,9 @@ struct AccountTypeSelectionView: View {
     }
 
     private func selectAccountType(_ accountType: Int) {
-        withAnimation(.easeInOut(duration: 0.2)) {
+        withAnimation {
             self.selectAccountType = accountType
+            viewModel.isStylist = (accountType == 2)
         }
     }
 
@@ -90,20 +84,14 @@ struct AccountTypeSelectionView: View {
         if selectAccountType == nil {
             showingAlert = true
         } else {
-            sendDataToBackend()
             shouldNavigateToNextScreen = true
         }
-    }
-
-    private func sendDataToBackend() {
-        // TODO: Implement the actual backend call here
-        print("Sending selected account type to backend: \(String(describing: selectAccountType))")
     }
 }
 
 struct AccountTypeSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        AccountTypeSelectionView()
+        AccountTypeSelectionView().environmentObject(UserRegistrationViewModel())
     }
 }
 
