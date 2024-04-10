@@ -16,7 +16,7 @@ struct Review: Identifiable {
 }
 
 struct StylistProfile: Identifiable {
-    let id: UUID
+    let id: Int
     let name: String
     let address: String
     let priceRange: String
@@ -111,7 +111,9 @@ let exampleReviews: [Review] = [
 
 struct StylistViewProfile: View {
     
-    var stylistId : UUID
+    var stylistId: Int
+    @ObservedObject var viewModel: ClientViewModel
+    
     @State private var stylist: StylistProfile?
     
     @State private var selectedSegment: Int = 0
@@ -721,7 +723,7 @@ struct FilterView: View {
 
 struct StylistViewProfile_Previews: PreviewProvider {
     static var previews: some View {
-        StylistViewProfile(stylistId: UUID())
+        StylistViewProfile(stylistId: 0, viewModel: ClientViewModel())
     }
 }
 

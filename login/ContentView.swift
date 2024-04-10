@@ -8,9 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var showOnboarding: Bool = false
    
     var body: some View {
-        WelcomeScreenView()
+        
+        if showOnboarding {
+            OnboardingViewClient(showOnboarding: $showOnboarding)
+        } else {
+            MainTabView()
+        }
     }
 }
 

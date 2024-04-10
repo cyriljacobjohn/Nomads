@@ -12,6 +12,8 @@ struct HairIDScreenView: View {
     @State private var selectedHairThickness: Int? = nil
     @State private var selectedHairType: Int? = nil
     @State private var colorHistory: String = ""
+    
+    let continueAction: () -> Void // Accepts the navigation function
 
     var body: some View {
         NavigationView {
@@ -139,9 +141,9 @@ struct HairIDScreenView: View {
                     
                     Spacer()
                     
-                    NavigationLink(
-                        destination: Text("Next Screen Placeholder").navigationBarHidden(true),
-                        label: {
+                    Button(action: {
+                        continueAction()
+                    },label: {
                             Text("Continue")
                                 .font(.title3)
                                 .fontWeight(.bold)
@@ -162,7 +164,7 @@ struct HairIDScreenView: View {
 
 struct HairIDScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        HairIDScreenView()
+        HairIDScreenView(continueAction: {})
     }
 }
 

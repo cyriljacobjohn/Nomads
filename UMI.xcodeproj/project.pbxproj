@@ -11,9 +11,11 @@
 		232D26D92BB89B2300237BA3 /* ForYouScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232D26D82BB89B2300237BA3 /* ForYouScreenView.swift */; };
 		232D26DB2BB9034100237BA3 /* StylistViewProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232D26DA2BB9034100237BA3 /* StylistViewProfile.swift */; };
 		23363E8E2BBAC3D600CA22E8 /* StylistLandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23363E8D2BBAC3D600CA22E8 /* StylistLandingPage.swift */; };
-		233F482F2BB7467100CAF26F /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233F482E2BB7467100CAF26F /* AuthManager.swift */; };
 		233F48312BB76A7400CAF26F /* stylist-client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233F48302BB76A7400CAF26F /* stylist-client.swift */; };
-		234A71222BC0B8F300D60524 /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234A71212BC0B8F300D60524 /* TabView.swift */; };
+		2340C8622BC1C9E7003DB50D /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340C8612BC1C9E7003DB50D /* TabView.swift */; };
+		2340C8642BC1F0A9003DB50D /* OnboardingViewClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340C8632BC1F0A9003DB50D /* OnboardingViewClient.swift */; };
+		2340C8662BC1F0D1003DB50D /* TabViewStylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2340C8652BC1F0D1003DB50D /* TabViewStylist.swift */; };
+		23B8AF6D2BC30D11003CC85A /* get_stylists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B8AF6C2BC30D11003CC85A /* get_stylists.swift */; };
 		23F364E52BBF316300E6DBA9 /* ClientProfilePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F364E42BBF316300E6DBA9 /* ClientProfilePage.swift */; };
 		23F364E72BBF82B600E6DBA9 /* FavoritesPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F364E62BBF82B600E6DBA9 /* FavoritesPage.swift */; };
 		23F364EB2BBF9F1E00E6DBA9 /* MyReviewsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F364EA2BBF9F1E00E6DBA9 /* MyReviewsPage.swift */; };
@@ -78,9 +80,11 @@
 		232D26D82BB89B2300237BA3 /* ForYouScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ForYouScreenView.swift; path = login/Screens/ForYouScreenView.swift; sourceTree = SOURCE_ROOT; };
 		232D26DA2BB9034100237BA3 /* StylistViewProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StylistViewProfile.swift; path = login/Screens/StylistViewProfile.swift; sourceTree = SOURCE_ROOT; };
 		23363E8D2BBAC3D600CA22E8 /* StylistLandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylistLandingPage.swift; sourceTree = "<group>"; };
-		233F482E2BB7467100CAF26F /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		233F48302BB76A7400CAF26F /* stylist-client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "stylist-client.swift"; sourceTree = "<group>"; };
-		234A71212BC0B8F300D60524 /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
+		2340C8612BC1C9E7003DB50D /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
+		2340C8632BC1F0A9003DB50D /* OnboardingViewClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewClient.swift; sourceTree = "<group>"; };
+		2340C8652BC1F0D1003DB50D /* TabViewStylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewStylist.swift; sourceTree = "<group>"; };
+		23B8AF6C2BC30D11003CC85A /* get_stylists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = get_stylists.swift; sourceTree = "<group>"; };
 		23F364E42BBF316300E6DBA9 /* ClientProfilePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientProfilePage.swift; sourceTree = "<group>"; };
 		23F364E62BBF82B600E6DBA9 /* FavoritesPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesPage.swift; sourceTree = "<group>"; };
 		23F364EA2BBF9F1E00E6DBA9 /* MyReviewsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyReviewsPage.swift; sourceTree = "<group>"; };
@@ -153,9 +157,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		23B8AF6B2BC30CE5003CC85A /* DataReading */ = {
+			isa = PBXGroup;
+			children = (
+				23B8AF6C2BC30D11003CC85A /* get_stylists.swift */,
+			);
+			path = DataReading;
+			sourceTree = "<group>";
+		};
 		885230DB263272E100DBCF3F = {
 			isa = PBXGroup;
 			children = (
+				23B8AF6B2BC30CE5003CC85A /* DataReading */,
 				88934F432634232200B116CA /* ui.png */,
 				885230E6263272E100DBCF3F /* login */,
 				885230E5263272E100DBCF3F /* Products */,
@@ -182,7 +195,6 @@
 				885230EB263272E200DBCF3F /* Assets.xcassets */,
 				885230F0263272E200DBCF3F /* Info.plist */,
 				885230ED263272E200DBCF3F /* Preview Content */,
-				233F482E2BB7467100CAF26F /* AuthManager.swift */,
 			);
 			path = login;
 			sourceTree = "<group>";
@@ -212,6 +224,9 @@
 				23F364E42BBF316300E6DBA9 /* ClientProfilePage.swift */,
 				23F364E62BBF82B600E6DBA9 /* FavoritesPage.swift */,
 				23F364EA2BBF9F1E00E6DBA9 /* MyReviewsPage.swift */,
+				2340C8612BC1C9E7003DB50D /* TabView.swift */,
+				2340C8632BC1F0A9003DB50D /* OnboardingViewClient.swift */,
+				2340C8652BC1F0D1003DB50D /* TabViewStylist.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -412,19 +427,21 @@
 				9E67A5B52BAA295D000D20CB /* HairGenderSelectionScreenView.swift in Sources */,
 				232D26D52BB87B0200237BA3 /* PreferenceScreenView.swift in Sources */,
 				23F364E52BBF316300E6DBA9 /* ClientProfilePage.swift in Sources */,
-				233F482F2BB7467100CAF26F /* AuthManager.swift in Sources */,
+				2340C8662BC1F0D1003DB50D /* TabViewStylist.swift in Sources */,
 				9E91FB3F2BA88171006160AE /* NameEntryScreenView.swift in Sources */,
 				233F48312BB76A7400CAF26F /* stylist-client.swift in Sources */,
 				8852311F2632A4D500DBCF3F /* SignInScreenView.swift in Sources */,
 				23363E8E2BBAC3D600CA22E8 /* StylistLandingPage.swift in Sources */,
 				8852311726329DCF00DBCF3F /* WelcomeScreenView.swift in Sources */,
-				234A71222BC0B8F300D60524 /* TabView.swift in Sources */,
 				885230EA263272E100DBCF3F /* ContentView.swift in Sources */,
+				2340C8642BC1F0A9003DB50D /* OnboardingViewClient.swift in Sources */,
 				9ED31FB62BAB6EE00002D645 /* HairIDScreenView.swift in Sources */,
 				9EB3BADB2B929CE200AFF043 /* SignUpScreenView.swift in Sources */,
 				885230E8263272E100DBCF3F /* loginApp.swift in Sources */,
 				23F364E72BBF82B600E6DBA9 /* FavoritesPage.swift in Sources */,
+				2340C8622BC1C9E7003DB50D /* TabView.swift in Sources */,
 				232D26DB2BB9034100237BA3 /* StylistViewProfile.swift in Sources */,
+				23B8AF6D2BC30D11003CC85A /* get_stylists.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

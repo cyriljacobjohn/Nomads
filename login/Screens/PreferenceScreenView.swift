@@ -18,6 +18,8 @@ struct PreferenceScreenView: View {
             "Braids": false,
             "Alternative Cuts": false
         ]
+    
+    let continueAction: () -> Void // Accepts the navigation function
 
     var body: some View {
         NavigationView {
@@ -107,9 +109,9 @@ struct PreferenceScreenView: View {
                         
                         Spacer()
                         
-                        NavigationLink(
-                            destination: Text("Next Screen Placeholder").navigationBarHidden(true),
-                            label: {
+                        Button(action: {
+                            continueAction()
+                        },label: {
                                 Text("Continue")
                                     .font(.title3)
                                     .fontWeight(.bold)
@@ -132,7 +134,7 @@ struct PreferenceScreenView: View {
 
 struct PreferencesScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        PreferenceScreenView()
+        PreferenceScreenView(continueAction: {})
     }
 }
 

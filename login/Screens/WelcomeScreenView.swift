@@ -19,20 +19,20 @@ struct WelcomeScreenView: View {
                         .foregroundColor(Color("PrimaryColor"))
                     Spacer()
                     
-                    NavigationLink(
-//                        destination: SignUpScreenView().navigationBarHidden(false),
-                        destination: NameEntryScreenView().navigationBarHidden(false),
-                        label: {
-                            Text("Get Started")
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundColor(Color.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color("PrimaryColor"))
-                                .cornerRadius(50.0)
-                                .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
-                        })
+//                    NavigationLink(
+////                        destination: SignUpScreenView().navigationBarHidden(false),
+//                        destination: NameEntryScreenView().navigationBarHidden(false),
+//                        label: {
+//                            Text("Get Started")
+//                                .font(.title3)
+//                                .fontWeight(.bold)
+//                                .foregroundColor(Color.white)
+//                                .padding()
+//                                .frame(maxWidth: .infinity)
+//                                .background(Color("PrimaryColor"))
+//                                .cornerRadius(50.0)
+//                                .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
+//                        })
                                 
                     
                     NavigationLink(

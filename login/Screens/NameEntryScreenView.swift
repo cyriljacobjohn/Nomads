@@ -11,6 +11,8 @@ struct NameEntryScreenView: View {
     @State private var name: String = ""
     @State private var address: String = ""
     @State private var distance: Double = 0
+    
+    let continueAction: () -> Void // Accepts the navigation function
 
     var body: some View {
         NavigationView {
@@ -82,9 +84,11 @@ struct NameEntryScreenView: View {
                     
                     Spacer()
                     
-                    NavigationLink( // Back already included for navigation links
-                        destination: AccountTypeSelectionView().navigationBarHidden(true),
-                        label: {
+//                    NavigationLink( // Back already included for navigation links
+//                        destination: AccountTypeSelectionView().navigationBarHidden(true),
+                    Button(action: {
+                        continueAction()
+                    },label: {
                             Text("Continue")
                                 .font(.title3)
                                 .fontWeight(.bold)
@@ -105,7 +109,7 @@ struct NameEntryScreenView: View {
 
 struct NameEntryScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        NameEntryScreenView()
+        NameEntryScreenView(continueAction: {})
     }
 }
 

@@ -10,6 +10,8 @@ import SwiftUI
 
 struct AccountTypeSelectionView: View {
     @State private var selectedButton: Int? = nil
+    
+    let continueAction: () -> Void // Accepts the navigation function
 
     var body: some View {
         NavigationView {
@@ -60,10 +62,9 @@ struct AccountTypeSelectionView: View {
 
                     Spacer()
                     
-                    NavigationLink( // Back already included for navigation links
-//                        destination: NameEntryScreenView().navigationBarHidden(true),
-                        destination: HairGenderSelectionScreenView().navigationBarHidden(true),
-                        label: {
+                    Button(action: {
+                        continueAction()
+                    }, label: {
                             Text("Continue")
                                 .font(.title3)
                                 .fontWeight(.bold)
@@ -86,7 +87,7 @@ struct AccountTypeSelectionView: View {
 
 struct AccountTypeSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        AccountTypeSelectionView()
+        AccountTypeSelectionView(continueAction: {})
     }
 }
 

@@ -9,6 +9,8 @@ import SwiftUI
 
 struct HairGenderSelectionScreenView: View {
     @State private var selectedButton: Int? = nil
+    
+    let continueAction: () -> Void // Accepts the navigation function
 
     var body: some View {
         NavigationView {
@@ -66,10 +68,9 @@ struct HairGenderSelectionScreenView: View {
                     
                     Spacer()
                     
-                    NavigationLink( // Back already included for navigation links
-//                        destination: NameEntryScreenView().navigationBarHidden(true),
-                        destination: HairIDScreenView().navigationBarHidden(true),
-                        label: {
+                    Button(action: {
+                        continueAction()
+                    },label: {
                             Text("Continue")
                                 .font(.title3)
                                 .fontWeight(.bold)
@@ -90,7 +91,7 @@ struct HairGenderSelectionScreenView: View {
 
 struct HairGenderSelectionScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        HairGenderSelectionScreenView()
+        HairGenderSelectionScreenView(continueAction: {})
     }
 }
 
