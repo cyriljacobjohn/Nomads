@@ -24,7 +24,6 @@ struct StylistContactScreenView: View {
         CountryCode(id: 7, code: "+55", countryName: "BR")
     ]
 
-
     var body: some View {
         NavigationView {
             ZStack {
@@ -105,9 +104,10 @@ struct StylistContactScreenView: View {
     }
 
     private func sendDataToBackend() {
-        // Use viewModel to update backend data
+        let fullPhoneNumber = selectedCode.code + viewModel.contacts.phoneNum
+        viewModel.contacts.phoneNum = fullPhoneNumber
         print("Sending contacts to backend: \(viewModel.contacts.dictionary)")
-        // Implement your backend communication logic here
+        // Here you would send the fullPhoneNumber to your backend or ViewModel
     }
 
     private func contactField(_ label: String, text: Binding<String>) -> some View {
@@ -157,7 +157,7 @@ struct StylistContactScreenView: View {
                     .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                 }
                 
-                TextField("123456789", text: $viewModel.contacts.phoneNum)
+                TextField("1234567890", text: $viewModel.contacts.phoneNum)
                     .keyboardType(.numberPad)
                     .padding(EdgeInsets(top: 20, leading: 24, bottom: 20, trailing: 24))
                     .background(Color.white)
