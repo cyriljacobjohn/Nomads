@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct SignInScreenView: View {
+    @StateObject private var userRegistrationVM = UserRegistrationViewModel()
     @State private var email: String = ""
     @State private var password: String = ""
+    @State private var userType: String = ""  // Add this line
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
     @State private var alertMessage = ""
@@ -87,7 +89,12 @@ struct SignInScreenView: View {
                         }
                         .padding(.bottom, 20)
 
-                        NavigationLink("", destination: ClientLandingPage().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                        // Conditional navigation based on user type
+                        if userType == "client" {
+                            NavigationLink("", destination: ClientLandingPage().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                        } else if userType == "stylist" {
+                            NavigationLink("", destination: Text("Stylist Dashboard Placeholder").navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                        }
                     }
                     .padding()
                 }
@@ -100,14 +107,22 @@ struct SignInScreenView: View {
             alertMessage = "Please fill in all fields."
             showingAlert = true
         } else {
-            validateUser()
-            shouldNavigateToNextScreen = true
+            userRegistrationVM.email = email
+            userRegistrationVM.password = password
+            userRegistrationVM.signIn { success, ayoStatus, user in
+                if success {
+                    DispatchQueue.main.async {
+                        self.userType = user
+                        self.shouldNavigateToNextScreen = true
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.alertMessage = "Authentication failed."
+                        self.showingAlert = true
+                    }
+                }
+            }
         }
-    }
-
-    private func validateUser() {
-        // Implement validation logic here, communicate with backend
-        print("Sending data to backend: Email: \(email), Password: \(password)")
     }
 }
 
@@ -116,5 +131,3 @@ struct SignInScreenView_Previews: PreviewProvider {
         SignInScreenView()
     }
 }
-
-// TODO: Need to add logic: If uid is stylist, then go to stylist login. Else, client login

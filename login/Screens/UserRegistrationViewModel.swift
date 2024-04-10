@@ -207,6 +207,57 @@ class UserRegistrationViewModel: ObservableObject {
 
         task.resume()
     }
+    
+    func signIn(completion: @escaping (Bool, String, String) -> Void) {
+        guard let url = URL(string: "http://127.0.0.1:5000/client/signin-user") else {
+            completion(false, "", "")
+            return
+        }
+
+        let signInData = ["email": email, "password": password]
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: signInData) else {
+            completion(false, "", "")
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+
+        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            guard let data = data, error == nil else {
+                completion(false, "", "")
+                return
+            }
+
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                       let ayoStatus = json["ayo_status"] as? String,
+                       let userType = json["user_type"] as? String {
+                        DispatchQueue.main.async {
+                            completion(true, ayoStatus, userType)
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            completion(false, "", "")
+                        }
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        completion(false, "", "")
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion(false, "", "")
+                }
+            }
+        }
+
+        task.resume()
+    }
 
     struct Address {
         var street: String = ""
