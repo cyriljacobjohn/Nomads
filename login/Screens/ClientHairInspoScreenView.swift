@@ -5,6 +5,8 @@
 //  Created by Sebastian Oberg on 3/30/24.
 //
 
+// NOTE: DISABLED FOR NOW
+
 import SwiftUI
 
 struct ClientHairInspoScreenView: View {
@@ -100,7 +102,7 @@ struct ClientHairInspoScreenView: View {
                     .alert(isPresented: $showingAlert) {
                         Alert(title: Text("Error"), message: Text("Please upload 4 images before continuing."), dismissButton: .default(Text("OK")))
                     }                    
-                    NavigationLink("", destination: StylistForYouScreenView().navigationBarHidden(true), isActive: $navigateToNextScreen)
+                    NavigationLink("", destination: ClientLandingPage().navigationBarHidden(true), isActive: $navigateToNextScreen)
                 }
                 .padding()
             }

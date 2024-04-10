@@ -87,7 +87,7 @@ struct SignInScreenView: View {
                         }
                         .padding(.bottom, 20)
 
-                        NavigationLink("", destination: StylistForYouScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                        NavigationLink("", destination: ClientLandingPage().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
                     .padding()
                 }

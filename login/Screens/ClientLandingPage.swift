@@ -17,7 +17,7 @@ struct Stylist: Identifiable {
        var rating: Float
 }
 
-struct StylistForYouScreenView: View {
+struct ClientLandingPage: View {
     
     @State private var progress: CGFloat = 0.0
     @State private var favoriteStylists: [UUID] = []
@@ -153,9 +153,9 @@ struct CircularProgressView: View {
     }
 }
 
-struct StylistForYouScreenView_Previews: PreviewProvider {
+struct ClientLandingPage_Previews: PreviewProvider {
     static var previews: some View {
-        StylistForYouScreenView()
+        ClientLandingPage()
     }
 }
 

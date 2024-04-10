@@ -1,17 +1,17 @@
 //
-//  CurlPatternScreenView.swift
+//  StylistCurlPatternScreenView.swift
 //  UMI
 //
-//  Created by Sebastian Oberg on 3/30/24.
+//  Created by Sebastian Oberg on 4/9/24.
 //
-
 
 import SwiftUI
 
-struct ClientCurlPatternScreenView: View {
+struct StylistCurlPatternScreenView: View {
     @EnvironmentObject var viewModel: UserRegistrationViewModel
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
+    @State private var selectedCurlPatterns: [Int] = []
 
     let curlPatterns = [
         ("2A", 10),
@@ -42,13 +42,13 @@ struct ClientCurlPatternScreenView: View {
                             .padding(.top)
 
                         VStack(alignment: .leading) {
-                            Text("Curl Pattern Selection")
+                            Text("Curl Patterns I Can Work With")
                                 .font(.custom("Sansita-BoldItalic", size: 50))
                                 .foregroundColor(Color("TitleTextColor"))
                                 .padding(.bottom, 20)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            Text("Select one:")
+                            Text("Select one or more:")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.bottom, 10)
@@ -61,7 +61,7 @@ struct ClientCurlPatternScreenView: View {
                                         updateCurlPatternSelection(with: pattern.1)
                                     }
                                 }) {
-                                    buttonText(pattern.0, isSelected: self.viewModel.interests.contains(pattern.1))
+                                    buttonText(pattern.0, isSelected: selectedCurlPatterns.contains(pattern.1))
                                 }
                                 .padding(.bottom)
                             }
@@ -72,10 +72,10 @@ struct ClientCurlPatternScreenView: View {
                             Text("Continue")
                                 .font(.title3)
                                 .fontWeight(.bold)
-                                .foregroundColor(viewModel.interests.isEmpty ? Color("PrimaryColor") : Color.white)
+                                .foregroundColor(selectedCurlPatterns.isEmpty ? Color("PrimaryColor") : Color.white)
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(viewModel.interests.isEmpty ? Color.white : Color("PrimaryColor"))
+                                .background(selectedCurlPatterns.isEmpty ? Color.white : Color("PrimaryColor"))
                                 .cornerRadius(50.0)
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
                         }
@@ -86,20 +86,23 @@ struct ClientCurlPatternScreenView: View {
                     }
                     .padding()
                     
-                    NavigationLink("", destination: ClientPreferenceScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                    NavigationLink("", destination: StylistSpecialtyScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                 }
             }
         }
     }
 
     private func updateCurlPatternSelection(with pattern: Int) {
-        // Clear the interests array before appending the new selection to ensure only one is selected
-        viewModel.interests.removeAll()
-        viewModel.interests.append(pattern)
+        if let index = selectedCurlPatterns.firstIndex(of: pattern) {
+            selectedCurlPatterns.remove(at: index)
+        } else {
+            selectedCurlPatterns.append(pattern)
+        }
+        viewModel.specialties = selectedCurlPatterns
     }
 
     private func continueAction() {
-        if viewModel.interests.isEmpty {
+        if selectedCurlPatterns.isEmpty {
             showingAlert = true
         } else {
             shouldNavigateToNextScreen = true
@@ -107,9 +110,9 @@ struct ClientCurlPatternScreenView: View {
     }
 }
 
-struct ClientCurlPatternScreenView_Previews: PreviewProvider {
+struct StylistCurlPatternScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        ClientCurlPatternScreenView().environmentObject(UserRegistrationViewModel())
+        StylistCurlPatternScreenView().environmentObject(UserRegistrationViewModel())
     }
 }
 

@@ -8,18 +8,17 @@
 import SwiftUI
 
 struct StylistSpecialtyScreenView: View {
-    @State private var selectedRaces: [Bool] = Array(repeating: false, count: 6)
+    @EnvironmentObject var viewModel: UserRegistrationViewModel
+    @State private var selectedSpecialties: [Bool] = Array(repeating: false, count: 5)
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
 
-    let races = [
-        "High Fades",
-        "Low Fades",
-        "Long Feminine Cuts",
-        "Long Masculine Cuts",
-        "Blonde Services",
+    let specialties = [
+        "Fades",
+        "Long Haircuts",
+        "Color Services",
         "Braids",
-        // Add more if needed
+        "Alt Cuts"
     ]
 
     private var columns: [GridItem] {
@@ -40,22 +39,23 @@ struct StylistSpecialtyScreenView: View {
                     Spacer()
 
                     VStack(alignment: .leading) {
-                        Text("What Do You Specialize In?")
+                        Text("Cuts I Can Perform")
                             .font(.custom("Sansita-BoldItalic", size: 50))
                             .foregroundColor(Color("TitleTextColor"))
                             .padding(.bottom, 20)
-                        
+
                         Text("Select all that apply:")
                             .font(.custom("Poppins-SemiBoldItalic", size: 20))
                         
                         LazyVGrid(columns: columns, spacing: 15) {
-                            ForEach(races.indices, id: \.self) { index in
+                            ForEach(specialties.indices, id: \.self) { index in
                                 Button(action: {
                                     withAnimation(.easeInOut(duration: 0.2)) {
-                                        self.selectedRaces[index].toggle()
+                                        self.selectedSpecialties[index].toggle()
+                                        updateSpecialties()
                                     }
                                 }) {
-                                    buttonText(races[index], isSelected: self.selectedRaces[index])
+                                    buttonText(specialties[index], isSelected: self.selectedSpecialties[index])
                                 }
                                 .padding(.bottom, 5)
                             }
@@ -66,10 +66,10 @@ struct StylistSpecialtyScreenView: View {
                             Text("Continue")
                                 .font(.title3)
                                 .fontWeight(.bold)
-                                .foregroundColor(selectedRaces.contains(true) ? Color.white : Color("PrimaryColor"))
+                                .foregroundColor(selectedSpecialties.contains(true) ? Color.white : Color("PrimaryColor"))
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(selectedRaces.contains(true) ? Color("PrimaryColor") : Color.white)
+                                .background(selectedSpecialties.contains(true) ? Color("PrimaryColor") : Color.white)
                                 .cornerRadius(50.0)
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
                         }
@@ -86,23 +86,24 @@ struct StylistSpecialtyScreenView: View {
     }
 
     private func continueAction() {
-        if !selectedRaces.contains(true) {
+        if !selectedSpecialties.contains(true) {
             showingAlert = true
         } else {
-            sendDataToBackend()
             shouldNavigateToNextScreen = true
         }
     }
 
-    private func sendDataToBackend() {
-        // Implement the actual backend call here
-        print("Sending selected specialties to backend: \(selectedRaces)")
+    private func updateSpecialties() {
+        let specialtyMapping = [19, 20, 21, 22, 23] // Mapping specialties to their integer values
+        viewModel.specialties = selectedSpecialties.enumerated().compactMap { index, isSelected in
+            isSelected ? specialtyMapping[index] : nil
+        }
     }
 }
 
 struct StylistSpecialtyScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        StylistSpecialtyScreenView()
+        StylistSpecialtyScreenView().environmentObject(UserRegistrationViewModel())
     }
 }
 

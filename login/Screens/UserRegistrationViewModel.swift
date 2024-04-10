@@ -25,9 +25,10 @@ class UserRegistrationViewModel: ObservableObject {
     @Published var isStylist: Bool = false
 
     // Stylist specific properties
-    @Published var specialities: [Int] = []
+    @Published var specialties: [Int] = []
     @Published var avgPrice: Int = 0
     @Published var contacts: Contacts = Contacts()
+    @Published var phoneNum: String = ""
     
     // Address
     @Published var address: Address = Address()
@@ -155,21 +156,56 @@ class UserRegistrationViewModel: ObservableObject {
     }
 
     func createStylistAccount(completion: @escaping (Bool) -> Void) {
-        guard !uid.isEmpty else { return }
+        let urlString = "http://127.0.0.1:5000/stylist/create-stylist"
+        guard let url = URL(string: urlString), !uid.isEmpty else {
+            completion(false)
+            return
+        }
 
         let stylistData: [String: Any] = [
             "fname": firstName,
             "lname": lastName,
             "clients_should_know": stylistsShouldKnow,
             "address": address.dictionary,
-            "specialities": specialities,
+            "specialities": specialties,  // Changed from "specialties" to "specialities" to match the backend since Ayo can't spell
             "avg_price": avgPrice,
             "uid": uid,
             "contacts": contacts.dictionary
         ]
-        print("Stylist Data: \(stylistData)")
-        // Implement network call to send stylistData to backend
-        completion(true)
+
+
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: stylistData) else {
+            completion(false)
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error during URLSessionDataTask: \(error.localizedDescription)")
+                completion(false)
+                return
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Invalid response from server.")
+                completion(false)
+                return
+            }
+
+            if 200...299 ~= httpResponse.statusCode {
+                completion(true)
+            } else {
+                print("Server error with status code: \(httpResponse.statusCode)")
+                completion(false)
+            }
+        }
+
+        task.resume()
     }
 
     struct Address {
@@ -177,7 +213,7 @@ class UserRegistrationViewModel: ObservableObject {
         var city: String = ""
         var state: String = ""
         var zipCode: String = ""
-        var country: String = "USA"
+        var country: String = ""
         var comfortRadius: Int = 20
 
         var dictionary: [String: Any] {

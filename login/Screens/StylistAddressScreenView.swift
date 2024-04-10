@@ -9,12 +9,7 @@ import SwiftUI
 import CoreLocation
 
 struct StylistAddressScreenView: View {
-    @State private var street: String = ""
-    @State private var city: String = ""
-    @State private var state: String = ""
-    @State private var zipCode: String = ""
-    @State private var country: String = ""
-    @State private var distance: Double = 1
+    @EnvironmentObject var viewModel: UserRegistrationViewModel
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
     @State private var alertMessage = "Please fill in all fields."
@@ -38,31 +33,21 @@ struct StylistAddressScreenView: View {
                                 .foregroundColor(Color("TitleTextColor"))
                                 .padding(.bottom, 20)
 
-                            addressField(label: "Street", placeholder: "123 Main Street", text: $street)
-                            addressField(label: "City", placeholder: "New York", text: $city)
-                            addressField(label: "State", placeholder: "NY", text: $state)
-                            addressField(label: "Zip Code", placeholder: "10001", text: $zipCode)
-                            addressField(label: "Country", placeholder: "USA", text: $country)
-                            
-                            Text("Distance Preferences")
-                                .font(.custom("Poppins-SemiBoldItalic", size: 20))
-                                .padding(.top)
-                                .padding(.bottom, 10)
-                            
-                            Slider(value: $distance, in: 1...100, step: 1)
-                            Text("\(Int(distance)) mile(s) from my address")
-                                .font(.custom("Poppins-Italic", size: 18))
-                                .padding(.bottom, 20)
+                            addressField(label: "Street", placeholder: "123 Main Street", text: $viewModel.address.street)
+                            addressField(label: "City", placeholder: "New York", text: $viewModel.address.city)
+                            addressField(label: "State", placeholder: "NY", text: $viewModel.address.state)
+                            addressField(label: "Zip Code", placeholder: "10001", text: $viewModel.address.zipCode)
+                            addressField(label: "Country", placeholder: "USA", text: $viewModel.address.country)
                         }
                         .padding(.horizontal)
 
                         Button(action: continueAction) {
                             Text("Continue")
                                 .font(.title3)
-                                .foregroundColor(street.isEmpty || city.isEmpty || state.isEmpty || zipCode.isEmpty || country.isEmpty ? Color("PrimaryColor") : Color.white)
+                                .foregroundColor(viewModel.address.isEmpty() ? Color("PrimaryColor") : Color.white)
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(street.isEmpty || city.isEmpty || state.isEmpty || zipCode.isEmpty || country.isEmpty ? Color.white : Color("PrimaryColor"))
+                                .background(viewModel.address.isEmpty() ? Color.white : Color("PrimaryColor"))
                                 .cornerRadius(50.0)
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                         }
@@ -80,7 +65,7 @@ struct StylistAddressScreenView: View {
     }
 
     private func continueAction() {
-        if street.isEmpty || city.isEmpty || state.isEmpty || zipCode.isEmpty || country.isEmpty {
+        if viewModel.address.isEmpty() {
             alertMessage = "Please fill in all fields."
             showingAlert = true
         } else {
@@ -89,26 +74,19 @@ struct StylistAddressScreenView: View {
     }
 
     private func geocodeAddress() {
-        let address = "\(street), \(city), \(state), \(zipCode), \(country)"
+        let address = "\(viewModel.address.street), \(viewModel.address.city), \(viewModel.address.state), \(viewModel.address.zipCode), \(viewModel.address.country)"
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(address) { (placemarks, error) in
             if error != nil {
-                alertMessage = "Please enter valid address."
+                alertMessage = "Please enter a valid address."
                 showingAlert = true
-            } else if (placemarks?.first?.location) != nil {
-                sendDataToBackend()
+            } else if let location = placemarks?.first?.location {
                 shouldNavigateToNextScreen = true
             } else {
                 alertMessage = "No valid location found for the address provided."
                 showingAlert = true
             }
         }
-    }
-
-    private func sendDataToBackend() {
-        let backendData = "Street: \(street), City: \(city), State: \(state), Zip Code: \(zipCode), Country: \(country), Distance: \(distance) miles"
-        print("Sending data to backend: \(backendData)")
-        // Implement your backend communication logic here, sending `backendData`
     }
 
     private func addressField(label: String, placeholder: String, text: Binding<String>) -> some View {
@@ -132,7 +110,6 @@ struct StylistAddressScreenView: View {
 
 struct StylistAddressScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        StylistAddressScreenView()
+        StylistAddressScreenView().environmentObject(UserRegistrationViewModel())
     }
 }
-

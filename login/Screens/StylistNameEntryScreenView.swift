@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct StylistNameEntryScreenView: View {
-    @State private var firstName: String = ""
-    @State private var lastName: String = ""
+    @EnvironmentObject var viewModel: UserRegistrationViewModel
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
 
@@ -40,7 +39,7 @@ struct StylistNameEntryScreenView: View {
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
                             
-                            TextField("Ayomide", text: $firstName)
+                            TextField("Ayomide", text: $viewModel.firstName)
                                 .font(.title3)
                                 .padding()
                                 .frame(maxWidth: .infinity)
@@ -54,7 +53,7 @@ struct StylistNameEntryScreenView: View {
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
                             
-                            TextField("Fatoye", text: $lastName)
+                            TextField("Fatoye", text: $viewModel.lastName)
                                 .font(.title3)
                                 .padding()
                                 .frame(maxWidth: .infinity)
@@ -72,10 +71,10 @@ struct StylistNameEntryScreenView: View {
                     Button(action: continueAction) {
                         Text("Continue")
                             .font(.title3)
-                            .foregroundColor(firstName.isEmpty || lastName.isEmpty ? Color("PrimaryColor") : Color.white)
+                            .foregroundColor(viewModel.firstName.isEmpty || viewModel.lastName.isEmpty ? Color("PrimaryColor") : Color.white)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(firstName.isEmpty || lastName.isEmpty ? Color.white : Color("PrimaryColor"))
+                            .background(viewModel.firstName.isEmpty || viewModel.lastName.isEmpty ? Color.white : Color("PrimaryColor"))
                             .cornerRadius(50.0)
                             .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                     }
@@ -92,21 +91,16 @@ struct StylistNameEntryScreenView: View {
     }
 
     private func continueAction() {
-        if firstName.isEmpty || lastName.isEmpty {
+        if viewModel.firstName.isEmpty || viewModel.lastName.isEmpty {
             showingAlert = true
         } else {
-            sendDataToBackend()
             shouldNavigateToNextScreen = true
         }
-    }
-
-    private func sendDataToBackend() {
-        print("Sending data to backend: First Name: \(firstName), Last Name: \(lastName)")
     }
 }
 
 struct StylistNameEntryScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        StylistNameEntryScreenView()
+        StylistNameEntryScreenView().environmentObject(UserRegistrationViewModel())
     }
 }

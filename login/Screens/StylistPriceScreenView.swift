@@ -5,9 +5,11 @@
 //  Created by Sebastian Oberg on 4/4/24.
 //
 
+// StylistPriceScreenView.swift
 import SwiftUI
 
 struct StylistPriceScreenView: View {
+    @EnvironmentObject var viewModel: UserRegistrationViewModel
     @State private var averagePrice: Double = 25
     @State private var shouldNavigateToNextScreen = false
     @State private var showingAlert = false
@@ -67,19 +69,14 @@ struct StylistPriceScreenView: View {
         if averagePrice == 0 {
             showingAlert = true
         } else {
-            sendDataToBackend()
+            viewModel.avgPrice = Int(averagePrice)
             shouldNavigateToNextScreen = true
         }
-    }
-
-    private func sendDataToBackend() {
-        print("Sending average price to backend: $\(averagePrice)")
-        // Implement your backend communication logic here, sending `averagePrice`
     }
 }
 
 struct StylistPriceScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        StylistPriceScreenView()
+        StylistPriceScreenView().environmentObject(UserRegistrationViewModel())
     }
 }
