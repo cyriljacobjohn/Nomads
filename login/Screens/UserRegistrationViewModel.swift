@@ -14,6 +14,7 @@ class UserRegistrationViewModel: ObservableObject {
     @Published var firstName: String = ""
     @Published var lastName: String = ""
     @Published var uid: String = ""
+    @Published var user_id: Int = 0
     
     // Client specific properties
     @Published var ethnicity: [String] = []
@@ -34,7 +35,7 @@ class UserRegistrationViewModel: ObservableObject {
     @Published var address: Address = Address()
 
     func signUp(completion: @escaping (Bool) -> Void) {
-        guard let url = URL(string: "http://127.0.0.1:5000/client/signup-user") else {
+        guard let url = URL(string: "http://127.0.0.1:10000/client/signup-user") else {
             completion(false)
             return
         }
@@ -80,67 +81,57 @@ class UserRegistrationViewModel: ObservableObject {
     }
 
     func createClientAccount(completion: @escaping (Bool) -> Void) {
-        guard let url = URL(string: "http://127.0.0.1:5000/client/create-client"), !uid.isEmpty else {
-            DispatchQueue.main.async {
-                completion(false)
+            guard let url = URL(string: "http://127.0.0.1:10000/client/create-client"), !uid.isEmpty else {
+                DispatchQueue.main.async {
+                    completion(false)
+                }
+                return
             }
-            return
-        }
-        
-        let clientData = getClientData()
-        print("Client Data: \(clientData)")
+            
+            let clientData = getClientData()
+            print("Client Data: \(clientData)")
 
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: clientData) else {
-            DispatchQueue.main.async {
-                completion(false)
-            }
-            return
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = jsonData
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error during URLSessionDataTask: \(error.localizedDescription)")
+            guard let jsonData = try? JSONSerialization.data(withJSONObject: clientData) else {
                 DispatchQueue.main.async {
                     completion(false)
                 }
                 return
             }
 
-            guard let httpResponse = response as? HTTPURLResponse else {
-                print("Invalid response from server.")
-                DispatchQueue.main.async {
-                    completion(false)
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = jsonData
+            
+            let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+                if let data = data, let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                    do {
+                        if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                           let clientId = json["client_id"] as? Int {
+                            DispatchQueue.main.async {
+                                self?.user_id = clientId
+                                print("User ID (createClient): \(clientId)")
+                                completion(true)
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                completion(false)
+                            }
+                        }
+                    } catch {
+                        DispatchQueue.main.async {
+                            completion(false)
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        completion(false)
+                    }
                 }
-                return
             }
 
-            switch httpResponse.statusCode {
-            case 200...299:
-                // Success response.
-                DispatchQueue.main.async {
-                    completion(true)
-                }
-            default:
-                // Server returned an error. Use data to get more information if needed.
-                print("Server error with status code: \(httpResponse.statusCode)")
-                if let data = data, let string = String(data: data, encoding: .utf8) {
-                    print("Server response: \(string)")
-                }
-                DispatchQueue.main.async {
-                    completion(false)
-                }
-            }
+            task.resume()
         }
-
-        task.resume()
-    }
-
-
     
     func getClientData() -> [String: Any] {
         [
@@ -156,7 +147,7 @@ class UserRegistrationViewModel: ObservableObject {
     }
 
     func createStylistAccount(completion: @escaping (Bool) -> Void) {
-        let urlString = "http://127.0.0.1:5000/stylist/create-stylist"
+        let urlString = "http://127.0.0.1:10000/stylist/create-stylist"
         guard let url = URL(string: urlString), !uid.isEmpty else {
             completion(false)
             return
@@ -167,12 +158,11 @@ class UserRegistrationViewModel: ObservableObject {
             "lname": lastName,
             "clients_should_know": stylistsShouldKnow,
             "address": address.dictionary,
-            "specialities": specialties,  // Changed from "specialties" to "specialities" to match the backend since Ayo can't spell
+            "specialities": specialties,
             "avg_price": avgPrice,
             "uid": uid,
             "contacts": contacts.dictionary
         ]
-
 
         guard let jsonData = try? JSONSerialization.data(withJSONObject: stylistData) else {
             completion(false)
@@ -184,80 +174,91 @@ class UserRegistrationViewModel: ObservableObject {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = jsonData
         
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error during URLSessionDataTask: \(error.localizedDescription)")
-                completion(false)
-                return
-            }
-
-            guard let httpResponse = response as? HTTPURLResponse else {
-                print("Invalid response from server.")
-                completion(false)
-                return
-            }
-
-            if 200...299 ~= httpResponse.statusCode {
-                completion(true)
+        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            if let data = data, let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                       let stylistId = json["stylist_id"] as? Int {
+                        DispatchQueue.main.async {
+                            self?.user_id = stylistId
+                            print("User ID (createStylist): \(stylistId)")
+                            completion(true)
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            completion(false)
+                        }
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        completion(false)
+                    }
+                }
             } else {
-                print("Server error with status code: \(httpResponse.statusCode)")
-                completion(false)
+                DispatchQueue.main.async {
+                    completion(false)
+                }
             }
         }
 
         task.resume()
     }
     
+    // signIn function
     func signIn(completion: @escaping (Bool, String, String) -> Void) {
-        guard let url = URL(string: "http://127.0.0.1:5000/client/signin-user") else {
-            completion(false, "", "")
-            return
-        }
+           guard let url = URL(string: "http://127.0.0.1:10000/client/signin-user") else {
+               completion(false, "", "")
+               return
+           }
 
-        let signInData = ["email": email, "password": password]
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: signInData) else {
-            completion(false, "", "")
-            return
-        }
+           let signInData = ["email": email, "password": password]
+           guard let jsonData = try? JSONSerialization.data(withJSONObject: signInData) else {
+               completion(false, "", "")
+               return
+           }
 
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = jsonData
+           var request = URLRequest(url: url)
+           request.httpMethod = "POST"
+           request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+           request.httpBody = jsonData
 
-        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
-            guard let data = data, error == nil else {
-                completion(false, "", "")
-                return
-            }
+           let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+               guard let data = data, error == nil else {
+                   completion(false, "", "")
+                   return
+               }
 
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                       let ayoStatus = json["ayo_status"] as? String,
-                       let userType = json["user_type"] as? String {
-                        DispatchQueue.main.async {
-                            completion(true, ayoStatus, userType)
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            completion(false, "", "")
-                        }
-                    }
-                } catch {
-                    DispatchQueue.main.async {
-                        completion(false, "", "")
-                    }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    completion(false, "", "")
-                }
-            }
-        }
+               if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                   do {
+                       if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                          let ayoStatus = json["ayo_status"] as? String,
+                          let userType = json["user_type"] as? String,
+                          let userIdInDb = json["user_id_in_db"] as? Int {
+                           DispatchQueue.main.async {
+                               self?.user_id = userIdInDb
+                               print("User ID (signIn): \(userIdInDb)")
+                               completion(true, ayoStatus, userType)
+                           }
+                       } else {
+                           DispatchQueue.main.async {
+                               completion(false, "", "")
+                           }
+                       }
+                   } catch {
+                       DispatchQueue.main.async {
+                           completion(false, "", "")
+                       }
+                   }
+               } else {
+                   DispatchQueue.main.async {
+                       completion(false, "", "")
+                   }
+               }
+           }
 
-        task.resume()
-    }
+           task.resume()
+       }
+
 
     struct Address {
         var street: String = ""

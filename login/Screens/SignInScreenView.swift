@@ -91,9 +91,10 @@ struct SignInScreenView: View {
 
                         // Conditional navigation based on user type
                         if userType == "client" {
-                            NavigationLink("", destination: ClientLandingPage().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                            NavigationLink("", destination: MainTabView().navigationBarHidden(true).navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                            NavigationLink("", destination: MainTabView().navigationBarHidden(true).navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                         } else if userType == "stylist" {
-                            NavigationLink("", destination: Text("Stylist Dashboard Placeholder").navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                            NavigationLink("", destination: StylistTabView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                         }
                     }
                     .padding()

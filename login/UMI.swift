@@ -15,6 +15,7 @@ struct UMIApp: App {
         WindowGroup {
             WelcomeScreenView()
                 .environmentObject(userRegistrationViewModel)
+//            ContentView()
         }
     }
 }

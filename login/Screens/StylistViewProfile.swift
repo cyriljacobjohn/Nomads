@@ -7,283 +7,392 @@
 
 import SwiftUI
 
-struct Review: Identifiable {
-    let id: UUID
-    let customerName: String
-    let rating: Float
-    let comment: String
-    let tags: [String] // Example: ["Cutting", "Styling"]
-}
-
-struct StylistProfile: Identifiable {
-    let id: UUID
-    let name: String
-    let address: String
-    let priceRange: String
-    let specialties: [String]
-    let profileImageUrl: String
-    let portfolioImages: [String] // URLs of portfolio images
-    let matchingPercentage: Float // e.g., 95%
-    let rating: Float
-    let services: [String]
-    let reviews: [Review]
-}
-
-// example review
-
-let exampleReviews: [Review] = [
-    Review(id: UUID(), customerName: "Customer 1", rating: 4, comment: "Great experience, loved the haircut!", tags: ["fades", "blonde services"]),
-    Review(id: UUID(), customerName: "Customer 2", rating: 5, comment: "Amazing service, very friendly!", tags: ["long haircuts"])
-]
 
 
-struct StylistProfileView: View {
-    var stylist: StylistProfile
-    
-    @State private var selectedSegment: Int = 0
-    @State private var showingAddReview = false
-    
-    let availableTags = ["fades", "blonde services", "long haircuts"]
-    @State private var showingFilterView = false
-    @State private var filterTags: [String] = []
-    
-    var filteredReviews: [Review] {
-        guard !filterTags.isEmpty else {
-            return stylist.reviews
+public struct PortfolioImageView: View {
+    let portfolioImages: [String]
+    @State private var selectedImageUrl: String?
+    @State private var isSheetPresented = false
+
+    public init(portfolioImages: [String]) {
+        self.portfolioImages = portfolioImages
+    }
+
+    private var columns: [GridItem] = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+
+    public var body: some View {
+        LazyVGrid(columns: columns, spacing: 10) {
+            ForEach(portfolioImages, id: \.self) { imageName in // imageURL in
+                Image("long-hair") // Using the asset name to create an Image view
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(height: 150)
+                                    .cornerRadius(10)
+                                    .onTapGesture {
+                                        selectedImageUrl = imageName
+                                        isSheetPresented = true
+                                    }
+                
+//                AsyncImage(url: URL(string: imageUrl)) { phase in
+//                    switch phase {
+//                    case .success(let image):
+//                        image.resizable()
+//                             .aspectRatio(contentMode: .fill)
+//                             .frame(height: 150)
+//                             .cornerRadius(10)
+//                             .onTapGesture {
+//                                 selectedImageUrl = imageUrl
+//                                 isSheetPresented = true
+//                             }
+//                    case .failure(_):
+//                        Rectangle().fill(Color.gray.opacity(0.3))
+//                    case .empty:
+//                        ProgressView()
+//                    @unknown default:
+//                        EmptyView()
+//                    }
+//                }
+            }
         }
-        return stylist.reviews.filter { review in
-            !Set(review.tags).isDisjoint(with: Set(filterTags))
+        .sheet(isPresented: $isSheetPresented) {
+            if let url = selectedImageUrl {
+                AsyncImage(url: URL(string: url)) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image.resizable()
+                             .aspectRatio(contentMode: .fit)
+                             .padding()
+                    case .failure(_):
+                        Text("Unable to load image")
+                    case .empty:
+                        ProgressView()
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
+            }
         }
     }
+}
+
+
+
+struct StylistViewProfile: View {
+    
+    var stylistId: Int
+    @ObservedObject var viewModel: ClientViewModel
+    @State private var stylistProfile: StylistProfile?
+    @State private var stylist: Stylist?
+    
+    @State private var selectedSegment: Int = 0
+    
+    //Reviews
+
+    @State private var showingFilterView = false
+    @State private var filterTags: [String] = []
+    @State private var showingAddReview = false
+    
+    @State private var clientId: Int = 1
+    
     
     var body: some View {
         VStack(spacing: 0){
-            ProfileNavigationBar(name: stylist.name)
-            CustomSegmentedControl(selectedSegment: $selectedSegment, segments: ["Profile", "Reviews"])
-            ScrollView {
-                VStack(alignment: .leading) {
-                    // Profile image (reverted back to original size)
-                    
-                    // Profile details in adjacent rectangles with icons
-                    if selectedSegment == 0 {
+            if let stylistP = stylistProfile{
+                ProfileNavigationBar(name: "\(stylistP.fname) \(stylistP.lname)")
+                CustomSegmentedControl(selectedSegment: $selectedSegment, segments: ["Profile", "Reviews"])
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        // Profile image (reverted back to original size)
                         
-                        AsyncImage(url: URL(string: stylist.profileImageUrl)) { image in
-                            image.resizable()
-                        } placeholder: {
-                            Rectangle()
-                                .fill(Color.gray.opacity(0.3))
-                        }
-                        .aspectRatio(1, contentMode: .fit)
-                        .cornerRadius(10)
-                        HStack() {
-                            Image(systemName: "mappin.and.ellipse")
-                                .frame(width: 30, alignment: .leading)
-                                .foregroundColor(Color("PrimaryColor"))
-                            VStack(alignment: .leading) {
-                                Text(stylist.address)
-                                    .font(.custom("Poppins-Regular", size: 18))
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 1)
-                        
-                        HStack {
-                            Image(systemName: "dollarsign.circle")
-                                .frame(width: 30, alignment: .leading)
-                                .foregroundColor(Color("PrimaryColor"))
-                            VStack(alignment: .leading) {
-                                Text(stylist.priceRange)
-                                    .font(.custom("Poppins-Regular", size: 18))
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 1)
-                        
-                        HStack {
-                            Image(systemName: "scissors")
-                                .frame(width: 30, alignment: .leading)
-                                .foregroundColor(Color("PrimaryColor"))
+                        // Profile details in adjacent rectangles with icons
+                        if selectedSegment == 0 {
                             
-                            VStack(alignment: .leading) {
-                                ForEach(stylist.specialties, id: \.self) { specialty in
-                                    Text(specialty)
+//                            AsyncImage(url: URL(string: stylist.profileImageUrl)) { image in
+//                                image.resizable()
+//                            } placeholder: {
+//                                Rectangle()
+//                                    .fill(Color.gray.opacity(0.3))
+//
+//                            }
+//                            .aspectRatio(1, contentMode: .fit)
+//                            .cornerRadius(10)
+                            
+                            HStack() {
+                                Image(systemName: "person.fill")
+                                    .frame(width: 30, alignment: .leading)
+                                    .foregroundColor(Color("PrimaryColor"))
+                                VStack(alignment: .leading) {
+                                    Text("About Me")
+                                        .font(.custom("Poppins-SemiBold", size: 15))
+                                    Text(stylistP.clientsShouldKnow)
                                         .font(.custom("Poppins-Regular", size: 18))
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             }
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 1)
-                        
-                        HStack {
-                            Image(systemName: "person.fill.questionmark") // Example icon for matching percentage
-                                .frame(width: 30, alignment: .leading)
-                                .foregroundColor(Color("PrimaryColor"))
-                            VStack(alignment: .leading) {
-                                
-                                Text("\(stylist.matchingPercentage, specifier: "%.0f%%")")
-                                    .font(.custom("Poppins-Regular", size: 18))
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 1)
-                        
-                        // Rating HStack
-                        HStack {
-                            Image(systemName: "star.fill") // Example icon for rating
-                                .frame(width: 30, alignment: .leading)
-                                .foregroundColor(Color("PrimaryColor"))
-                            VStack(alignment: .leading) {
-                                
-                                Text("\(stylist.rating, specifier: "%.1f")")
-                                    .font(.custom("Poppins-Regular", size: 18))
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 1)
-                        
-                        // Services HStack
-                        HStack {
-                            Image(systemName: "wrench.and.screwdriver.fill") // Example icon for services
-                                .frame(width: 30, alignment: .leading)
-                                .foregroundColor(Color("PrimaryColor"))
-                            VStack(alignment: .leading) {
-                                
-                                ForEach(stylist.services, id: \.self) { service in
-                                    Text(service)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.white)
+                           
+                            .cornerRadius(10) // Apply corner radius to make the edges rounded
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+                                    .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+                            )
+                            
+                            HStack() {
+                                Image(systemName: "mappin.and.ellipse")
+                                    .frame(width: 30, alignment: .leading)
+                                    .foregroundColor(Color("PrimaryColor"))
+                                VStack(alignment: .leading) {
+                                    Text(stylistP.address.formattedAddress)
                                         .font(.custom("Poppins-Regular", size: 18))
                                 }
+                                .frame(maxWidth: .infinity, alignment: .leading)
                             }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 1)
-                        
-                        Text("More Work")
-                            .font(.custom("Poppins-SemiBold", size: 20)) // Replace with your actual font name and size
-                            .foregroundColor(Color("PrimaryColor")) // Replace with your actual color
-                            .padding(.top)
-                        ForEach(stylist.portfolioImages, id: \.self) { imageUrl in
-                            AsyncImage(url: URL(string: imageUrl)) { image in
-                                image.resizable()
-                            } placeholder: {
-                                Rectangle()
-                                    .fill(Color.gray.opacity(0.3))
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.white)
+                           
+                            .cornerRadius(10) // Apply corner radius to make the edges rounded
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+                                    .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+                            )
+                            
+                            
+                            HStack {
+                                Image(systemName: "dollarsign.circle")
+                                    .frame(width: 30, alignment: .leading)
+                                    .foregroundColor(Color("PrimaryColor"))
+                                VStack(alignment: .leading) {
+                                    Text("\(stylistP.avgPrice)")
+                                        .font(.custom("Poppins-Regular", size: 18))
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                
                             }
-                            .aspectRatio(1, contentMode: .fit)
-                            .cornerRadius(10)
-                    }
-                    
-                    
-                    // More work - portfolio images scrolling down
-                    
-                    }
-                    if selectedSegment == 1 { // When Reviews segment is selected
-                        ScrollView {
-                            VStack(spacing : 20) {
-                                // Filter button
-                                HStack {
-                                    Button("Filter") {
-                                        showingFilterView = true
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.white)
+                            .cornerRadius(10) // Apply corner radius to make the edges rounded
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+                                    .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+                            )
+                            
+                            HStack {
+                                Image(systemName: "scissors")
+                                    .frame(width: 30, alignment: .leading)
+                                    .foregroundColor(Color("PrimaryColor"))
+                                
+                                VStack(alignment: .leading) {
+                                    ForEach(stylistP.specialities, id: \.self) { specialty in
+                                        Text(specialty)
+                                            .font(.custom("Poppins-Regular", size: 18))
                                     }
-                                    .foregroundColor(Color("PrimaryColor")) // Color of the text
-                                    .font(.custom("Poppins-SemiBold", size: 15)) // Font of the text
-                                    .padding(.horizontal) // Horizontal padding
-                                    .padding(.vertical, 8) // Vertical padding
-                                    .background(Color.white) // Background color of the button
-                                    .clipShape(Capsule()) // Shape of the button
-                                    .shadow(radius: 3) // Shadow for the button
-                                    .popover(isPresented: $showingFilterView) {
-                                        FilterView(selectedTags: $filterTags, availableTags: availableTags)
-                                    }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.white)
+                            .cornerRadius(10) // Apply corner radius to make the edges rounded
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+                                    .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+                            )
+                            HStack {
+                                Image(systemName: "person.fill.questionmark") // Example icon for matching percentage
+                                    .frame(width: 30, alignment: .leading)
+                                    .foregroundColor(Color("PrimaryColor"))
+                                VStack(alignment: .leading) {
                                     
-                                    Spacer() // Pushes the button to the left
-                                }
-                                .padding([.leading, .top, .trailing])
-                                
-                                // Reviews list
-                                VStack(spacing: 30) {
-                                    ForEach(stylist.reviews) { review in
-                                        ReviewEntryView(review: review)
+                                    if let matchPercentage = stylist?.matchPercentage {
+                                        Text("\(stylist!.matchPercentage, specifier: "%.0f%%")")
+                                                    .font(.custom("Poppins-Regular", size: 18))
+                                            } else {
+                                                Text("No Match Percentage")
+                                                    .font(.custom("Poppins-Regular", size: 18))
+                                            }
+                                        }
+                                        .frame(maxWidth: .infinity, alignment: .leading)
                                     }
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(Color.white)
+                                    .cornerRadius(10)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(Color.black, lineWidth: 1)
+                                    )
+                            
+                            // Rating HStack
+                            HStack {
+                                Image(systemName: "star.fill") // Example icon for rating
+                                    .frame(width: 30, alignment: .leading)
+                                    .foregroundColor(Color("PrimaryColor"))
+                                VStack(alignment: .leading) {
+                                    
+                                    Text("\(stylistP.rating ?? 0.0, specifier: "%.1f")")
+                                        .font(.custom("Poppins-Regular", size: 18))
                                 }
-                                Spacer()
-                                Spacer()
-                                
-                                // Add Review button
-                                Button(action: {
-                                    showingAddReview.toggle()
-                                }) {
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.white)
+                            .cornerRadius(10) // Apply corner radius to make the edges rounded
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+                                    .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+                            )
+                            
+                            
+                            Text("More Work")
+                                .font(.custom("Poppins-SemiBold", size: 20)) // Replace with your actual font name and size
+                                .foregroundColor(Color("PrimaryColor")) // Replace with your actual color
+                                .padding(.top)
+                            //PortfolioImageView(portfolioImages: stylist.portfolioImages)
+                            
+//                            ForEach(stylist.portfolioImages, id: \.self) { imageUrl in
+//                                AsyncImage(url: URL(string: imageUrl)) { image in
+//                                    image.resizable()
+//                                } placeholder: {
+//                                    Rectangle()
+//                                        .fill(Color.gray.opacity(0.3))
+//                                }
+//                                .aspectRatio(1, contentMode: .fit)
+//                                .cornerRadius(10)
+//                            }
+                            
+                            
+                            // More work - portfolio images scrolling down
+                            
+                        }
+                        if selectedSegment == 1 { // When Reviews segment is selected
+                            ScrollView {
+                                VStack(spacing : 20) {
+                                    // Filter button
                                     HStack {
-                                        Spacer()
-                                        Image(systemName: "plus")
-                                            .font(.title3)
-                                        Spacer()
+                                        Button("Filter") {
+                                            showingFilterView = true
+                                        }
+                                        .foregroundColor(Color("PrimaryColor")) // Color of the text
+                                        .font(.custom("Poppins-SemiBold", size: 15)) // Font of the text
+                                        .padding(.horizontal) // Horizontal padding
+                                        .padding(.vertical, 8) // Vertical padding
+                                        .background(Color.white) // Background color of the button
+                                        .clipShape(Capsule()) // Shape of the button
+                                        .shadow(radius: 3) // Shadow for the button
+                                        .popover(isPresented: $showingFilterView) {
+                                            FilterView(selectedTags: $filterTags, availableTags: viewModel.tags)
+                                        }
+                                        
+                                        Spacer() // Pushes the button to the left
                                     }
-                                    .foregroundColor(Color.white)
-                                    .padding(.vertical, 10)
-                                    .background(Color("PrimaryColor"))
-                                    .cornerRadius(25)
-                                    .shadow(radius: 3)
+                                    .padding([.leading, .top, .trailing])
                                     
+                                    
+                                    //FILTERED REVIEWS
+                                    
+                                    var filteredReviews: [Rating] {
+                                        if filterTags.isEmpty {
+                                            return viewModel.ratings
+                                        } else {
+                                            return viewModel.ratings.filter { rating in
+                                                !Set(rating.tags).isDisjoint(with: Set(filterTags))
+                                            }
+                                        }
+                                    }
+                                    
+                                    // Reviews list
+                                    VStack(spacing: 30) {
+                                        ForEach(filteredReviews, id: \.rating_id) { review in
+                                            ReviewEntryView(review: review)
+                                        }
+                                    }
+                                    
+                                    
+                                    Spacer()
+                                    Spacer()
+                                    
+                                    // Add Review button
+                                    Button(action: {
+                                        if stylistId != 0 {
+                                            showingAddReview.toggle()
+                                        } else {
+                                            print("Stylist data is not available")
+                                        }
+                                    }) {
+                                        HStack {
+                                            Spacer()
+                                            Image(systemName: "plus")
+                                                .font(.title3)
+                                            Spacer()
+                                        }
+                                        .foregroundColor(Color.white)
+                                        .padding(.vertical, 10)
+                                        .background(Color("PrimaryColor"))
+                                        .cornerRadius(25)
+                                        .shadow(radius: 3)
+                                    }
+                                    .padding([.leading, .top, .trailing])
                                 }
-                                .padding([.leading, .top, .trailing])
                             }
+                            .sheet(isPresented: $showingAddReview) {
+                                AddReviewView(stylistId: stylistId, clientVM: viewModel)
+                            }
+                            
+                            .onAppear {
+                                   viewModel.getStylistRatings(stylistId: stylistId) { success in
+                                       if !success {
+                                           print("Error loading reviews: \(viewModel.errorMessage ?? "Unknown error")")
+                                       }
+                                   }
+                               }
                         }
-                        .sheet(isPresented: $showingAddReview) {
-                            AddReviewView()
-                        }
+                        // Reviews content would go here
                     }
-                    // Reviews content would go here
+                    .padding()
                 }
-                .padding()
+            }else{
+                Text("Loading..")
             }
             
         }
+        .navigationBarBackButtonHidden(true)
         
+        .onAppear{
+            fetchStylistProfile()
+        }
         
     }
-    private func actionSheetButtons() -> [ActionSheet.Button] {
-            var buttons = availableTags.map { tag in
-                ActionSheet.Button.default(Text(tag)) {
-                    if filterTags.contains(tag) {
-                        filterTags.removeAll(where: { $0 == tag })
-                    } else {
-                        filterTags.append(tag)
-                    }
+    
+    private func fetchStylistProfile() {
+        viewModel.fetchStylistProfileById(stylistId: stylistId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let profile):
+                    self.stylistProfile = profile
+                    // Create and assign a Stylist object based on the fetched profile
+                case .failure(let error):
+                    print("Failed to fetch stylist profile:", error.localizedDescription)
+                    // Optionally update some UI component to reflect the error
                 }
             }
-            buttons.append(.cancel())
-            return buttons
         }
+    }
+
+
 }
 
 // INTERACTIONS & ANIMATIONS /////////////////////////////////////////////////////
 
 struct ProfileNavigationBar: View {
-    let name: String  // Add a property to accept the name
+    let name: String  // Property to accept the name
 
     var body: some View {
         ZStack {
@@ -296,7 +405,7 @@ struct ProfileNavigationBar: View {
                 Spacer() // This will push the name towards center
                 
                 Text(name) // Use the name here
-                    .font(.custom("Sansita-BoldItalic", size: 28))
+                    .font(.custom("Sansita-BoldItalic", size: calculateFontSize(for: name)))
                     .foregroundColor(Color("TitleTextColor"))
                     .frame(maxWidth: .infinity, alignment: .center) // Center the name text
                 
@@ -305,15 +414,27 @@ struct ProfileNavigationBar: View {
                 Button(action: {
                     // Action for search button
                 }) {
-                    Image(systemName: "person")
+                    Image(systemName: "line.horizontal.3.decrease.circle.fill")
                         .imageScale(.large)
-                        .accentColor(.black)
+                        .accentColor(Color("PrimaryColor"))
                 }
                 .frame(width: 80, alignment: .trailing) // Right-aligned button
             }
             .padding(.horizontal)
         }
         .frame(height: 60) // Fixed height for the navigation bar
+    }
+
+    // Function to calculate font size based on the length of the name
+    private func calculateFontSize(for name: String) -> CGFloat {
+        switch name.count {
+        case 0...10:
+            return 28 // Larger font size for short names
+        case 11...20:
+            return 24 // Medium font size for moderately long names
+        default:
+            return 20 // Smaller font size for long names
+        }
     }
 }
 
@@ -395,51 +516,68 @@ struct StarRatingView: View {
 //REVIEWSS /////////////////////
 
 struct ReviewDetailView: View {
-    let review: Review
-    
+    let review: Rating
+    @State private var isExpanded = false  // State to track expanded/collapsed view
+
     var body: some View {
-        VStack {
-            Text(review.customerName)
-                .font(.title)
+        VStack(alignment: .leading, spacing: 8) {
+            Text(review.client_name)
+                .font(.custom("Poppins-SemiBold", size: 20))
                 .padding(.top)
-            
-            HStack{
+
+            HStack {
                 ForEach(1...5, id: \.self) { index in
-                Image(systemName: "star.fill")
-                        .foregroundColor(index <= Int(review.rating) ? Color("PrimaryColor") : .gray)
+                    Image(systemName: "star.fill")
+                        .foregroundColor(index <= Int(review.stars) ? Color("PrimaryColor") : .gray)
+                }
             }
-            }
-            
-            Text(review.comment)
+
+            // Make the text expandable on tap
+            Text(review.review)
+                .font(.custom("Poppins-Regular", size: 15))
+                .lineLimit(isExpanded ? nil : 3) // Show all lines when expanded, default to 3 lines
+                .onTapGesture {
+                    withAnimation {
+                        isExpanded.toggle()
+                    }
+                }
                 .padding()
-            
-            ForEach(review.tags, id: \.self) { tag in
-                Text(tag)
-                    .font(.caption)
-                    .padding(4)
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(4)
+
+            HStack {
+                ForEach(review.tags, id: \.self) { tag in
+                    Text(tag)
+                        .font(.custom("Poppins-Italic", size: 12))
+                        .padding(4)
+                        .background(Color.gray.opacity(0.2))
+                        .cornerRadius(4)
+                }
             }
-            
+
             Spacer()
         }
-       
+        .padding()
+        .frame(maxWidth: .infinity)
+        .background(Color.white)
+        .cornerRadius(10)
+        .shadow(radius: 3)
+        .padding(.horizontal)
     }
 }
 
 
 struct ReviewEntryView: View {
-    let review: Review
+    
+    let review: Rating
     @State private var showingPopup = false
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(review.customerName)
+            Text(review.client_name)
                 .font(.custom("Poppins-SemiBold", size: 20))
 
             VStack {
-                StarRatingView(rating: .constant(Int(review.rating)), offColor: .gray , onColor: Color("PrimaryColor"))
+                StarRatingView(rating: .constant(Int(review.stars)), offColor: .gray , onColor: Color("PrimaryColor"))
                 Spacer()
-                Text(review.comment)
+                Text(review.review)
                     .font(.custom("Poppins-Regular", size: 15))
                     .lineLimit(1)
             }
@@ -448,7 +586,7 @@ struct ReviewEntryView: View {
             HStack {
                 ForEach(review.tags, id: \.self) { tag in
                     Text(tag)
-                        .font(.custom("Poppins-Italic", size: 12))
+                        .font(.custom("Poppins-Italic",size: dynamicTagFontSize(for: tag)))
                         .padding(4)
                         .background(Color.gray.opacity(0.2))
                         .cornerRadius(4)
@@ -468,98 +606,141 @@ struct ReviewEntryView: View {
                     ReviewDetailView(review: review)
                 }
     }
+    
+    private func dynamicTagFontSize(for tag: String) -> CGFloat {
+            let length = tag.count
+            switch length {
+            case 0...4:
+                return 14 // Larger font size for shorter tags
+            case 5...10:
+                return 12 // Medium font size for medium-length tags
+            default:
+                return 10 // Smaller font size for longer tags
+            }
+        }
 }
 
 
+
+import SwiftUI
+
 struct AddReviewView: View {
-    // Define the states for each field you need for the review
+    
+    @State private var clientId: Int = 1
+    var stylistId: Int  // Accept stylistId directly
     @State private var rating: Int = 0
     @State private var comment: String = ""
-    @State private var selectedTags: Set<String> = []
+  
+    @State private var isLoading: Bool = false
+    @State private var showAlert: Bool = false
+    @State private var alertMessage: String = ""
     
-    // Other states as needed for your form
-    
-    let availableTags = ["fades", "blonde services", "long haircuts"]
-    
-    
+    @ObservedObject var clientVM: ClientViewModel
+
     var body: some View {
-        // Create the form for adding a review here
         NavigationView {
-            Form {
-                Section(header: Text("Rating")) {
-                    
-                    StarRatingView(rating: $rating)
-                }
-                
-                Section(header: Text("Comment")) {
-                    
-                    TextEditor(text: $comment)
-                                            .frame(minHeight: 100)
-                }
-                Section(header: Text("Tags")) {
-                                    ForEach(availableTags, id: \.self) { tag in
-                                        Button(tag) {
-                                            if selectedTags.contains(tag) {
-                                                selectedTags.remove(tag)
-                                            } else {
-                                                selectedTags.insert(tag)
-                                            }
+            VStack {
+                if isLoading {
+                    ProgressView("Submitting...")
+                } else {
+                    Form {
+                        Section(header: Text("Rating").font(.headline)) {
+                            StarRatingView(rating: $rating)
                         }
-                                        .foregroundColor(selectedTags.contains(tag) ? .blue : .primary)
+                        Section(header: Text("Comment").font(.headline)) {
+                            TextField("Comment", text: $comment)
+                                .frame(minHeight: 100)
+                                .padding(4)
+                                .background(Color(UIColor.systemBackground))
+                                .cornerRadius(8)
+                        }
+                    }
+
+                    Button(action: submitReview) {
+                        Text("Submit")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color.blue)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.white)
+                            .cornerRadius(10)
+                            .shadow(radius: 10)
+                            .padding(.vertical)
+                    }
+                    .alert(isPresented: $showAlert) {
+                        Alert(title: Text("Review Status"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                     }
                 }
-                // Add more sections as needed for your form
             }
             .navigationBarTitle("Add Review", displayMode: .inline)
-            .navigationBarItems(trailing: Button("Submit") {
-                // Submit action
-            })
+        }
+    }
+    
+    func submitReview() {
+        isLoading = true
+        clientVM.postReview(clientId: clientId, stylistId: stylistId, rating: rating, comment: comment) { success, message in
+            isLoading = false
+            alertMessage = message
+            showAlert = true
         }
     }
 }
+
+
 struct FilterView: View {
     @Binding var selectedTags: [String]
     let availableTags: [String]
-    
+
     var body: some View {
-        VStack {
-            ForEach(availableTags, id: \.self) { tag in
-                Button(action: {
-                    if selectedTags.contains(tag) {
-                        selectedTags.removeAll { $0 == tag }
-                    } else {
-                        selectedTags.append(tag)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 12) {
+                ForEach(availableTags, id: \.self) { tag in
+                    Button(action: {
+                        toggleTag(tag)
+                    }) {
+                        TagView(tag: tag, isSelected: selectedTags.contains(tag))
                     }
-                }) {
-                    HStack {
-                        Text(tag)
-                            .foregroundColor(selectedTags.contains(tag) ? .blue : .black)
-                        if selectedTags.contains(tag) {
-                            Image(systemName: "checkmark")
-                        }
-                    }
+                    .padding(.horizontal, 4)
                 }
-                .padding()
             }
+            .padding()
         }
         .background(Color.white)
-        .cornerRadius(10)
+        .cornerRadius(12)
         .shadow(radius: 3)
+        .padding(.horizontal)
+    }
+    
+    private func toggleTag(_ tag: String) {
+        if let index = selectedTags.firstIndex(of: tag) {
+            selectedTags.remove(at: index)
+        } else {
+            selectedTags.append(tag)
+        }
     }
 }
 
-struct StylistProfileView_Previews: PreviewProvider {
+struct TagView: View {
+    let tag: String
+    var isSelected: Bool
+
+    var body: some View {
+        HStack {
+            Text(tag)
+                .padding(.vertical, 8)
+                .padding(.horizontal, 12)
+                .font(.custom("Poppins-Regular", size: 14))
+                .background(isSelected ? Color("PrimaryColor") : Color.gray.opacity(0.2))
+                .foregroundColor(isSelected ? Color.white : Color.black)
+                .cornerRadius(8)
+        }
+    }
+}
+
+
+struct StylistViewProfile_Previews: PreviewProvider {
     static var previews: some View {
-        StylistProfileView(stylist: StylistProfile(id: UUID(),
-                                                   name: "Alex Smith",
-                                                   address: "1234 Road Dr",
-                                                   priceRange: "$60 - $100",
-                                                   specialties: ["Curly Hair"],
-                                                   profileImageUrl: "https://example.com/image1.jpg",
-                                                   portfolioImages: ["https://example.com/work1.jpg",
-                                                                     "https://example.com/work2.jpg",
-                                                                     "https://example.com/work3.jpg"],
-                                                   matchingPercentage: 90,
-                                                   rating: 4.5, services: ["Fades"], reviews: exampleReviews))
+        StylistViewProfile(stylistId: 0, viewModel: ClientViewModel())
     }
 }

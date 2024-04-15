@@ -64,7 +64,7 @@ struct StylistAdditionalInformationScreenView: View {
                         Alert(title: Text("Error"), message: Text("Please provide the requested information."), dismissButton: .default(Text("OK")))
                     }
 
-                    NavigationLink("", destination: Text("Stylists Landing Page").navigationBarHidden(false), isActive: $shouldNavigateToNextScreen)
+                    NavigationLink("", destination: StylistTabView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                 }
                 .padding()
             }

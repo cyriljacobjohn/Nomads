@@ -63,7 +63,7 @@ struct ClientAdditionalInformationScreenView: View {
                     }
 
                     //NavigationLink("", destination: ClientCurrentHairScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
-                    NavigationLink("", destination: ClientLandingPage().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                    NavigationLink("", destination: MainTabView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     
                 }
                 .padding()
