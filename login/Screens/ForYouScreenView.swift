@@ -9,23 +9,35 @@ import Foundation
 import SwiftUI
 
 
+enum SortOption {
+    case matchPercentage
+    case distance
+    case rating
+    case avgPrice
+}
+
 struct DiscoveryPageView: View {
     
     @StateObject var viewModel = ClientViewModel()
-    
     @State private var progress: CGFloat = 0.0
     @State private var favoriteStylists: [Int] = []
     
-    // test data
-    //     let stylists: [Stylist] = [
-    //         Stylist(name: "Alex Smith", distance: 1.2, profileImageUrl: "https://example.com/image1.jpg", matchingPercentage: 90, rating: 2.6),
-    //         Stylist(name: "Jordan Doe", distance: 3.4, profileImageUrl: "https://example.com/image2.jpg", matchingPercentage: 85,rating: 4.6),
-    //     ]
+    @State private var selectedSortOption: SortOption = .matchPercentage
+    
     
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                CustomNavigationBar()
+                CustomNavigationBar(selectedSortOption: $selectedSortOption)
+                
+//                Picker("Sort by", selection: $selectedSortOption) {
+//                    Text("Match %").tag(SortOption.matchPercentage)
+//                    Text("Distance").tag(SortOption.distance)
+//                    Text("Rating").tag(SortOption.rating)
+//                }
+//                .pickerStyle(SegmentedPickerStyle())
+//                .padding()
+                
                 
                 if viewModel.isLoading {
                     
@@ -38,11 +50,12 @@ struct DiscoveryPageView: View {
                     ScrollView {
                         
                         VStack(alignment: .leading, spacing: 20) {
-                            ForEach(viewModel.stylists) { stylist in
+                            ForEach(viewModel.sortedStylists) { stylist in
                                 
-                                NavigationLink(destination: StylistViewProfile(stylistId: stylist.id, viewModel: viewModel)) {
+                                
+                                NavigationLink(destination: stylistCardTapped(stylistId: stylist.id)) {
                                     
-                                    StylistSummaryView(stylist: stylist, favoriteStylists: $favoriteStylists)
+                                    StylistSummaryView(stylist: stylist, viewModel: viewModel)
                                         .padding()
                                         .background(Color.white)
                                         .cornerRadius(10)
@@ -54,10 +67,13 @@ struct DiscoveryPageView: View {
                         }
                     }
                     .padding(.top)
-                    
                 }
             }
         }
+        .onChange(of: selectedSortOption) { newValue in
+            viewModel.sortStylists(by: newValue)
+        }
+        
         .onAppear {
             viewModel.fetchStylists { success in
                 if success {
@@ -67,16 +83,19 @@ struct DiscoveryPageView: View {
                 }
             }
         }
+        
     }
+    private func stylistCardTapped(stylistId: Int) -> some View {
+           StylistViewProfile(stylistId: stylistId, viewModel: viewModel)
+       }
     
 }
 
 struct StylistSummaryView: View {
-    
-    @StateObject var viewModel = ClientViewModel()
-    var stylist: Stylist
-    @Binding var favoriteStylists: [Int]
 
+    @State private var isFavorite = false
+    let stylist: Stylist
+    let viewModel: ClientViewModel
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("\(stylist.fname) \(stylist.lname)")
@@ -98,31 +117,41 @@ struct StylistSummaryView: View {
                         .scaledToFit() // Or .scaledToFill() depending on your needs
                 }
 
-                
                 Button(action: {
-                    if favoriteStylists.contains(stylist.id) {
+                    if viewModel.isStylistFavorite(stylistId: stylist.id) {
                         viewModel.removeFromFavorites(stylistId: stylist.id) { success in
-                            if success {
-                                favoriteStylists.removeAll { $0 == stylist.id }
+                            DispatchQueue.main.async {
+                                if success {
+                                    viewModel.getFavoriteStylists { _ in }
+                                } else {
+                                    // Handle failure
+                                    print("Failed to remove stylist from favorites")
+                                }
                             }
                         }
                     } else {
                         viewModel.addToFavorites(stylistId: stylist.id) { success in
-                            if success {
-                                favoriteStylists.append(stylist.id)
+                            DispatchQueue.main.async {
+                                if success {
+                                    viewModel.getFavoriteStylists { _ in }
+                                } else {
+                                    // Handle failure
+                                    print("Failed to add stylist to favorites")
+                                }
                             }
                         }
                     }
                 }) {
-                    Image(systemName: favoriteStylists.contains(stylist.id) ? "heart.fill" : "heart")
+                    Image(systemName: viewModel.isStylistFavorite(stylistId: stylist.id) ? "heart.fill" : "heart")
                         .font(.system(size: 30))
-                        .foregroundColor(favoriteStylists.contains(stylist.id) ? Color("PrimaryColor") : Color("PrimaryColor"))
+                        .foregroundColor(Color("PrimaryColor"))
                         .padding(10)
                         .background(Color.white.opacity(0.5))
                         .clipShape(Circle())
                 }
                 .padding(10)
-            }
+
+                    }
             HStack {
                 VStack(alignment: .leading) {
                     Text("\(stylist.distance, specifier: "%.1f") miles away")
@@ -131,6 +160,11 @@ struct StylistSummaryView: View {
                     Text("Rating: \(stylist.rating ?? 0.0, specifier: "%.1f")")
                         .font(.custom("Poppins-Regular", size: 15))
                         .foregroundColor(.black)
+                    Text("Avg Price: \(stylist.avgPrice , specifier: "%.1f")")
+                        .font(.custom("Poppins-Regular", size: 15))
+                        .foregroundColor(.black)
+
+
                 }
                 
                 Spacer()
@@ -142,7 +176,43 @@ struct StylistSummaryView: View {
     }
 }
 
+//struct CustomNavigationBar: View {
+//    var body: some View {
+//        ZStack {
+//            HStack {
+//                Text("UMI") // Use your logo asset name
+//                    .font(.custom("Sarina-Regular", size: 15))
+//                    .foregroundColor(Color("PrimaryColor"))
+//                    .frame(width: 80, alignment: .leading)
+//                
+//                Spacer() // This will push the name towards center
+//            
+//                Text("Stylists For You")
+//                    .font(.custom("Sansita-BoldItalic", size: 25))
+//                    .foregroundColor(Color("TitleTextColor"))
+//                    .frame(maxWidth: .infinity, alignment: .center) // Center the name text
+//                
+//                Spacer()
+//                
+//                Button(action: {
+//                    // Action for search button
+//                }) {
+//                    Image(systemName: "line.horizontal.3.decrease.circle.fill")
+//                        .imageScale(.large)
+//                        .accentColor(Color("PrimaryColor"))
+//                }
+//                .frame(width: 80, alignment: .trailing) // Right-aligned button
+//            }
+//            .padding(.horizontal)
+//        }
+//        .frame(height: 60) // Adjust the height as necessary
+//    }
+//}
+
 struct CustomNavigationBar: View {
+    @Binding var selectedSortOption: SortOption
+    @State private var showingSortOptions = false
+    
     var body: some View {
         ZStack {
             HStack {
@@ -151,8 +221,8 @@ struct CustomNavigationBar: View {
                     .foregroundColor(Color("PrimaryColor"))
                     .frame(width: 80, alignment: .leading)
                 
-                Spacer() // This will push the name towards center
-            
+                Spacer() // This will push the name towards the center
+                
                 Text("Stylists For You")
                     .font(.custom("Sansita-BoldItalic", size: 25))
                     .foregroundColor(Color("TitleTextColor"))
@@ -160,9 +230,13 @@ struct CustomNavigationBar: View {
                 
                 Spacer()
                 
-                Button(action: {
-                    // Action for search button
-                }) {
+                Menu {
+                    Button("Match %", action: { selectedSortOption = .matchPercentage })
+                    Button("Distance", action: { selectedSortOption = .distance })
+                    Button("Rating", action: { selectedSortOption = .rating })
+                    Button("Avg Price", action: { selectedSortOption = .avgPrice })
+                    
+                } label: {
                     Image(systemName: "line.horizontal.3.decrease.circle.fill")
                         .imageScale(.large)
                         .accentColor(Color("PrimaryColor"))

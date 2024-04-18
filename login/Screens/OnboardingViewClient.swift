@@ -21,7 +21,7 @@ struct OnboardingViewClient : View {
         } else {
             // Here, you might set showOnboarding to false or perform any other action needed when onboarding is completed
             withAnimation{
-                showOnboarding = false
+                showOnboarding = true
             }
         }
     }

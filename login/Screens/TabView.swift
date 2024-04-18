@@ -11,7 +11,8 @@
 import SwiftUI
 
 struct MainTabView: View {
-    private let favoriteStylistUUIDs: [UUID] = [UUID(), UUID()]
+    
+  
     
     init() {
             // Customize the tab bar appearance using UITabBarAppearance
@@ -33,13 +34,13 @@ struct MainTabView: View {
                         
                 }
 
-            //FavoritesPageView(favoriteStylistUUIDs: favoriteStylistUUIDs)
+            FavoritesPageView()
                 .tabItem {
                     Image("favorite")
                        
                 }
 
-           // ClientProfileView(clientId: UUID())
+           ClientProfileView(clientId: 15)
                 .tabItem {
                     Image("about-me")
                         

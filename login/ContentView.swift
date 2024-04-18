@@ -10,13 +10,16 @@ import SwiftUI
 struct ContentView: View {
     
     @State private var showOnboarding: Bool = false
+    @State private var isStylist: Bool = false
    
     var body: some View {
         
         if showOnboarding {
             OnboardingViewClient(showOnboarding: $showOnboarding)
+        } else if isStylist {
+            StylistTabView()  // Show the stylist interface if logged in as a stylist
         } else {
-            MainTabView()
+            MainTabView()     // Show the main client interface otherwise
         }
     }
 }
