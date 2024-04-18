@@ -20,7 +20,7 @@ struct StylistProfile: Decodable, Equatable {
     let clientsShouldKnow: String
     let fname: String
     let lname: String
-    let rating: Double
+    let rating: Double?
     let specialities: [String]
 
     enum CodingKeys: String, CodingKey {
@@ -213,7 +213,7 @@ class ClientViewModel: ObservableObject {
     
     func fetchStylists(completion: @escaping (Bool) -> Void) {
         self.isLoading = true
-        guard let url = URL(string: "http://127.0.0.1:10000/stylist/mina/\(clientId)") else {
+        guard let url = URL(string: "http://127.0.0.1:5000/stylist/mina/\(clientId)") else {
             DispatchQueue.main.async {
                 self.isLoading = false
                 self.errorMessage = "Invalid URL"
@@ -296,7 +296,7 @@ class ClientViewModel: ObservableObject {
     func fetchStylistProfileById(stylistId: Int, completion: @escaping (Result<StylistProfile, Error>) -> Void) {
         print("Fetching stylist profile for ID: \(stylistId)")
         self.isLoading = true
-        guard let url = URL(string: "http://127.0.0.1:10000/stylist/read-stylist/\(stylistId)") else {
+        guard let url = URL(string: "http://127.0.0.1:5000/stylist/read-stylist/\(stylistId)") else {
             DispatchQueue.main.async {
                 self.isLoading = false
                 self.errorMessage = "Invalid URL"
@@ -360,7 +360,7 @@ class ClientViewModel: ObservableObject {
     
     // ________________________ ADD TO FAVORITES ___________________________________
     func addToFavorites(stylistId: Int, completion: @escaping (Bool) -> Void) {
-        let urlString = "http://127.0.0.1:10000/client/add-to-favourites/\(clientId)"
+        let urlString = "http://127.0.0.1:5000/client/add-to-favourites/\(clientId)"
         
         guard let url = URL(string: urlString) else {
             DispatchQueue.main.async {
@@ -425,7 +425,7 @@ class ClientViewModel: ObservableObject {
     
     // _______________REMOVE FROM FAVORITES______________________
     func removeFromFavorites(stylistId: Int, completion: @escaping (Bool) -> Void) {
-        let urlString = "http://127.0.0.1:10000/client/remove-from-favourites/\(clientId)"
+        let urlString = "http://127.0.0.1:5000/client/remove-from-favourites/\(clientId)"
         
         guard let url = URL(string: urlString) else {
             DispatchQueue.main.async {
@@ -471,7 +471,7 @@ class ClientViewModel: ObservableObject {
     
     
     func getFavoriteStylists(completion: @escaping (Bool) -> Void) {
-        let urlString = "http://127.0.0.1:10000/client/get-all-favs/\(clientId)"
+        let urlString = "http://127.0.0.1:5000/client/get-all-favs/\(clientId)"
         
         guard let url = URL(string: urlString) else {
             DispatchQueue.main.async {
@@ -540,7 +540,7 @@ class ClientViewModel: ObservableObject {
     
     
     func getStylistRatings(stylistId: Int, completion: @escaping (Bool) -> Void) {
-        let urlString = "http://127.0.0.1:10000/stylist/get-ratings/\(stylistId)"
+        let urlString = "http://127.0.0.1:5000/stylist/get-ratings/\(stylistId)"
         
         guard let url = URL(string: urlString) else {
             DispatchQueue.main.async {
@@ -614,7 +614,7 @@ class ClientViewModel: ObservableObject {
     
     func postReview(clientId: Int, stylistId: Int, rating: Int, comment: String, completion: @escaping (Bool, String) -> Void) {
             // URL and request setup
-            guard let url = URL(string: "http://127.0.0.1:10000/client/create-rating") else {
+            guard let url = URL(string: "http://127.0.0.1:5000/client/create-rating") else {
                 completion(false, "Invalid URL")
                 return
             }
@@ -675,7 +675,7 @@ class ClientViewModel: ObservableObject {
         print("Fetching client profile for clientId: \(clientId)")
         
         self.isLoading = true
-        let urlString = "http://127.0.0.1:10000/client/read-client/\(clientId)"
+        let urlString = "http://127.0.0.1:5000/client/read-client/\(clientId)"
         print("URL: \(urlString)")
         
         guard let url = URL(string: urlString) else {

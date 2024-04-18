@@ -35,7 +35,7 @@ class UserRegistrationViewModel: ObservableObject {
     @Published var address: Address = Address()
 
     func signUp(completion: @escaping (Bool) -> Void) {
-        guard let url = URL(string: "http://127.0.0.1:10000/client/signup-user") else {
+        guard let url = URL(string: "http://127.0.0.1:5000/client/signup-user") else {
             completion(false)
             return
         }
@@ -81,7 +81,7 @@ class UserRegistrationViewModel: ObservableObject {
     }
 
     func createClientAccount(completion: @escaping (Bool) -> Void) {
-            guard let url = URL(string: "http://127.0.0.1:10000/client/create-client"), !uid.isEmpty else {
+            guard let url = URL(string: "http://127.0.0.1:5000/client/create-client"), !uid.isEmpty else {
                 DispatchQueue.main.async {
                     completion(false)
                 }
@@ -147,7 +147,7 @@ class UserRegistrationViewModel: ObservableObject {
     }
 
     func createStylistAccount(completion: @escaping (Bool) -> Void) {
-        let urlString = "http://127.0.0.1:10000/stylist/create-stylist"
+        let urlString = "http://127.0.0.1:5000/stylist/create-stylist"
         guard let url = URL(string: urlString), !uid.isEmpty else {
             completion(false)
             return
@@ -206,7 +206,7 @@ class UserRegistrationViewModel: ObservableObject {
     
     // signIn function
     func signIn(completion: @escaping (Bool, String, String) -> Void) {
-           guard let url = URL(string: "http://127.0.0.1:10000/client/signin-user") else {
+           guard let url = URL(string: "http://127.0.0.1:5000/client/signin-user") else {
                completion(false, "", "")
                return
            }

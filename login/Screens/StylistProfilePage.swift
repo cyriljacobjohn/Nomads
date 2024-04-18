@@ -98,7 +98,7 @@ struct StylistProfileCardView: View {
         VStack(alignment: .leading, spacing: 16) {
             
             VStack(alignment: .leading, spacing: 16) {
-                ProfileSectionView(iconName: "star", text: String(format: "%.1f", stylist.rating))
+                ProfileSectionView(iconName: "star", text: String(format: "%.1f", stylist.rating ?? 0.0))
                                 Divider()
                                 ProfileSectionView(iconName: "dollarsign.circle", text: String(format: "$%.2f", stylist.avgPrice))
                                 Divider()

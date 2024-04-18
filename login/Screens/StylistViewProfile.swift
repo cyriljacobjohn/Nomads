@@ -84,6 +84,7 @@ struct StylistViewProfile: View {
     
     var stylistId: Int
     @ObservedObject var viewModel: ClientViewModel
+    @Environment(\.presentationMode) var presentationMode
     @State private var stylistProfile: StylistProfile?
     @State private var stylist: Stylist?
     
@@ -363,7 +364,20 @@ struct StylistViewProfile: View {
             }
             
         }
-        .navigationBarBackButtonHidden(true)
+        Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }){
+            Image(systemName: "arrow.left")
+                .foregroundColor(.white)
+                .padding()
+                .background(Color("PrimaryColor").opacity(0.5))
+                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                .shadow(radius: 4)
+                .padding()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+        
+        .navigationBarBackButtonHidden(false)
         
         .onAppear{
             fetchStylistProfile()
