@@ -5,29 +5,46 @@
 //  Created by Cyril John on 3/30/24.
 //
 
+//
+//  ForYouScreenView.swift
+//  UMI
+//
+//  Created by Cyril John on 3/30/24.
+//
+
 import Foundation
 import SwiftUI
 
 
+enum SortOption {
+    case matchPercentage
+    case distance
+    case rating
+    case avgPrice
+}
+
 struct DiscoveryPageView: View {
     
-    
-    
     @StateObject var viewModel = ClientViewModel()
-    
     @State private var progress: CGFloat = 0.0
     @State private var favoriteStylists: [Int] = []
     
-    // test data
-    //     let stylists: [Stylist] = [
-    //         Stylist(name: "Alex Smith", distance: 1.2, profileImageUrl: "https://example.com/image1.jpg", matchingPercentage: 90, rating: 2.6),
-    //         Stylist(name: "Jordan Doe", distance: 3.4, profileImageUrl: "https://example.com/image2.jpg", matchingPercentage: 85,rating: 4.6),
-    //     ]
+    @State private var selectedSortOption: SortOption = .matchPercentage
+    
     
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                CustomNavigationBar()
+                CustomNavigationBar(selectedSortOption: $selectedSortOption)
+                
+//                Picker("Sort by", selection: $selectedSortOption) {
+//                    Text("Match %").tag(SortOption.matchPercentage)
+//                    Text("Distance").tag(SortOption.distance)
+//                    Text("Rating").tag(SortOption.rating)
+//                }
+//                .pickerStyle(SegmentedPickerStyle())
+//                .padding()
+                
                 
                 if viewModel.isLoading {
                     
@@ -40,7 +57,7 @@ struct DiscoveryPageView: View {
                     ScrollView {
                         
                         VStack(alignment: .leading, spacing: 20) {
-                            ForEach(viewModel.stylists) { stylist in
+                            ForEach(viewModel.sortedStylists) { stylist in
                                 
                                 
                                 NavigationLink(destination: stylistCardTapped(stylistId: stylist.id)) {
@@ -57,10 +74,13 @@ struct DiscoveryPageView: View {
                         }
                     }
                     .padding(.top)
-                    
                 }
             }
         }
+        .onChange(of: selectedSortOption) { newValue in
+            viewModel.sortStylists(by: newValue)
+        }
+        
         .onAppear {
             viewModel.fetchStylists { success in
                 if success {
@@ -81,7 +101,6 @@ struct DiscoveryPageView: View {
 struct StylistSummaryView: View {
 
     @State private var isFavorite = false
-    
     let stylist: Stylist
     let viewModel: ClientViewModel
     var body: some View {
@@ -148,6 +167,11 @@ struct StylistSummaryView: View {
                     Text("Rating: \(stylist.rating ?? 0.0, specifier: "%.1f")")
                         .font(.custom("Poppins-Regular", size: 15))
                         .foregroundColor(.black)
+                    Text("Avg Price: \(stylist.avgPrice , specifier: "%.1f")")
+                        .font(.custom("Poppins-Regular", size: 15))
+                        .foregroundColor(.black)
+
+
                 }
                 
                 Spacer()
@@ -159,7 +183,43 @@ struct StylistSummaryView: View {
     }
 }
 
+//struct CustomNavigationBar: View {
+//    var body: some View {
+//        ZStack {
+//            HStack {
+//                Text("UMI") // Use your logo asset name
+//                    .font(.custom("Sarina-Regular", size: 15))
+//                    .foregroundColor(Color("PrimaryColor"))
+//                    .frame(width: 80, alignment: .leading)
+//
+//                Spacer() // This will push the name towards center
+//
+//                Text("Stylists For You")
+//                    .font(.custom("Sansita-BoldItalic", size: 25))
+//                    .foregroundColor(Color("TitleTextColor"))
+//                    .frame(maxWidth: .infinity, alignment: .center) // Center the name text
+//
+//                Spacer()
+//
+//                Button(action: {
+//                    // Action for search button
+//                }) {
+//                    Image(systemName: "line.horizontal.3.decrease.circle.fill")
+//                        .imageScale(.large)
+//                        .accentColor(Color("PrimaryColor"))
+//                }
+//                .frame(width: 80, alignment: .trailing) // Right-aligned button
+//            }
+//            .padding(.horizontal)
+//        }
+//        .frame(height: 60) // Adjust the height as necessary
+//    }
+//}
+
 struct CustomNavigationBar: View {
+    @Binding var selectedSortOption: SortOption
+    @State private var showingSortOptions = false
+    
     var body: some View {
         ZStack {
             HStack {
@@ -168,8 +228,8 @@ struct CustomNavigationBar: View {
                     .foregroundColor(Color("PrimaryColor"))
                     .frame(width: 80, alignment: .leading)
                 
-                Spacer() // This will push the name towards center
-            
+                Spacer() // This will push the name towards the center
+                
                 Text("Stylists For You")
                     .font(.custom("Sansita-BoldItalic", size: 25))
                     .foregroundColor(Color("TitleTextColor"))
@@ -177,9 +237,13 @@ struct CustomNavigationBar: View {
                 
                 Spacer()
                 
-                Button(action: {
-                    // Action for search button
-                }) {
+                Menu {
+                    Button("Match %", action: { selectedSortOption = .matchPercentage })
+                    Button("Distance", action: { selectedSortOption = .distance })
+                    Button("Rating", action: { selectedSortOption = .rating })
+                    Button("Avg Price", action: { selectedSortOption = .avgPrice })
+                    
+                } label: {
                     Image(systemName: "line.horizontal.3.decrease.circle.fill")
                         .imageScale(.large)
                         .accentColor(Color("PrimaryColor"))

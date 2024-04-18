@@ -6,6 +6,14 @@
 //
 
 
+//
+//  get_stylists.swift
+//  UMI
+//
+//  Created by Cyril John on 4/7/24.
+//
+
+
 import Foundation
 import SwiftUI
 //stylist properties'
@@ -15,7 +23,7 @@ struct StylistResponse: Decodable {
 }
 
 struct StylistProfile: Decodable, Equatable {
-    let address: Address
+    var address: Address
     let avgPrice: Double
     let clientsShouldKnow: String
     let fname: String
@@ -41,7 +49,7 @@ struct StylistProfile: Decodable, Equatable {
 }
 
 
-struct Address: Decodable, Equatable{
+struct Address: Decodable, Equatable {
     let city: String
     let comfortRadius: Int
     let country: String
@@ -58,9 +66,10 @@ struct Address: Decodable, Equatable{
     }
     
     var formattedAddress: String {
-            return "\(street), \(city), \(state) \(zipCode), \(country)"
-        }
+        return "\(street), \(city), \(state) \(zipCode), \(country)"
+    }
 }
+
 
 
 struct Stylist: Decodable, Identifiable {
@@ -75,9 +84,10 @@ struct Stylist: Decodable, Identifiable {
     let matchPercentage: Double
     let rating: Double?
     let specialities: [String]
+    let avgPrice : Double
     
     enum CodingKeys: String, CodingKey {
-        case id, fname, lname, city, state, street, specialities, distance, rating
+        case id, fname, lname, city, state, street, specialities, distance, rating, avgPrice = "avg_price"
         case matchPercentage = "match_percentage"
         case zipCode = "zip_code"
     }
@@ -130,13 +140,63 @@ struct RatingsResponse: Decodable {
 // CLIENT Profile
 
 
-struct ClientProfile: Decodable {
+//struct ClientProfile: Decodable {
+//    let fname: String
+//    let lname: String
+//    let ethnicity: [String]
+//    let stylistsShouldKnow: String
+//    let hairProfile: HairProfile
+//    let address: Address
+//    let interests: [String]
+//
+//    enum CodingKeys: String, CodingKey {
+//        case fname, lname, ethnicity, interests, address
+//        case stylistsShouldKnow = "stylists_should_know"
+//        case hairProfile = "hair_profile"
+//    }
+//
+//    struct HairProfile: Decodable {
+//        let thickness: String
+//        let hairType: String
+//        let hairGender: String
+//        let colorLevel: Int
+//        let colorHist: String
+//
+//        enum CodingKeys: String, CodingKey {
+//            case thickness
+//            case hairType = "hair_type"
+//            case hairGender = "hair_gender"
+//            case colorLevel = "color_level"
+//            case colorHist = "color_hist"
+//        }
+//    }
+//
+//    struct Address: Decodable {
+//        let street: String
+//        let city: String
+//        let state: String
+//        let zipCode: Int
+//        let country: String
+//        let comfortRadius: Double
+//        let longitude: Double
+//        let latitude: Double
+//
+//        enum CodingKeys: String, CodingKey {
+//            case street, city, state, country, longitude, latitude
+//            case zipCode = "zip_code"
+//            case comfortRadius = "comfort_radius"
+//        }
+//    }
+//}
+
+
+struct ClientProfile: Decodable, Equatable {
     let fname: String
     let lname: String
     let ethnicity: [String]
     let stylistsShouldKnow: String
     let hairProfile: HairProfile
-    let address: Address
+    var address: Address
     let interests: [String]
     
     enum CodingKeys: String, CodingKey {
@@ -145,7 +205,18 @@ struct ClientProfile: Decodable {
         case hairProfile = "hair_profile"
     }
     
-    struct HairProfile: Decodable {
+    // Equatable conformance for ClientProfile
+    static func == (lhs: ClientProfile, rhs: ClientProfile) -> Bool {
+        return lhs.fname == rhs.fname &&
+               lhs.lname == rhs.lname &&
+               lhs.ethnicity == rhs.ethnicity &&
+               lhs.stylistsShouldKnow == rhs.stylistsShouldKnow &&
+               lhs.hairProfile == rhs.hairProfile &&
+               lhs.address == rhs.address &&
+               lhs.interests == rhs.interests
+    }
+
+    struct HairProfile: Decodable, Equatable {
         let thickness: String
         let hairType: String
         let hairGender: String
@@ -159,22 +230,43 @@ struct ClientProfile: Decodable {
             case colorLevel = "color_level"
             case colorHist = "color_hist"
         }
+        
+        // Equatable conformance for HairProfile
+        static func == (lhs: HairProfile, rhs: HairProfile) -> Bool {
+            return lhs.thickness == rhs.thickness &&
+                   lhs.hairType == rhs.hairType &&
+                   lhs.hairGender == rhs.hairGender &&
+                   lhs.colorLevel == rhs.colorLevel &&
+                   lhs.colorHist == rhs.colorHist
+        }
     }
     
-    struct Address: Decodable {
-        let street: String
-        let city: String
-        let state: String
-        let zipCode: Int
-        let country: String
-        let comfortRadius: Double
-        let longitude: Double
-        let latitude: Double
+    struct Address: Decodable, Equatable {
+        var street: String
+        var city: String
+        var state: String
+        var zipCode: Int
+        var country: String
+        var comfortRadius: Double
+        var longitude: Double
+        var latitude: Double
         
         enum CodingKeys: String, CodingKey {
             case street, city, state, country, longitude, latitude
             case zipCode = "zip_code"
             case comfortRadius = "comfort_radius"
+        }
+        
+        // Equatable conformance for Address
+        static func == (lhs: Address, rhs: Address) -> Bool {
+            return lhs.street == rhs.street &&
+                   lhs.city == rhs.city &&
+                   lhs.state == rhs.state &&
+                   lhs.zipCode == rhs.zipCode &&
+                   lhs.country == rhs.country &&
+                   lhs.comfortRadius == rhs.comfortRadius &&
+                   lhs.longitude == rhs.longitude &&
+                   lhs.latitude == rhs.latitude
         }
     }
 }
@@ -184,7 +276,7 @@ struct ClientProfile: Decodable {
 class ClientViewModel: ObservableObject {
     // Shared Properties
     
-    var clientId: Int = 1
+    var clientId: Int = 24
     @Published var stylists: [Stylist] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
@@ -192,10 +284,14 @@ class ClientViewModel: ObservableObject {
     @Published var client: ClientProfile?
     @Published var stylist: StylistProfile?
     
+    //sort
+    @Published var sortedStylists: [Stylist] = []
+    
     // Ratings properties
-    
-    
     var averageRating: Double = 0
+    
+    //EDITT
+    @Published var editableInterests: [String] = []
     
     @Published var ratings: [Rating] = []
     @Published var tags: [String] = []
@@ -209,7 +305,9 @@ class ClientViewModel: ObservableObject {
             self.tags = Array(allTags)
         }
     }
-    // Function to fetch stylists with a completion handler to notify of the request's success or failure
+    
+    
+    //______________________FETCH STYLISTS_____________________________________________________
     
     func fetchStylists(completion: @escaping (Bool) -> Void) {
         self.isLoading = true
@@ -290,6 +388,58 @@ class ClientViewModel: ObservableObject {
         task.resume()
     }
     
+    func mapInterestsToIDs(interests: [String]) -> [Int] {
+        let hair_tags = [
+            "fine hair": 1,
+            "medium hair": 2,
+            "coarse hair": 3,
+            "straight hair": 4,
+            "wavy hair": 5,
+            "curly hair": 6,
+            "feminine": 7,
+            "masculine": 8,
+            "androgynous": 9,
+            "2A": 10,
+            "2B": 11,
+            "2C": 12,
+            "3A": 13,
+            "3B": 14,
+            "3C": 15,
+            "4A": 16,
+            "4B": 17,
+            "4C": 18,
+            "fades": 19,
+            "long haircuts": 20,
+            "color services": 21,
+            "braids": 22,
+            "alt cuts": 23
+        ]
+        var ids = [Int]()
+        for interest in interests {
+            if let id = hair_tags[interest] {
+                ids.append(id)
+            } else {
+                print("Warning: No mapping found for \(interest)")
+            }
+        }
+        return ids
+    }
+    
+    //________________SORT STYLISTS_________________________________________________
+    
+    func sortStylists(by option: SortOption) {
+        switch option {
+        case .matchPercentage:
+            sortedStylists = stylists.sorted { $0.matchPercentage > $1.matchPercentage }
+        case .distance:
+            sortedStylists = stylists.sorted { $0.distance < $1.distance }
+        case .rating:
+            sortedStylists = stylists.sorted { ($0.rating ?? 0.0) > ($1.rating ?? 0.0) }
+        case .avgPrice:
+            sortedStylists = stylists.sorted { $0.avgPrice < $1.avgPrice }
+        }
+    }
+    
     //________________________FETCH STYLIST PROFILE_________________________________
     
     
@@ -336,28 +486,50 @@ class ClientViewModel: ObservableObject {
             
             do {
                 print("Received JSON data:")
-                print(String(data: data, encoding: .utf8) ?? "")
+                print(String(data: data, encoding: .utf8) ?? "Invalid JSON data")
                 
                 let decodedResponse = try JSONDecoder().decode(StylistProfile.self, from: data)
                 DispatchQueue.main.async {
                     print("Fetched stylist profile successfully")
                     completion(.success(decodedResponse)) // Using Result with Success
                 }
-            } catch {
-                print("Failed to decode stylist profile: \(error.localizedDescription)")
+            } catch let DecodingError.dataCorrupted(context) {
+                print("Data corrupted: \(context)")
                 DispatchQueue.main.async {
-                    self.errorMessage = "Failed to decode stylist profile: \(error.localizedDescription)"
+                    self.errorMessage = "Data corrupted: \(context.debugDescription)"
+                    completion(.failure(DecodingError.dataCorrupted(context)))
                 }
-                completion(.failure(error)) // This is now correctly passing an Error
+            } catch let DecodingError.keyNotFound(key, context) {
+                print("Key '\(key)' not found: \(context.debugDescription), codingPath: \(context.codingPath)")
+                DispatchQueue.main.async {
+                    self.errorMessage = "Key '\(key)' not found: \(context.debugDescription)"
+                    completion(.failure(DecodingError.keyNotFound(key, context)))
+                }
+            } catch let DecodingError.valueNotFound(value, context) {
+                print("Value '\(value)' not found: \(context.debugDescription), codingPath: \(context.codingPath)")
+                DispatchQueue.main.async {
+                    self.errorMessage = "Value '\(value)' not found: \(context.debugDescription)"
+                    completion(.failure(DecodingError.valueNotFound(value, context)))
+                }
+            } catch let DecodingError.typeMismatch(type, context) {
+                print("Type '\(type)' mismatch: \(context.debugDescription), codingPath: \(context.codingPath)")
+                DispatchQueue.main.async {
+                    self.errorMessage = "Type '\(type)' mismatch: \(context.debugDescription)"
+                    completion(.failure(DecodingError.typeMismatch(type, context)))
+                }
+            } catch {
+                print("Unexpected error: \(error).")
+                DispatchQueue.main.async {
+                    self.errorMessage = "Unexpected error: \(error.localizedDescription)"
+                    completion(.failure(error))
+                }
             }
-            
         }
         
         task.resume()
     }
-    
-    
-    
+
+        
     // ________________________ ADD TO FAVORITES ___________________________________
     func addToFavorites(stylistId: Int, completion: @escaping (Bool) -> Void) {
         let urlString = "http://127.0.0.1:5000/client/add-to-favourites/\(clientId)"
@@ -731,11 +903,225 @@ class ClientViewModel: ObservableObject {
             }
         }.resume()
     }
+    
+    //___________________________UPDATE PROFILE_________________________________________
+    
+    func updateClientAddress(clientId: Int, address: ClientProfile.Address, completion: @escaping (Bool, String) -> Void) {
+        guard let url = URL(string: "http://127.0.0.1:5000/client/update-address/\(clientId)") else {
+            completion(false, "Invalid URL")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body: [String: Any] = [
+            "street": address.street,
+            "city": address.city,
+            "state": address.state,
+            "zip_code": address.zipCode,
+            "country": address.country,
+            "comfort_radius": address.comfortRadius
+        ]
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: body)
+            request.httpBody = jsonData
+        } catch {
+            completion(false, "JSON serialization failed: \(error.localizedDescription)")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(false, "No response received")
+                return
+            }
+            let statusCode = httpResponse.statusCode
+            var responseMessage = "Unknown error occurred"
+            
+            if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                responseMessage = responseString
+                print("Response: \(responseString)")
+            }
+            
+            switch statusCode {
+            case 200:
+                completion(true, "Address updated successfully")
+            case 400:
+                completion(false, "Bad request: \(responseMessage)")
+            case 404:
+                completion(false, "Not found: \(responseMessage)")
+            case 500:
+                completion(false, "Internal server error: \(responseMessage)")
+            default:
+                completion(false, "HTTP \(statusCode): \(responseMessage)")
+            }
+        }.resume()
+    }
+
+    
+    //___________________STYLISTS SHOULD KNOW_______________________
+    
+    func updateStylistsShouldKnow(clientId: Int, text: String, completion: @escaping (Bool, String) -> Void) {
+            guard let url = URL(string: "http://127.0.0.1:5000/client/update-stylists-should-know/\(clientId)") else {
+                completion(false, "Invalid URL")
+                return
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "PUT"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let body: [String: Any] = [
+                "stylists_should_know": text
+            ]
+            
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: body)
+            } catch {
+                completion(false, "JSON Serialization failed")
+                return
+            }
+            
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    completion(false, "Failed to update Stlists should know")
+                    return
+                }
+                completion(true, "stylistsShouldKnow updated successfully")
+            }.resume()
+        }
+    
+    
+    //______________________INTERESTS___________________________
+    
+    func updateClientInterests(clientId: Int, interests: [String], completion: @escaping (Bool, String) -> Void) {
+        guard let url = URL(string: "http://127.0.0.1:5000/client/update-interests/\(clientId)") else {
+            completion(false, "Invalid URL")
+            return
+        }
+
+        let interestIDs = mapInterestsToIDs(interests: interests)
+        print("Updating interests for client ID: \(clientId) with interests IDs: \(interestIDs)")
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let body: [String: Any] = ["interests": interestIDs]
+
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: body)
+            print("Request body formed successfully")
+        } catch {
+            print("JSON Serialization failed: \(error.localizedDescription)")
+            completion(false, "JSON Serialization failed")
+            return
+        }
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Network error: \(error.localizedDescription)")
+                completion(false, "Network error: \(error.localizedDescription)")
+                return
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse, let responseData = data else {
+                print("No valid HTTP URL response or data received")
+                completion(false, "Invalid response from the server")
+                return
+            }
+
+            let responseString = String(data: responseData, encoding: .utf8) ?? "No response body"
+            print("Response Status Code: \(httpResponse.statusCode)")
+            print("Response Body: \(responseString)")
+            
+            switch httpResponse.statusCode {
+            case 200:
+                completion(true, "Interests updated successfully")
+            case 400, 404:
+                print("Error response from server: \(responseString)")
+                completion(false, "Server reported error: \(responseString)")
+            default:
+                print("Unexpected server error with status code: \(httpResponse.statusCode) and response: \(responseString)")
+                completion(false, "Unexpected server error with status code: \(httpResponse.statusCode) and response: \(responseString)")
+            }
+        }.resume()
+    }
+
+
+    
+    func updateComfortRadius(clientId: Int, comfortRadius: Double, completion: @escaping (Bool, String) -> Void) {
+        guard let url = URL(string: "http://127.0.0.1:5000/client/change-radius/\(clientId)") else {
+            completion(false, "Invalid URL")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body: [String: Any] = ["comfort_radius": comfortRadius]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        } catch {
+            completion(false, "JSON Serialization failed")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                let errorMessage = String(data: data ?? Data(), encoding: .utf8) ?? "Unknown error"
+                completion(false, "Failed to update comfort radius: \(errorMessage)")
+                return
+            }
+            completion(true, "Comfort radius updated successfully")
+        }.resume()
+    }
+    
+    
+    func updateStylistAddress(stylistId: Int, address: Address, completion: @escaping (Bool, String) -> Void) {
+            let url = URL(string: "https://your.api.endpoint/update-address/\(stylistId)")!
+            var request = URLRequest(url: url)
+            request.httpMethod = "PUT"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let addressData = [
+                "street": address.street,
+                "city": address.city,
+                "state": address.state,
+                "zipCode": address.zipCode,
+                "country": address.country,
+                "comfortRadius": address.comfortRadius
+            ] as [String : Any]
+            
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: addressData, options: [])
+            } catch {
+                completion(false, "Failed to encode address data")
+                return
+            }
+            
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        completion(false, "Network error: \(error.localizedDescription)")
+                        return
+                    }
+                    
+                    guard let httpResponse = response as? HTTPURLResponse,
+                          httpResponse.statusCode == 200 else {
+                        completion(false, "Server error")
+                        return
+                    }
+                    
+                    completion(true, "Address updated successfully")
+                }
+            }.resume()
+        }
+
 
 }
-
-
-    
-    
-
-
