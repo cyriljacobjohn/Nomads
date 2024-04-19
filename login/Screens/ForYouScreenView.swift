@@ -36,16 +36,8 @@ struct DiscoveryPageView: View {
         NavigationView {
             VStack(spacing: 0) {
                 CustomNavigationBar(selectedSortOption: $selectedSortOption)
-                
-//                Picker("Sort by", selection: $selectedSortOption) {
-//                    Text("Match %").tag(SortOption.matchPercentage)
-//                    Text("Distance").tag(SortOption.distance)
-//                    Text("Rating").tag(SortOption.rating)
-//                }
-//                .pickerStyle(SegmentedPickerStyle())
-//                .padding()
-                
-                
+
+                            
                 if viewModel.isLoading {
                     
                     ProgressView("Loading...")
@@ -58,8 +50,7 @@ struct DiscoveryPageView: View {
                         
                         VStack(alignment: .leading, spacing: 20) {
                             ForEach(viewModel.sortedStylists) { stylist in
-                                
-                                
+        
                                 NavigationLink(destination: stylistCardTapped(stylistId: stylist.id)) {
                                     
                                     StylistSummaryView(stylist: stylist, viewModel: viewModel)
@@ -77,10 +68,6 @@ struct DiscoveryPageView: View {
                 }
             }
         }
-        .onChange(of: selectedSortOption) { newValue in
-            viewModel.sortStylists(by: newValue)
-        }
-        
         .onAppear {
             viewModel.fetchStylists { success in
                 if success {
@@ -89,6 +76,9 @@ struct DiscoveryPageView: View {
                     print("Failed to fetch stylists")
                 }
             }
+        }
+        .onChange(of: selectedSortOption) { newValue in
+            viewModel.sortStylists(by: newValue)
         }
         
     }
@@ -182,39 +172,6 @@ struct StylistSummaryView: View {
         }
     }
 }
-
-//struct CustomNavigationBar: View {
-//    var body: some View {
-//        ZStack {
-//            HStack {
-//                Text("UMI") // Use your logo asset name
-//                    .font(.custom("Sarina-Regular", size: 15))
-//                    .foregroundColor(Color("PrimaryColor"))
-//                    .frame(width: 80, alignment: .leading)
-//
-//                Spacer() // This will push the name towards center
-//
-//                Text("Stylists For You")
-//                    .font(.custom("Sansita-BoldItalic", size: 25))
-//                    .foregroundColor(Color("TitleTextColor"))
-//                    .frame(maxWidth: .infinity, alignment: .center) // Center the name text
-//
-//                Spacer()
-//
-//                Button(action: {
-//                    // Action for search button
-//                }) {
-//                    Image(systemName: "line.horizontal.3.decrease.circle.fill")
-//                        .imageScale(.large)
-//                        .accentColor(Color("PrimaryColor"))
-//                }
-//                .frame(width: 80, alignment: .trailing) // Right-aligned button
-//            }
-//            .padding(.horizontal)
-//        }
-//        .frame(height: 60) // Adjust the height as necessary
-//    }
-//}
 
 struct CustomNavigationBar: View {
     @Binding var selectedSortOption: SortOption

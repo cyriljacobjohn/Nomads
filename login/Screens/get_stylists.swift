@@ -23,7 +23,7 @@ struct StylistResponse: Decodable {
 }
 
 struct StylistProfile: Decodable, Equatable {
-    var address: Address
+    let address: Address
     let avgPrice: Double
     let clientsShouldKnow: String
     let fname: String
@@ -276,7 +276,12 @@ struct ClientProfile: Decodable, Equatable {
 class ClientViewModel: ObservableObject {
     // Shared Properties
     
-    var clientId: Int = 24
+    //______________CLIENT ID______________________________
+    
+    var clientId: Int = 43
+    
+    //______________CLIENT ID______________________________
+    
     @Published var stylists: [Stylist] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
@@ -353,6 +358,10 @@ class ClientViewModel: ObservableObject {
                 let decodedResponse = try JSONDecoder().decode(StylistResponse.self, from: data)
                 DispatchQueue.main.async {
                     self.stylists = decodedResponse.stylists
+                    
+                    //sortedStylists array populated
+                    self.sortedStylists = decodedResponse.stylists
+                    
                     print("Fetched stylists successfully")
                     completion(true) // Call completion with true upon successful fetch
                 }
@@ -1083,45 +1092,45 @@ class ClientViewModel: ObservableObject {
     }
     
     
-    func updateStylistAddress(stylistId: Int, address: Address, completion: @escaping (Bool, String) -> Void) {
-            let url = URL(string: "https://your.api.endpoint/update-address/\(stylistId)")!
-            var request = URLRequest(url: url)
-            request.httpMethod = "PUT"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            
-            let addressData = [
-                "street": address.street,
-                "city": address.city,
-                "state": address.state,
-                "zipCode": address.zipCode,
-                "country": address.country,
-                "comfortRadius": address.comfortRadius
-            ] as [String : Any]
-            
-            do {
-                request.httpBody = try JSONSerialization.data(withJSONObject: addressData, options: [])
-            } catch {
-                completion(false, "Failed to encode address data")
-                return
-            }
-            
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                DispatchQueue.main.async {
-                    if let error = error {
-                        completion(false, "Network error: \(error.localizedDescription)")
-                        return
-                    }
-                    
-                    guard let httpResponse = response as? HTTPURLResponse,
-                          httpResponse.statusCode == 200 else {
-                        completion(false, "Server error")
-                        return
-                    }
-                    
-                    completion(true, "Address updated successfully")
-                }
-            }.resume()
-        }
+//    func updateStylistAddress(stylistId: Int, address: Address, completion: @escaping (Bool, String) -> Void) {
+//            let url = URL(string: "https://your.api.endpoint/update-address/\(stylistId)")!
+//            var request = URLRequest(url: url)
+//            request.httpMethod = "PUT"
+//            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//            
+//            let addressData = [
+//                "street": address.street,
+//                "city": address.city,
+//                "state": address.state,
+//                "zipCode": address.zipCode,
+//                "country": address.country,
+//                "comfortRadius": address.comfortRadius
+//            ] as [String : Any]
+//            
+//            do {
+//                request.httpBody = try JSONSerialization.data(withJSONObject: addressData, options: [])
+//            } catch {
+//                completion(false, "Failed to encode address data")
+//                return
+//            }
+//            
+//            URLSession.shared.dataTask(with: request) { data, response, error in
+//                DispatchQueue.main.async {
+//                    if let error = error {
+//                        completion(false, "Network error: \(error.localizedDescription)")
+//                        return
+//                    }
+//                    
+//                    guard let httpResponse = response as? HTTPURLResponse,
+//                          httpResponse.statusCode == 200 else {
+//                        completion(false, "Server error")
+//                        return
+//                    }
+//                    
+//                    completion(true, "Address updated successfully")
+//                }
+//            }.resume()
+//        }
 
 
 }

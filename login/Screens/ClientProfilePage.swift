@@ -514,6 +514,6 @@ struct ImageSectionView: View {
 
 struct ClientProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ClientProfileView(clientId: 24)
+        ClientProfileView(clientId: 43)
     }
 }

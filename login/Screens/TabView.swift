@@ -40,7 +40,7 @@ struct MainTabView: View {
                        
                 }
 
-           ClientProfileView(clientId: 1)
+           ClientProfileView(clientId: 43)
                 .tabItem {
                     Image("about-me")
                         
