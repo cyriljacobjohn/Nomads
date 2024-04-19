@@ -81,57 +81,81 @@ class UserRegistrationViewModel: ObservableObject {
     }
 
     func createClientAccount(completion: @escaping (Bool) -> Void) {
-            guard let url = URL(string: "http://127.0.0.1:5000/client/create-client"), !uid.isEmpty else {
+        // Ensure URL is valid and UID is not empty
+        guard let url = URL(string: "http://127.0.0.1:5000/client/create-client"), !uid.isEmpty else {
+            DispatchQueue.main.async {
+                print("Error: Invalid URL or empty UID")
+                completion(false)
+            }
+            return
+        }
+        
+        let clientData = getClientData()
+        print("Client Data: \(clientData)")
+
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: clientData) else {
+            DispatchQueue.main.async {
+                print("Error: JSON Data serialization failed")
+                completion(false)
+            }
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        
+        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            guard let httpResponse = response as? HTTPURLResponse else {
                 DispatchQueue.main.async {
+                    print("Error: No HTTP response")
                     completion(false)
                 }
                 return
             }
-            
-            let clientData = getClientData()
-            print("Client Data: \(clientData)")
 
-            guard let jsonData = try? JSONSerialization.data(withJSONObject: clientData) else {
+            guard httpResponse.statusCode == 200 || httpResponse.statusCode == 201 else {
                 DispatchQueue.main.async {
+                    print("Error: Server returned status code \(httpResponse.statusCode)")
                     completion(false)
                 }
                 return
             }
 
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpBody = jsonData
-            
-            let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
-                if let data = data, let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                    do {
-                        if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                           let clientId = json["client_id"] as? Int {
-                            DispatchQueue.main.async {
-                                self?.user_id = clientId
-                                print("User ID (createClient): \(clientId)")
-                                completion(true)
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                completion(false)
-                            }
-                        }
-                    } catch {
-                        DispatchQueue.main.async {
-                            completion(false)
-                        }
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    print("Error: No data received")
+                    completion(false)
+                }
+                return
+            }
+
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let clientId = json["client_id"] as? Int {
+                    DispatchQueue.main.async {
+                        self?.user_id = clientId
+                        print("Success: User ID (createClient) - \(clientId)")
+                        completion(true)
                     }
                 } else {
                     DispatchQueue.main.async {
+                        print("Error: Failed to parse client ID from response")
                         completion(false)
                     }
                 }
+            } catch {
+                DispatchQueue.main.async {
+                    print("Error parsing JSON: \(error.localizedDescription)")
+                    completion(false)
+                }
             }
-
-            task.resume()
         }
+
+        task.resume()
+    }
+
     
     func getClientData() -> [String: Any] {
         [
@@ -149,7 +173,10 @@ class UserRegistrationViewModel: ObservableObject {
     func createStylistAccount(completion: @escaping (Bool) -> Void) {
         let urlString = "http://127.0.0.1:5000/stylist/create-stylist"
         guard let url = URL(string: urlString), !uid.isEmpty else {
-            completion(false)
+            DispatchQueue.main.async {
+                print("Error: Invalid URL or empty UID")
+                completion(false)
+            }
             return
         }
 
@@ -165,7 +192,10 @@ class UserRegistrationViewModel: ObservableObject {
         ]
 
         guard let jsonData = try? JSONSerialization.data(withJSONObject: stylistData) else {
-            completion(false)
+            DispatchQueue.main.async {
+                print("Error: JSON Data serialization failed")
+                completion(false)
+            }
             return
         }
 
@@ -175,27 +205,47 @@ class UserRegistrationViewModel: ObservableObject {
         request.httpBody = jsonData
         
         let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
-            if let data = data, let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                       let stylistId = json["stylist_id"] as? Int {
-                        DispatchQueue.main.async {
-                            self?.user_id = stylistId
-                            print("User ID (createStylist): \(stylistId)")
-                            completion(true)
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            completion(false)
-                        }
-                    }
-                } catch {
+            guard let httpResponse = response as? HTTPURLResponse else {
+                DispatchQueue.main.async {
+                    print("Error: No HTTP response")
+                    completion(false)
+                }
+                return
+            }
+
+            guard httpResponse.statusCode == 200 || httpResponse.statusCode == 201 else {
+                DispatchQueue.main.async {
+                    print("Error: Server returned status code \(httpResponse.statusCode)")
+                    completion(false)
+                }
+                return
+            }
+
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    print("Error: No data received")
+                    completion(false)
+                }
+                return
+            }
+
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let stylistId = json["stylist_id"] as? Int {
                     DispatchQueue.main.async {
+                        self?.user_id = stylistId
+                        print("Success: User ID (createStylist): \(stylistId)")
+                        completion(true)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        print("Error: Failed to parse stylist ID from response")
                         completion(false)
                     }
                 }
-            } else {
+            } catch {
                 DispatchQueue.main.async {
+                    print("Error parsing JSON: \(error.localizedDescription)")
                     completion(false)
                 }
             }
@@ -203,6 +253,7 @@ class UserRegistrationViewModel: ObservableObject {
 
         task.resume()
     }
+
     
     // signIn function
     func signIn(completion: @escaping (Bool, String, String) -> Void) {

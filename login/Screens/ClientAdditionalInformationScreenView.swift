@@ -62,7 +62,6 @@ struct ClientAdditionalInformationScreenView: View {
                         Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                     }
 
-                    //NavigationLink("", destination: ClientCurrentHairScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     NavigationLink("", destination: MainTabView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     
                 }
