@@ -23,7 +23,7 @@ struct StylistResponse: Decodable {
 }
 
 struct StylistProfile: Decodable, Equatable {
-    let address: Address
+    var address: Address
     let avgPrice: Double
     let clientsShouldKnow: String
     let fname: String
@@ -48,27 +48,51 @@ struct StylistProfile: Decodable, Equatable {
     }
 }
 
+//updated this struct for stylist address editing capablity
+struct Address: Codable, Equatable {
+    var street: String
+    var city: String
+    var state: String
+    var zipCode: Int
+    var country: String
+    var comfortRadius: Double?
+    var longitude: Double?
+    var latitude: Double?
 
-struct Address: Decodable, Equatable {
-    let city: String
-    let comfortRadius: Int
-    let country: String
-    let latitude: Double
-    let longitude: Double
-    let state: String
-    let street: String
-    let zipCode: Int
-    
     enum CodingKeys: String, CodingKey {
-        case city, country, latitude, longitude, state, street
-        case comfortRadius = "comfort_radius"
+        case street, city, state, country, longitude, latitude
         case zipCode = "zip_code"
+        case comfortRadius = "comfort_radius"
     }
     
     var formattedAddress: String {
-        return "\(street), \(city), \(state) \(zipCode), \(country)"
+        var components = [street, city, state, "\(zipCode)", country]
+        components = components.filter { !$0.isEmpty }
+        return components.joined(separator: ", ")
     }
 }
+
+
+//struct Address: Decodable, Equatable {
+//    let city: String
+//    let comfortRadius: Int
+//    let country: String
+//    let latitude: Double
+//    let longitude: Double
+//    let state: String
+//    let street: String
+//    let zipCode: Int
+//    
+//    enum CodingKeys: String, CodingKey {
+//        case city, country, latitude, longitude, state, street
+//        case comfortRadius = "comfort_radius"
+//        case zipCode = "zip_code"
+//    }
+//    
+//    var formattedAddress: String {
+//        return "\(street), \(city), \(state) \(zipCode), \(country)"
+//    }
+//}
 
 
 
@@ -624,7 +648,7 @@ class ClientViewModel: ObservableObject {
         let body: [String: Int] = ["stylist_id": stylistId]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        let _: Void = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 DispatchQueue.main.async {
                     self.errorMessage = "Network request failed: \(error.localizedDescription)"
@@ -642,6 +666,7 @@ class ClientViewModel: ObservableObject {
             }
             
             DispatchQueue.main.async {
+                print("Stylist removed from favorites successfully")
                 completion(true)
             }
         }.resume()
@@ -1092,45 +1117,66 @@ class ClientViewModel: ObservableObject {
     }
     
     
-//    func updateStylistAddress(stylistId: Int, address: Address, completion: @escaping (Bool, String) -> Void) {
-//            let url = URL(string: "https://your.api.endpoint/update-address/\(stylistId)")!
-//            var request = URLRequest(url: url)
-//            request.httpMethod = "PUT"
-//            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//            
-//            let addressData = [
-//                "street": address.street,
-//                "city": address.city,
-//                "state": address.state,
-//                "zipCode": address.zipCode,
-//                "country": address.country,
-//                "comfortRadius": address.comfortRadius
-//            ] as [String : Any]
-//            
-//            do {
-//                request.httpBody = try JSONSerialization.data(withJSONObject: addressData, options: [])
-//            } catch {
-//                completion(false, "Failed to encode address data")
-//                return
-//            }
-//            
-//            URLSession.shared.dataTask(with: request) { data, response, error in
-//                DispatchQueue.main.async {
-//                    if let error = error {
-//                        completion(false, "Network error: \(error.localizedDescription)")
-//                        return
-//                    }
-//                    
-//                    guard let httpResponse = response as? HTTPURLResponse,
-//                          httpResponse.statusCode == 200 else {
-//                        completion(false, "Server error")
-//                        return
-//                    }
-//                    
-//                    completion(true, "Address updated successfully")
-//                }
-//            }.resume()
-//        }
+    func updateStylistAddress(stylistId: Int, address: Address, completion: @escaping (Bool, String) -> Void) {
+        guard let url = URL(string: "http://127.0.0.1:5000/stylist/update-address/\(stylistId)") else {
+            completion(false, "Invalid URL")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body: [String: Any] = [
+            "street": address.street,
+            "city": address.city,
+            "state": address.state,
+            "zip_code": address.zipCode,
+            "country": address.country,
+            "comfort_radius": address.comfortRadius
+        ]
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: body)
+            request.httpBody = jsonData
+        } catch {
+            completion(false, "JSON serialization failed: \(error.localizedDescription)")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(false, "Network error: \(error.localizedDescription)")
+                return
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(false, "No response received")
+                return
+            }
+
+            let statusCode = httpResponse.statusCode
+            var responseMessage = "Unknown error occurred"
+
+            if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                responseMessage = responseString
+                print("Response: \(responseString)")
+            }
+
+            switch statusCode {
+            case 200:
+                completion(true, "Address updated successfully")
+            case 400:
+                completion(false, "Bad request: \(responseMessage)")
+            case 404:
+                completion(false, "Not found: \(responseMessage)")
+            case 500:
+                completion(false, "Internal server error: \(responseMessage)")
+            default:
+                completion(false, "HTTP \(statusCode): \(responseMessage)")
+            }
+        }.resume()
+    }
 
 
 }

@@ -71,6 +71,7 @@ struct DiscoveryPageView: View {
         .onAppear {
             viewModel.fetchStylists { success in
                 if success {
+                    viewModel.getFavoriteStylists { _ in }
                     print("Stylists fetched successfully")
                 } else {
                     print("Failed to fetch stylists")
@@ -88,58 +89,43 @@ struct DiscoveryPageView: View {
     
 }
 
-struct StylistSummaryView: View {
 
-    @State private var isFavorite = false
+struct StylistSummaryView: View {
     let stylist: Stylist
-    let viewModel: ClientViewModel
+    @ObservedObject var viewModel: ClientViewModel
+    
     var body: some View {
+        let isFavorite = Binding<Bool>(
+            get: { viewModel.isStylistFavorite(stylistId: stylist.id) },
+            set: { _ in } // No operation needed on set; favorites are managed via actions
+        )
+
         VStack(alignment: .leading, spacing: 8) {
             Text("\(stylist.fname) \(stylist.lname)")
                 .font(.custom("Poppins-SemiBold", size: 25))
                 .foregroundColor(Color("PrimaryColor"))
+            
             ZStack(alignment: .bottomTrailing) {
-//                AsyncImage(url: URL(string: stylist.profileImageUrl)) { image in
-//                    image.resizable()
-//                } placeholder: {
-//                    Rectangle().fill(Color.gray.opacity(0.3))
-//                }
-//                .aspectRatio(1, contentMode: .fit)
+                Rectangle().fill(Color.gray.opacity(0.3)) // Placeholder
+                Image("BarberProfile") // Your image
+                    .resizable()
+                    .scaledToFit()
                 
-                //temporary image
-                ZStack {
-                    Rectangle().fill(Color.gray.opacity(0.3)) // Placeholder
-                    Image("BarberProfile") // Your image
-                        .resizable() // Make sure to add resizable() to scale the image correctly
-                        .scaledToFit() // Or .scaledToFill() depending on your needs
-                }
-
                 Button(action: {
-                    if viewModel.isStylistFavorite(stylistId: stylist.id) {
-                        viewModel.removeFromFavorites(stylistId: stylist.id) { success in
-                            DispatchQueue.main.async {
-                                if success {
-                                    viewModel.getFavoriteStylists { _ in }
-                                } else {
-                                    // Handle failure
-                                    print("Failed to remove stylist from favorites")
+                    // Always add to favorites since this view should only add, not remove
+                    viewModel.addToFavorites(stylistId: stylist.id) { success in
+                        DispatchQueue.main.async {
+                            if success {
+                                viewModel.getFavoriteStylists { _ in
+                                    // No need to manually update isFavorite here since the Binding takes care of it
                                 }
-                            }
-                        }
-                    } else {
-                        viewModel.addToFavorites(stylistId: stylist.id) { success in
-                            DispatchQueue.main.async {
-                                if success {
-                                    viewModel.getFavoriteStylists { _ in }
-                                } else {
-                                    // Handle failure
-                                    print("Failed to add stylist to favorites")
-                                }
+                            } else {
+                                print("Failed to add stylist to favorites")
                             }
                         }
                     }
                 }) {
-                    Image(systemName: viewModel.isStylistFavorite(stylistId: stylist.id) ? "heart.fill" : "heart")
+                    Image(systemName: isFavorite.wrappedValue ? "heart.fill" : "heart")
                         .font(.system(size: 30))
                         .foregroundColor(Color("PrimaryColor"))
                         .padding(10)
@@ -147,8 +133,8 @@ struct StylistSummaryView: View {
                         .clipShape(Circle())
                 }
                 .padding(10)
-
-                    }
+            }
+            
             HStack {
                 VStack(alignment: .leading) {
                     Text("\(stylist.distance, specifier: "%.1f") miles away")
@@ -157,11 +143,9 @@ struct StylistSummaryView: View {
                     Text("Rating: \(stylist.rating ?? 0.0, specifier: "%.1f")")
                         .font(.custom("Poppins-Regular", size: 15))
                         .foregroundColor(.black)
-                    Text("Avg Price: \(stylist.avgPrice , specifier: "%.1f")")
+                    Text("Avg Price: \(stylist.avgPrice, specifier: "%.1f")")
                         .font(.custom("Poppins-Regular", size: 15))
                         .foregroundColor(.black)
-
-
                 }
                 
                 Spacer()
@@ -172,6 +156,7 @@ struct StylistSummaryView: View {
         }
     }
 }
+
 
 struct CustomNavigationBar: View {
     @Binding var selectedSortOption: SortOption
