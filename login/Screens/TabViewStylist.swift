@@ -28,13 +28,15 @@ struct StylistTabView: View {
                     Image("umi-logo")
                 }
             
-            MyReviewsView(stylistId: 1)
+            MyReviewsView()
+                .environmentObject(UserSessionManager.shared)
                 .tabItem {
                     Image(systemName: "star.fill")
                                 .foregroundColor(.white)
                 }
             
-            StylistProfileView(stylistId: 1)
+            StylistProfileView()
+                .environmentObject(UserSessionManager.shared)
                 .tabItem {
                     Image("about-me")
                         

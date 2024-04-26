@@ -302,7 +302,7 @@ class ClientViewModel: ObservableObject {
     
     //______________CLIENT ID______________________________
     
-    var clientId: Int = 43
+    //var clientId: Int = 43
     
     //______________CLIENT ID______________________________
     
@@ -339,6 +339,18 @@ class ClientViewModel: ObservableObject {
     //______________________FETCH STYLISTS_____________________________________________________
     
     func fetchStylists(completion: @escaping (Bool) -> Void) {
+        
+        guard let clientId = UserSessionManager.shared.userId,
+                  UserSessionManager.shared.userType == "client" else {
+            
+            UserSessionManager.shared.printUserType()
+            
+                print("Invalid or missing client ID")
+                completion(false)
+                return
+            }
+        
+        
         self.isLoading = true
         guard let url = URL(string: "http://127.0.0.1:5000/stylist/mina/\(clientId)") else {
             DispatchQueue.main.async {
@@ -565,6 +577,16 @@ class ClientViewModel: ObservableObject {
         
     // ________________________ ADD TO FAVORITES ___________________________________
     func addToFavorites(stylistId: Int, completion: @escaping (Bool) -> Void) {
+        
+        //usersessionmanager instance
+        guard let clientId = UserSessionManager.shared.userId,
+                  UserSessionManager.shared.userType == "client" else {
+                print("Invalid or missing client ID")
+                completion(false)
+                return
+            }
+        
+        
         let urlString = "http://127.0.0.1:5000/client/add-to-favourites/\(clientId)"
         
         guard let url = URL(string: urlString) else {
@@ -630,8 +652,15 @@ class ClientViewModel: ObservableObject {
     
     // _______________REMOVE FROM FAVORITES______________________
     func removeFromFavorites(stylistId: Int, completion: @escaping (Bool) -> Void) {
-        let urlString = "http://127.0.0.1:5000/client/remove-from-favourites/\(clientId)"
         
+        guard let clientId = UserSessionManager.shared.userId,
+                  UserSessionManager.shared.userType == "client" else {
+                print("Invalid or missing client ID")
+                completion(false)
+                return
+            }
+        
+        let urlString = "http://127.0.0.1:5000/client/remove-from-favourites/\(clientId)"
         guard let url = URL(string: urlString) else {
             DispatchQueue.main.async {
                 self.errorMessage = "Invalid URL"
@@ -677,6 +706,16 @@ class ClientViewModel: ObservableObject {
     
     
     func getFavoriteStylists(completion: @escaping (Bool) -> Void) {
+        
+        guard let clientId = UserSessionManager.shared.userId,
+                  UserSessionManager.shared.userType == "client" else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Invalid or missing client ID"
+                    completion(false)
+                }
+                return
+            }
+        
         let urlString = "http://127.0.0.1:5000/client/get-all-favs/\(clientId)"
         
         guard let url = URL(string: urlString) else {
@@ -937,6 +976,7 @@ class ClientViewModel: ObservableObject {
             }
         }.resume()
     }
+
     
     //___________________________UPDATE PROFILE_________________________________________
     

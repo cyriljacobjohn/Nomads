@@ -40,7 +40,8 @@ struct MainTabView: View {
                        
                 }
 
-           ClientProfileView(clientId: 43)
+           ClientProfileView()
+                .environmentObject(UserSessionManager.shared)
                 .tabItem {
                     Image("about-me")
                         

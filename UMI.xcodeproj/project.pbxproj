@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		23422D7C2BDAB9D6000FEB41 /* UserSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23422D7B2BDAB9D6000FEB41 /* UserSessionManager.swift */; };
 		885230E8263272E100DBCF3F /* UMI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885230E7263272E100DBCF3F /* UMI.swift */; };
 		885230EA263272E100DBCF3F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885230E9263272E100DBCF3F /* ContentView.swift */; };
 		885230EC263272E200DBCF3F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 885230EB263272E200DBCF3F /* Assets.xcassets */; };
@@ -94,6 +95,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		23422D7B2BDAB9D6000FEB41 /* UserSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionManager.swift; sourceTree = "<group>"; };
 		885230E4263272E100DBCF3F /* UMI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UMI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		885230E7263272E100DBCF3F /* UMI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UMI.swift; sourceTree = "<group>"; };
 		885230E9263272E100DBCF3F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -275,6 +277,7 @@
 				9EAAE0482BCD7274007B63C6 /* StylistLandingPage.swift */,
 				9EAAE0452BCD7274007B63C6 /* StylistProfilePage.swift */,
 				9E155A9B2BCD74FC002233E5 /* StylistViewProfile.swift */,
+				23422D7B2BDAB9D6000FEB41 /* UserSessionManager.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -483,6 +486,7 @@
 				9EAAE05B2BCD7274007B63C6 /* TabView.swift in Sources */,
 				9EAAE05A2BCD7274007B63C6 /* TabViewStylist.swift in Sources */,
 				9EABBFBA2BBF14B700EB9846 /* StylistContactScreenView.swift in Sources */,
+				23422D7C2BDAB9D6000FEB41 /* UserSessionManager.swift in Sources */,
 				9EF1334B2BC5F36000F5207E /* StylistCurlPatternScreenView.swift in Sources */,
 				9EAAE0512BCD7274007B63C6 /* StylistProfilePage.swift in Sources */,
 				9EA198112BB8A3E4001DE054 /* ClientCurrentHairScreenView.swift in Sources */,

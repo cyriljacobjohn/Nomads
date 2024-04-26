@@ -71,7 +71,8 @@ import SwiftUI
 
 struct StylistProfileView: View {
     
-    var stylistId: Int
+    //var stylistId: Int
+    @EnvironmentObject private var session: UserSessionManager
     @StateObject private var viewModel = ClientViewModel()
     @State private var stylistProfile: StylistProfile?
     @State private var editableAddress: Address?
@@ -147,16 +148,22 @@ struct StylistProfileView: View {
     }
     
     private func fetchStylistProfile() {
-        viewModel.fetchStylistProfileById(stylistId: stylistId) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let profile):
-                    self.stylistProfile = profile
-                    // Optionally, initialize editableAddress here if it should only be editable when the user enters edit mode
-                case .failure(let error):
-                    print("Failed to fetch stylist profile:", error.localizedDescription)
+        if let stylistId = session.userId, session.userType == "stylist"{
+            viewModel.fetchStylistProfileById(stylistId: stylistId) { result in
+                DispatchQueue.main.async {
+                    
+                    switch result {
+                    case .success(let profile):
+                        self.stylistProfile = profile
+                        // Optionally, initialize editableAddress here if it should only be editable when the user enters edit mode
+                    case .failure(let error):
+                        print("Failed to fetch stylist profile:", error.localizedDescription)
+                    }
+                    
                 }
             }
+        }else{
+            viewModel.errorMessage = "User is not a stylist or ID is missing"
         }
     }
 }
@@ -312,6 +319,6 @@ struct StylistEditableAddress: View {
 
 struct StylistProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        StylistProfileView(stylistId: 1)
+        StylistProfileView().environmentObject(UserSessionManager.shared)
     }
 }

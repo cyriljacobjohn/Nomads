@@ -62,7 +62,9 @@ import SwiftUI
 
 struct ClientProfileView: View {
     
-    var clientId: Int
+    //var clientId: Int
+    
+    @EnvironmentObject private var session: UserSessionManager
     @StateObject private var viewModel = ClientViewModel()
     @State private var selectedSegment: Int = 0
     
@@ -106,7 +108,10 @@ struct ClientProfileView: View {
             }
         }
         .onAppear {
-            viewModel.fetchClientProfile(clientId: clientId)
+            //viewModel.fetchClientProfile(clientId: clientId)
+            if let clientId = session.userId, session.userType == "client" {
+                            viewModel.fetchClientProfile(clientId: clientId)
+                        }
         }
         .onChange(of: viewModel.client) { newValue in
             if let newClient = newValue {
@@ -137,7 +142,8 @@ struct ClientProfileView: View {
         EditableTextView(title: "Stylists Should Know", text: $editableStylistsShouldKnow)
         
         // Make sure this view is always included, even if editableInterests is empty
-        if let client = viewModel.client {
+        //acccessing clientID directly from the session EnvironmentObject
+        if let client = viewModel.client, let clientId = session.userId, session.userType == "client"  {
                InterestsSelectionView(
                    viewModel: viewModel,
                    clientId: clientId,
@@ -174,20 +180,21 @@ struct ClientProfileView: View {
 
 
     private func saveChanges() {
-        viewModel.updateClientAddress(clientId: clientId, address: editableAddress) { success, message in
-            print("Address Update: \(message)")
-        }
-        viewModel.updateStylistsShouldKnow(clientId: clientId, text: editableStylistsShouldKnow) { success, message in
-            print("Stylists Should Know Update: \(message)")
-        }
-        viewModel.updateComfortRadius(clientId: clientId, comfortRadius: editableAddress.comfortRadius) { success, message in
-               // Handle the response
-               print(message)
-           }
-        viewModel.updateClientInterests(clientId: clientId, interests: viewModel.editableInterests) { success, message in
-                print("Interests Update: \(message)")
+            if let clientId = session.userId, session.userType == "client"{
+                viewModel.updateClientAddress(clientId: clientId, address: editableAddress) { success, message in
+                    print("Address Update: \(message)")
+                }
+                viewModel.updateStylistsShouldKnow(clientId: clientId, text: editableStylistsShouldKnow) { success, message in
+                    print("Stylists Should Know Update: \(message)")
+                }
+                viewModel.updateComfortRadius(clientId: clientId, comfortRadius: editableAddress.comfortRadius) { success, message in
+                    print(message)
+                }
+                viewModel.updateClientInterests(clientId: clientId, interests: viewModel.editableInterests) { success, message in
+                    print("Interests Update: \(message)")
+                }
             }
-    }
+        }
 }
 
 
@@ -514,6 +521,6 @@ struct ImageSectionView: View {
 
 struct ClientProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ClientProfileView(clientId: 43)
+        ClientProfileView().environmentObject(UserSessionManager.shared)
     }
 }

@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct MyReviewsView: View {
-    var stylistId: Int
+    
+    @EnvironmentObject private var session: UserSessionManager
     @StateObject private var viewModel = ClientViewModel()
     @State private var showingFilterView = false
     
@@ -39,10 +40,14 @@ struct MyReviewsView: View {
             }
         }
         .onAppear {
-            viewModel.getStylistRatings(stylistId: stylistId) { success in
-                if !success {
-                    print("Error loading reviews: \(viewModel.errorMessage ?? "Unknown error")")
+            if let stylistId = session.userId, session.userType == "stylist" {
+                viewModel.getStylistRatings(stylistId: stylistId) { success in
+                    if !success {
+                        print("Error loading reviews: \(viewModel.errorMessage ?? "Unknown error")")
+                    }
                 }
+            } else {
+                viewModel.errorMessage = "Invalid user type or missing stylist ID"
             }
         }
         .sheet(isPresented: $showingFilterView) {
@@ -90,7 +95,7 @@ struct ReviewsNavigationBar: View {
 // Example client reviews preview provider
 struct MyReviewsView_Previews: PreviewProvider {
     static var previews: some View {
-        MyReviewsView(stylistId: 1)
+        MyReviewsView().environmentObject(UserSessionManager.shared)
     }
 }
 

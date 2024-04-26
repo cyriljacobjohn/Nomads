@@ -10,6 +10,7 @@ import SwiftUI
 struct StylistViewProfile: View {
     
     var stylistId: Int
+    @EnvironmentObject private var session: UserSessionManager
     @ObservedObject var viewModel: ClientViewModel
     @Environment(\.presentationMode) var presentationMode
     
@@ -25,8 +26,6 @@ struct StylistViewProfile: View {
     @State private var showingFilterView = false
     @State private var filterTags: [String] = []
     @State private var showingAddReview = false
-    
-    @State private var clientId: Int = 43
     
     
     var body: some View {
@@ -616,7 +615,7 @@ import SwiftUI
 
 struct AddReviewView: View {
     
-    @State private var clientId: Int = 43
+    @EnvironmentObject private var session: UserSessionManager
     var stylistId: Int  // Accept stylistId directly
     @State private var rating: Int = 0
     @State private var comment: String = ""
@@ -668,13 +667,18 @@ struct AddReviewView: View {
     }
     
     func submitReview() {
-        isLoading = true
-        clientVM.postReview(clientId: clientId, stylistId: stylistId, rating: rating, comment: comment) { success, message in
-            isLoading = false
-            alertMessage = message
-            showAlert = true
-        }
-    }
+        guard let clientId = session.userId, session.userType == "client" else {
+                    alertMessage = "Invalid user or user type for review submission"
+                    showAlert = true
+                    return
+                }
+                isLoading = true
+                clientVM.postReview(clientId: clientId, stylistId: stylistId, rating: rating, comment: comment) { success, message in
+                    isLoading = false
+                    alertMessage = message
+                    showAlert = true
+                }
+            }
 }
 
 
@@ -800,6 +804,12 @@ struct TagView: View {
 
 struct StylistViewProfile_Previews: PreviewProvider {
     static var previews: some View {
-        StylistViewProfile(stylistId: 0, viewModel: ClientViewModel())
+        // Create an instance of UserSessionManager and set it up as needed for the preview.
+        let sessionManager = UserSessionManager.shared
+        sessionManager.userId = 1 // Example user ID, set this to a valid ID for your preview
+        sessionManager.userType = "stylist" // Assuming you're previewing a stylist profile
+
+        return StylistViewProfile(stylistId: 0, viewModel: ClientViewModel())
+            .environmentObject(sessionManager) // Injecting the UserSessionManager as an environment object
     }
 }
