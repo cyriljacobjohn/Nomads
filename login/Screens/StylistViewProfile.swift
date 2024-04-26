@@ -42,148 +42,160 @@ struct StylistViewProfile: View {
                             // Profile details in adjacent rectangles with icons
                             if selectedSegment == 0 {
                                 
-                                HStack() {
-                                    Image(systemName: "person.fill")
-                                        .frame(width: 30, alignment: .leading)
-                                        .foregroundColor(Color("PrimaryColor"))
-                                    VStack(alignment: .leading) {
-                                        Text("About Me")
-                                            .font(.custom("Poppins-SemiBold", size: 15))
-                                        Text(stylistP.clientsShouldKnow)
-                                            .font(.custom("Poppins-Regular", size: 18))
-                                    }
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.white)
+                                StylistDescriptionView(title: "About Me ", description: stylistP.clientsShouldKnow)
                                 
-                                .cornerRadius(10) // Apply corner radius to make the edges rounded
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
-                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
-                                )
+                                StylistDetailCardView(Details: [(iconName: "phone", text: "\(stylistP.contacts.phoneNum ?? "Unavailable")"),(iconName: "camera", text: "\(stylistP.contacts.instagram ?? "Unavailable")"), (iconName: "bird", text: "\(stylistP.contacts.twitter ?? "Unavailable")"),(iconName: "link", text: "\(stylistP.contacts.linkedTree ?? "Unavailable")")])
                                 
-                                HStack() {
-                                    Image(systemName: "mappin.and.ellipse")
-                                        .frame(width: 30, alignment: .leading)
-                                        .foregroundColor(Color("PrimaryColor"))
-                                    VStack(alignment: .leading) {
-                                        Text(stylistP.address.formattedAddress)
-                                            .font(.custom("Poppins-Regular", size: 18))
-                                    }
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.white)
+                                StylistDescriptionView(title: "I'm located at", description: stylistP.address.formattedAddress)
                                 
-                                .cornerRadius(10) // Apply corner radius to make the edges rounded
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
-                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
-                                )
-                                HStack {
-                                    Image(systemName: "phone")
-                                        .frame(width: 30, alignment: .leading)
-                                        .foregroundColor(Color("PrimaryColor"))
-                                    VStack(alignment: .leading) {
-                                        Text("\(stylistP.contacts.phoneNum ?? "Unavailable")")
-                                            .font(.custom("Poppins-Regular", size: 18))
-                                    }
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    
-                                }
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.white)
-                                .cornerRadius(10) // Apply corner radius to make the edges rounded
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
-                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
-                                )
+                                StylistDetailCardView(Details: [(iconName: "dollarsign.circle", text: "\(stylistP.avgPrice)" ),(iconName: "star.fill", text: String(format: "%.1f", stylistP.rating ?? 0.0))])
                                 
-                                HStack {
-                                    Image(systemName: "camera")
-                                        .frame(width: 30, alignment: .leading)
-                                        .foregroundColor(Color("PrimaryColor"))
-                                    VStack(alignment: .leading) {
-                                        Text("Instagram: \(stylistP.contacts.instagram ?? "Unavailable")")
-                                            .font(.custom("Poppins-Regular", size: 18))
-                                    }
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    
-                                }
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.white)
-                                .cornerRadius(10) // Apply corner radius to make the edges rounded
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
-                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
-                                )
-                                
-                                HStack {
-                                    Image(systemName: "message")
-                                        .frame(width: 30, alignment: .leading)
-                                        .foregroundColor(Color("PrimaryColor"))
-                                    VStack(alignment: .leading) {
-                                        Text("Twitter: \(stylistP.contacts.twitter ?? "Unavailable")")
-                                            .font(.custom("Poppins-Regular", size: 18))
-                                    }
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    
-                                }
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.white)
-                                .cornerRadius(10) // Apply corner radius to make the edges rounded
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
-                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
-                                )
-                                
-                                HStack {
-                                    Image(systemName: "link")
-                                        .frame(width: 30, alignment: .leading)
-                                        .foregroundColor(Color("PrimaryColor"))
-                                    VStack(alignment: .leading) {
-                                        Text("LinkedTree: \(stylistP.contacts.linkedTree ?? "Unavailable")")
-                                            .font(.custom("Poppins-Regular", size: 18))
-                                    }
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    
-                                }
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.white)
-                                .cornerRadius(10) // Apply corner radius to make the edges rounded
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
-                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
-                                )
+                                StylistSpecialitiesView(specialities: stylistP.specialities)
                                 
                                 
-                                HStack {
-                                    Image(systemName: "dollarsign.circle")
-                                        .frame(width: 30, alignment: .leading)
-                                        .foregroundColor(Color("PrimaryColor"))
-                                    VStack(alignment: .leading) {
-                                        Text("\(stylistP.avgPrice)")
-                                            .font(.custom("Poppins-Regular", size: 18))
-                                    }
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    
-                                }
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.white)
-                                .cornerRadius(10) // Apply corner radius to make the edges rounded
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
-                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
-                                )
-                                
+                    
+//                                HStack() {
+//                                    Image(systemName: "person.fill")
+//                                        .frame(width: 30, alignment: .leading)
+//                                        .foregroundColor(Color("PrimaryColor"))
+//                                    VStack(alignment: .leading) {
+//                                        Text("About Me")
+//                                            .font(.custom("Poppins-SemiBold", size: 15))
+//                                        Text(stylistP.clientsShouldKnow)
+//                                            .font(.custom("Poppins-Regular", size: 18))
+//                                    }
+//                                    .frame(maxWidth: .infinity, alignment: .leading)
+//                                }
+//                                .padding()
+//                                .frame(maxWidth: .infinity)
+//                                .background(Color.white)
+//                                
+//                                .cornerRadius(10) // Apply corner radius to make the edges rounded
+//                                .overlay(
+//                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+//                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+//                                )
+//                                
+//                                HStack() {
+//                                    Image(systemName: "mappin.and.ellipse")
+//                                        .frame(width: 30, alignment: .leading)
+//                                        .foregroundColor(Color("PrimaryColor"))
+//                                    VStack(alignment: .leading) {
+//                                        Text(stylistP.address.formattedAddress)
+//                                            .font(.custom("Poppins-Regular", size: 18))
+//                                    }
+//                                    .frame(maxWidth: .infinity, alignment: .leading)
+//                                }
+//                                .padding()
+//                                .frame(maxWidth: .infinity)
+//                                .background(Color.white)
+//                                
+//                                .cornerRadius(10) // Apply corner radius to make the edges rounded
+//                                .overlay(
+//                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+//                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+//                                )
+//                                HStack {
+//                                    Image(systemName: "phone")
+//                                        .frame(width: 30, alignment: .leading)
+//                                        .foregroundColor(Color("PrimaryColor"))
+//                                    VStack(alignment: .leading) {
+//                                        Text("\(stylistP.contacts.phoneNum ?? "Unavailable")")
+//                                            .font(.custom("Poppins-Regular", size: 18))
+//                                    }
+//                                    .frame(maxWidth: .infinity, alignment: .leading)
+//                                    
+//                                }
+//                                .padding()
+//                                .frame(maxWidth: .infinity)
+//                                .background(Color.white)
+//                                .cornerRadius(10) // Apply corner radius to make the edges rounded
+//                                .overlay(
+//                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+//                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+//                                )
+//                                
+//                                HStack {
+//                                    Image(systemName: "camera")
+//                                        .frame(width: 30, alignment: .leading)
+//                                        .foregroundColor(Color("PrimaryColor"))
+//                                    VStack(alignment: .leading) {
+//                                        Text("Instagram: \(stylistP.contacts.instagram ?? "Unavailable")")
+//                                            .font(.custom("Poppins-Regular", size: 18))
+//                                    }
+//                                    .frame(maxWidth: .infinity, alignment: .leading)
+//                                    
+//                                }
+//                                .padding()
+//                                .frame(maxWidth: .infinity)
+//                                .background(Color.white)
+//                                .cornerRadius(10) // Apply corner radius to make the edges rounded
+//                                .overlay(
+//                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+//                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+//                                )
+//                                
+//                                HStack {
+//                                    Image(systemName: "message")
+//                                        .frame(width: 30, alignment: .leading)
+//                                        .foregroundColor(Color("PrimaryColor"))
+//                                    VStack(alignment: .leading) {
+//                                        Text("Twitter: \(stylistP.contacts.twitter ?? "Unavailable")")
+//                                            .font(.custom("Poppins-Regular", size: 18))
+//                                    }
+//                                    .frame(maxWidth: .infinity, alignment: .leading)
+//                                    
+//                                }
+//                                .padding()
+//                                .frame(maxWidth: .infinity)
+//                                .background(Color.white)
+//                                .cornerRadius(10) // Apply corner radius to make the edges rounded
+//                                .overlay(
+//                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+//                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+//                                )
+//                                
+//                                HStack {
+//                                    Image(systemName: "link")
+//                                        .frame(width: 30, alignment: .leading)
+//                                        .foregroundColor(Color("PrimaryColor"))
+//                                    VStack(alignment: .leading) {
+//                                        Text("LinkedTree: \(stylistP.contacts.linkedTree ?? "Unavailable")")
+//                                            .font(.custom("Poppins-Regular", size: 18))
+//                                    }
+//                                    .frame(maxWidth: .infinity, alignment: .leading)
+//                                    
+//                                }
+//                                .padding()
+//                                .frame(maxWidth: .infinity)
+//                                .background(Color.white)
+//                                .cornerRadius(10) // Apply corner radius to make the edges rounded
+//                                .overlay(
+//                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+//                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+//                                )
+//                                
+//                                
+//                                HStack {
+//                                    Image(systemName: "dollarsign.circle")
+//                                        .frame(width: 30, alignment: .leading)
+//                                        .foregroundColor(Color("PrimaryColor"))
+//                                    VStack(alignment: .leading) {
+//                                        Text("\(stylistP.avgPrice)")
+//                                            .font(.custom("Poppins-Regular", size: 18))
+//                                    }
+//                                    .frame(maxWidth: .infinity, alignment: .leading)
+//                                    
+//                                }
+//                                .padding()
+//                                .frame(maxWidth: .infinity)
+//                                .background(Color.white)
+//                                .cornerRadius(10) // Apply corner radius to make the edges rounded
+//                                .overlay(
+//                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+//                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+//                                )
+//                                
                                 
 //                                HStack {
 //                                    Image(systemName: "scissors")
@@ -207,56 +219,56 @@ struct StylistViewProfile: View {
 //                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
 //                                )
                                 
-                                HStack {
-                                    Image(systemName: "scissors")
-                                        .frame(width: 30, alignment: .leading)
-                                        .foregroundColor(Color("PrimaryColor"))
-
-                                    ScrollView(.horizontal, showsIndicators: false) {
-                                        HStack {
-                                            ForEach(stylistP.specialities, id: \.self) { specialty in
-                                                Text(specialty)
-                                                    .font(.custom("Poppins-Regular", size: 18))
-                                                    .foregroundColor(.white)
-                                                    .padding(.horizontal, 10)
-                                                    .padding(.vertical, 5)
-                                                    .background(Color("PrimaryColor"))
-                                                    .cornerRadius(8)
-                                            }
-                                        }
-                                    }
-                                }
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.white)
-                                .cornerRadius(10) // Apply corner radius to make the edges rounded
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
-                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
-                                )
-
-                        
-                                
-                                // Rating HStack
-                                HStack {
-                                    Image(systemName: "star.fill") // Example icon for rating
-                                        .frame(width: 30, alignment: .leading)
-                                        .foregroundColor(Color("PrimaryColor"))
-                                    VStack(alignment: .leading) {
-                                        
-                                        Text("\(stylistP.rating ?? 0.0, specifier: "%.1f")")
-                                            .font(.custom("Poppins-Regular", size: 18))
-                                    }
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.white)
-                                .cornerRadius(10) // Apply corner radius to make the edges rounded
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
-                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
-                                )
+//                                HStack {
+//                                    Image(systemName: "scissors")
+//                                        .frame(width: 30, alignment: .leading)
+//                                        .foregroundColor(Color("PrimaryColor"))
+//
+//                                    ScrollView(.horizontal, showsIndicators: false) {
+//                                        HStack {
+//                                            ForEach(stylistP.specialities, id: \.self) { specialty in
+//                                                Text(specialty)
+//                                                    .font(.custom("Poppins-Regular", size: 18))
+//                                                    .foregroundColor(.white)
+//                                                    .padding(.horizontal, 10)
+//                                                    .padding(.vertical, 5)
+//                                                    .background(Color("PrimaryColor"))
+//                                                    .cornerRadius(8)
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                                .padding()
+//                                .frame(maxWidth: .infinity)
+//                                .background(Color.white)
+//                                .cornerRadius(10) // Apply corner radius to make the edges rounded
+//                                .overlay(
+//                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+//                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+//                                )
+//
+//                        
+//                                
+//                                // Rating HStack
+//                                HStack {
+//                                    Image(systemName: "star.fill") // Example icon for rating
+//                                        .frame(width: 30, alignment: .leading)
+//                                        .foregroundColor(Color("PrimaryColor"))
+//                                    VStack(alignment: .leading) {
+//                                        
+//                                        Text("\(stylistP.rating ?? 0.0, specifier: "%.1f")")
+//                                            .font(.custom("Poppins-Regular", size: 18))
+//                                    }
+//                                    .frame(maxWidth: .infinity, alignment: .leading)
+//                                }
+//                                .padding()
+//                                .frame(maxWidth: .infinity)
+//                                .background(Color.white)
+//                                .cornerRadius(10) // Apply corner radius to make the edges rounded
+//                                .overlay(
+//                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+//                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+//                                )
                                 
                                 
                                 Text("More Work")
@@ -822,6 +834,51 @@ struct TagView: View {
                 .foregroundColor(isSelected ? Color.white : Color.black)
                 .cornerRadius(8)
         }
+    }
+}
+
+
+//struct StylistContactCardView: View {
+//    let stylist: StylistProfile
+//    
+//    var body: some View {
+//        VStack(alignment: .leading, spacing: 16) {
+//            
+//            VStack(alignment: .leading, spacing: 16) {
+//                
+//                ProfileSectionView(iconName: "phone", text: "\(stylist.contacts.phoneNum ?? "Unavailable")")
+//                Divider()
+//                ProfileSectionView(iconName: "camera", text: "\(stylist.contacts.instagram ?? "Unavailable")")
+//                Divider()
+//                ProfileSectionView(iconName: "bird", text: "\(stylist.contacts.twitter ?? "Unavailable")")
+//                Divider()
+//                ProfileSectionView(iconName: "link", text: "\(stylist.contacts.linkedTree ?? "Unavailable")")
+//            }
+//            .padding(.horizontal)
+//            .padding(.bottom)
+//            
+//        }
+//        .padding(.top)
+//        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white))
+//        .shadow(radius: 1)
+//        .frame(maxWidth: .infinity)
+//    }
+//}
+
+struct StylistDetailCardView: View {
+    var Details: [(iconName: String, text: String)]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            ForEach(Details, id: \.iconName) { detail in
+                ProfileSectionView(iconName: detail.iconName, text: detail.text)
+                Divider()
+            }
+        }
+        .padding()
+        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white))
+        .shadow(radius: 1)
+        .frame(maxWidth: .infinity)
     }
 }
 
