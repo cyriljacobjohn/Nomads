@@ -18,54 +18,57 @@ struct ClientAdditionalInformationScreenView: View {
             ZStack {
                 Color("BgColor").edgesIgnoringSafeArea(.all)
                 
-                VStack {
-                    Text("UMI")
-                        .font(.custom("Sarina-Regular", size: 35))
-                        .foregroundColor(Color("PrimaryColor"))
-
-                    Spacer().frame(height: 40)
+                ScrollView {
                     
-                    VStack(alignment: .leading) {
-                        Text("Share Your Preferences")
-                            .font(.custom("Sansita-BoldItalic", size: 50))
-                            .foregroundColor(Color("TitleTextColor"))
-                            .padding(.bottom, 20)
+                    VStack {
+                        Text("UMI")
+                            .font(.custom("Sarina-Regular", size: 35))
+                            .foregroundColor(Color("PrimaryColor"))
                         
-                        Text("Let us know your preferences and any accessibility needs you have")
-                            .font(.custom("Poppins-SemiBoldItalic", size: 20))
-                            .padding(.bottom, 10)
-
-                        TextEditor(text: $viewModel.stylistsShouldKnow)
-                            .frame(height: 250)
-                            .padding(4)
-                            .background(Color.white.opacity(0.7))
-                            .cornerRadius(10.0)
-                            .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
+                        Spacer().frame(height: 40)
+                        
+                        VStack(alignment: .leading) {
+                            Text("Share Your Preferences")
+                                .font(.custom("Sansita-BoldItalic", size: 50))
+                                .foregroundColor(Color("TitleTextColor"))
+                                .padding(.bottom, 20)
+                            
+                            Text("Let us know your preferences and any accessibility needs you have")
+                                .font(.custom("Poppins-SemiBoldItalic", size: 20))
+                                .padding(.bottom, 10)
+                            
+                            TextEditor(text: $viewModel.stylistsShouldKnow)
+                                .frame(height: 200)
+                                .padding(4)
+                                .background(Color.white.opacity(0.7))
+                                .cornerRadius(10.0)
+                                .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
+                        }
+                        .padding(.horizontal)
+                        
+                        Spacer()
+                        
+                        Button(action: continueAction) {
+                            Text("Continue")
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundColor(!viewModel.stylistsShouldKnow.isEmpty ? Color.white : Color("PrimaryColor"))
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(!viewModel.stylistsShouldKnow.isEmpty ? Color("PrimaryColor") : Color.white.opacity(0.7))
+                                .cornerRadius(50.0)
+                                .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
+                        }
+                        .padding(.vertical)
+                        .alert(isPresented: $showingAlert) {
+                            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                        }
+                        
+                        NavigationLink("", destination: MainTabView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
+                        
                     }
-                    .padding(.horizontal)
-                    
-                    Spacer()
-                    
-                    Button(action: continueAction) {
-                        Text("Continue")
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(!viewModel.stylistsShouldKnow.isEmpty ? Color.white : Color("PrimaryColor"))
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(!viewModel.stylistsShouldKnow.isEmpty ? Color("PrimaryColor") : Color.white.opacity(0.7))
-                            .cornerRadius(50.0)
-                            .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
-                    }
-                    .padding(.vertical)
-                    .alert(isPresented: $showingAlert) {
-                        Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
-                    }
-
-                    NavigationLink("", destination: MainTabView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
-                    
+                    .padding()
                 }
-                .padding()
             }
         }
     }

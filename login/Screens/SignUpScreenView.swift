@@ -92,6 +92,14 @@ struct SignUpScreenView: View {
                         .alert(isPresented: $showingAlert) {
                             Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                         }
+                        
+                        NavigationLink(destination: SignInScreenView().navigationBarHidden(true)) {
+                            Text("Have An Account? ")
+                                .foregroundColor(Color.black) +
+                            Text("Sign In")
+                                .foregroundColor(Color("PrimaryColor"))
+                        }
+                        .padding(.bottom, 20)
 
                         NavigationLink("", destination: AccountTypeSelectionView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
