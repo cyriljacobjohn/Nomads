@@ -83,6 +83,85 @@ struct StylistViewProfile: View {
                                     RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
                                         .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
                                 )
+                                HStack {
+                                    Image(systemName: "phone")
+                                        .frame(width: 30, alignment: .leading)
+                                        .foregroundColor(Color("PrimaryColor"))
+                                    VStack(alignment: .leading) {
+                                        Text("\(stylistP.contacts.phoneNum ?? "Unavailable")")
+                                            .font(.custom("Poppins-Regular", size: 18))
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    
+                                }
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color.white)
+                                .cornerRadius(10) // Apply corner radius to make the edges rounded
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+                                )
+                                
+                                HStack {
+                                    Image(systemName: "camera")
+                                        .frame(width: 30, alignment: .leading)
+                                        .foregroundColor(Color("PrimaryColor"))
+                                    VStack(alignment: .leading) {
+                                        Text("Instagram: \(stylistP.contacts.instagram ?? "Unavailable")")
+                                            .font(.custom("Poppins-Regular", size: 18))
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    
+                                }
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color.white)
+                                .cornerRadius(10) // Apply corner radius to make the edges rounded
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+                                )
+                                
+                                HStack {
+                                    Image(systemName: "message")
+                                        .frame(width: 30, alignment: .leading)
+                                        .foregroundColor(Color("PrimaryColor"))
+                                    VStack(alignment: .leading) {
+                                        Text("Twitter: \(stylistP.contacts.twitter ?? "Unavailable")")
+                                            .font(.custom("Poppins-Regular", size: 18))
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    
+                                }
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color.white)
+                                .cornerRadius(10) // Apply corner radius to make the edges rounded
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+                                )
+                                
+                                HStack {
+                                    Image(systemName: "link")
+                                        .frame(width: 30, alignment: .leading)
+                                        .foregroundColor(Color("PrimaryColor"))
+                                    VStack(alignment: .leading) {
+                                        Text("LinkedTree: \(stylistP.contacts.linkedTree ?? "Unavailable")")
+                                            .font(.custom("Poppins-Regular", size: 18))
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    
+                                }
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color.white)
+                                .cornerRadius(10) // Apply corner radius to make the edges rounded
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+                                )
                                 
                                 
                                 HStack {
@@ -105,17 +184,46 @@ struct StylistViewProfile: View {
                                         .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
                                 )
                                 
+                                
+//                                HStack {
+//                                    Image(systemName: "scissors")
+//                                        .frame(width: 30, alignment: .leading)
+//                                        .foregroundColor(Color("PrimaryColor"))
+//                                    
+//                                    VStack(alignment: .leading) {
+//                                        ForEach(stylistP.specialities, id: \.self) { specialty in
+//                                            Text(specialty)
+//                                                .font(.custom("Poppins-Regular", size: 18))
+//                                        }
+//                                        .frame(maxWidth: .infinity, alignment: .leading)
+//                                    }
+//                                }
+//                                .padding()
+//                                .frame(maxWidth: .infinity)
+//                                .background(Color.white)
+//                                .cornerRadius(10) // Apply corner radius to make the edges rounded
+//                                .overlay(
+//                                    RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
+//                                        .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
+//                                )
+                                
                                 HStack {
                                     Image(systemName: "scissors")
                                         .frame(width: 30, alignment: .leading)
                                         .foregroundColor(Color("PrimaryColor"))
-                                    
-                                    VStack(alignment: .leading) {
-                                        ForEach(stylistP.specialities, id: \.self) { specialty in
-                                            Text(specialty)
-                                                .font(.custom("Poppins-Regular", size: 18))
+
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        HStack {
+                                            ForEach(stylistP.specialities, id: \.self) { specialty in
+                                                Text(specialty)
+                                                    .font(.custom("Poppins-Regular", size: 18))
+                                                    .foregroundColor(.white)
+                                                    .padding(.horizontal, 10)
+                                                    .padding(.vertical, 5)
+                                                    .background(Color("PrimaryColor"))
+                                                    .cornerRadius(8)
+                                            }
                                         }
-                                        .frame(maxWidth: .infinity, alignment: .leading)
                                     }
                                 }
                                 .padding()
@@ -126,31 +234,8 @@ struct StylistViewProfile: View {
                                     RoundedRectangle(cornerRadius: 10) // Use the same corner radius for the overlay as the background
                                         .stroke(Color.black, lineWidth: 1) // Apply stroke to create the border
                                 )
-                                
-                                //                                HStack {
-                                //                                    Image(systemName: "person.fill.questionmark") // Example icon for matching percentage
-                                //                                        .frame(width: 30, alignment: .leading)
-                                //                                        .foregroundColor(Color("PrimaryColor"))
-                                //                                    VStack(alignment: .leading) {
-                                //
-                                //                                        if let matchPercentage = stylist?.matchPercentage {
-                                //                                            Text("\(stylist!.matchPercentage, specifier: "%.0f%%")")
-                                //                                                .font(.custom("Poppins-Regular", size: 18))
-                                //                                        } else {
-                                //                                            Text("No Match Percentage")
-                                //                                                .font(.custom("Poppins-Regular", size: 18))
-                                //                                        }
-                                //                                    }
-                                //                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                //                                }
-                                //                                .padding()
-                                //                                .frame(maxWidth: .infinity)
-                                //                                .background(Color.white)
-                                //                                .cornerRadius(10)
-                                //                                .overlay(
-                                //                                    RoundedRectangle(cornerRadius: 10)
-                                //                                        .stroke(Color.black, lineWidth: 1)
-                                //                                )
+
+                        
                                 
                                 // Rating HStack
                                 HStack {
@@ -358,9 +443,17 @@ struct StylistViewProfile: View {
                 guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200, let data = data else {
                     DispatchQueue.main.async {
                         self.errorMessage = "Server error or no data"
+                        
+                        if let httpResponse = response as? HTTPURLResponse {
+                                        print("HTTP Response Status Code: \(httpResponse.statusCode)")
+                                    }
+                        
                     }
                     return
                 }
+                
+                let rawJSON = String(data: data, encoding: .utf8)
+                print("Raw JSON received: \(rawJSON ?? "Invalid JSON")")
                 
                 do {
                     let decodedResponse = try JSONDecoder().decode(StylistProfile.self, from: data)

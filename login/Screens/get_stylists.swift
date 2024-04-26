@@ -30,13 +30,32 @@ struct StylistProfile: Decodable, Equatable {
     let lname: String
     let rating: Double?
     let specialities: [String]
-
+    let contacts: Contacts
+    
+    
+    struct Contacts: Decodable, Equatable { // Define a nested struct for contacts
+        let instagram: String?
+        let linkedTree: String?
+        let phoneNum: String?
+        let twitter: String?
+        
+        enum CodingKeys: String, CodingKey{
+            
+            case instagram
+            case linkedTree = "linked_tree"
+            case phoneNum = "phone_num"
+            case twitter
+            
+        }
+    }
+    
     enum CodingKeys: String, CodingKey {
-        case fname, lname, address, specialities, rating
+        case fname, lname, address, specialities, rating, contacts
         case avgPrice = "avg_price"
         case clientsShouldKnow = "clients_should_know"
+        
     }
-
+    
     static func == (lhs: StylistProfile, rhs: StylistProfile) -> Bool {
         lhs.fname == rhs.fname &&
         lhs.lname == rhs.lname &&
@@ -44,7 +63,8 @@ struct StylistProfile: Decodable, Equatable {
         lhs.avgPrice == rhs.avgPrice &&
         lhs.clientsShouldKnow == rhs.clientsShouldKnow &&
         lhs.rating == rhs.rating &&
-        lhs.specialities == rhs.specialities
+        lhs.specialities == rhs.specialities &&
+        lhs.contacts == rhs.contacts
     }
 }
 
