@@ -38,8 +38,9 @@ struct StylistNameEntryScreenView: View {
                             Text("First Name")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
+                                .foregroundColor(.black)
                             
-                            TextField("Ayomide", text: $viewModel.firstName)
+                            TextField("", text: $viewModel.firstName)
                                 .font(.title3)
                                 .padding()
                                 .frame(maxWidth: .infinity)
@@ -48,16 +49,19 @@ struct StylistNameEntryScreenView: View {
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                                 .padding(.top, -8)
                                 .padding(.bottom, 20)
+                                .foregroundColor(.black)
 
                             Text("Last Name")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
+                                .foregroundColor(.black)
                             
-                            TextField("Fatoye", text: $viewModel.lastName)
+                            TextField("", text: $viewModel.lastName)
                                 .font(.title3)
                                 .padding()
                                 .frame(maxWidth: .infinity)
                                 .background(Color.white)
+                                .foregroundColor(.black)
                                 .cornerRadius(50.0)
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                                 .padding(.top, -8)
@@ -82,10 +86,16 @@ struct StylistNameEntryScreenView: View {
                     .alert(isPresented: $showingAlert) {
                         Alert(title: Text("Error"), message: Text("Please fill in all fields."), dismissButton: .default(Text("OK")))
                     }
+                    .animation(.easeInOut, value: viewModel.firstName.isEmpty || viewModel.lastName.isEmpty)
+
 
                     NavigationLink("", destination: StylistAddressScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                 }
                 .padding()
+            }
+            .onTapGesture
+            {
+                hideKeyboard()  // Call to dismiss the keyboard
             }
         }
     }
@@ -103,4 +113,8 @@ struct StylistNameEntryScreenView_Previews: PreviewProvider {
     static var previews: some View {
         StylistNameEntryScreenView().environmentObject(UserRegistrationViewModel())
     }
+}
+
+private func hideKeyboard() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 }

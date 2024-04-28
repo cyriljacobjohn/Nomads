@@ -41,6 +41,8 @@ struct ClientCurlPatternScreenView: View {
                             .foregroundColor(Color("PrimaryColor"))
                             .padding(.top)
 
+                        Spacer().frame(height: 40)
+                        
                         VStack(alignment: .leading) {
                             Text("Curl Pattern Selection")
                                 .font(.custom("Sansita-BoldItalic", size: 50))
@@ -52,6 +54,7 @@ struct ClientCurlPatternScreenView: View {
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.bottom, 10)
+                                .foregroundColor(.black)
                         }
 
                         LazyVGrid(columns: columns, spacing: 15) {

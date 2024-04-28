@@ -47,8 +47,11 @@ struct StylistContactScreenView: View {
                             phoneField()
                             // Social Media Contact Fields
                             contactField("Instagram", text: $viewModel.contacts.instagram)
+                                .foregroundColor(.black)
                             contactField("Twitter", text: $viewModel.contacts.twitter)
+                                .foregroundColor(.black)
                             contactField("LinkedTree", text: $viewModel.contacts.linkedTree)
+                                .foregroundColor(.black)
                         }
                         .padding(.horizontal)
 
@@ -67,9 +70,15 @@ struct StylistContactScreenView: View {
                         .alert(isPresented: $showingAlert) {
                             Alert(title: Text("Error"), message: Text(errorAlertMessage()), dismissButton: .default(Text("OK")))
                         }
+                        .animation(.easeInOut, value: canContinue)
+
                         NavigationLink("", destination: StylistHairGenderSelectionScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
                     .padding()
+                }
+                .onTapGesture
+                {
+                    hideKeyboard()  // Call to dismiss the keyboard
                 }
             }
         }
@@ -116,7 +125,7 @@ struct StylistContactScreenView: View {
                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                 .padding(.bottom, 10)
 
-            TextField(label, text: text)
+            TextField("", text: text)
                 .font(.title3)
                 .padding()
                 .frame(maxWidth: .infinity)
@@ -125,6 +134,7 @@ struct StylistContactScreenView: View {
                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                 .padding(.top, -8)
                 .padding(.bottom, 10)
+                .foregroundColor(.black)
         }
     }
 
@@ -157,12 +167,13 @@ struct StylistContactScreenView: View {
                     .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                 }
                 
-                TextField("1234567890", text: $viewModel.contacts.phoneNum)
+                TextField("", text: $viewModel.contacts.phoneNum)
                     .keyboardType(.numberPad)
                     .padding(EdgeInsets(top: 20, leading: 24, bottom: 20, trailing: 24))
                     .background(Color.white)
                     .cornerRadius(25.0)
                     .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
+                    .foregroundColor(.black)
             }
         }
     }
@@ -178,4 +189,8 @@ struct StylistContactScreenView_Previews: PreviewProvider {
     static var previews: some View {
         StylistContactScreenView().environmentObject(UserRegistrationViewModel())
     }
+}
+
+private func hideKeyboard() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 }

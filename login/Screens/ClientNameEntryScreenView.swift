@@ -21,8 +21,9 @@ struct ClientNameEntryScreenView: View {
                     Text("UMI")
                         .font(.custom("Sarina-Regular", size: 35))
                         .foregroundColor(Color("PrimaryColor"))
+                        .padding(.top)
                     
-                    Spacer().frame(height: 20)
+                    Spacer().frame(height: 40)
                     
                     VStack(alignment: .leading) {
                         Text("Let's Get")
@@ -37,8 +38,9 @@ struct ClientNameEntryScreenView: View {
                         Text("First Name")
                             .font(.custom("Poppins-SemiBoldItalic", size: 20))
                             .padding(.bottom, 10)
+                            .foregroundColor(.black)
                         
-                        TextField("Ayomide", text: $viewModel.firstName)
+                        TextField("", text: $viewModel.firstName)
                             .font(.title3)
                             .padding()
                             .frame(maxWidth: .infinity)
@@ -47,12 +49,14 @@ struct ClientNameEntryScreenView: View {
                             .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                             .padding(.top, -8)
                             .padding(.bottom, 20)
+                            .foregroundColor(.black)
 
                         Text("Last Name")
                             .font(.custom("Poppins-SemiBoldItalic", size: 20))
                             .padding(.bottom, 10)
+                            .foregroundColor(.black)
                         
-                        TextField("Fatoye", text: $viewModel.lastName)
+                        TextField("", text: $viewModel.lastName)
                             .font(.title3)
                             .padding()
                             .frame(maxWidth: .infinity)
@@ -61,6 +65,7 @@ struct ClientNameEntryScreenView: View {
                             .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                             .padding(.top, -8)
                             .padding(.bottom, 20)
+                            .foregroundColor(.black)
                     }
                     .padding(.horizontal)
                     
@@ -80,10 +85,16 @@ struct ClientNameEntryScreenView: View {
                     .alert(isPresented: $showingAlert) {
                         Alert(title: Text("Error"), message: Text("Please fill in all fields."), dismissButton: .default(Text("OK")))
                     }
+                    .animation(.easeInOut, value: viewModel.firstName.isEmpty || viewModel.lastName.isEmpty)
+
 
                     NavigationLink("", destination: ClientAddressScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                 }
                 .padding()
+            }
+            .onTapGesture
+            {
+                hideKeyboard()  // Call to dismiss the keyboard
             }
         }
     }
@@ -102,4 +113,8 @@ struct ClientNameEntryScreenView_Previews: PreviewProvider {
     static var previews: some View {
         ClientNameEntryScreenView().environmentObject(UserRegistrationViewModel())
     }
+}
+
+private func hideKeyboard() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 }

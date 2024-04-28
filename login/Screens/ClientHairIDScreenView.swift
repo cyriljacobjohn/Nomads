@@ -22,6 +22,7 @@ struct ClientHairIDScreenView: View {
                         Text("UMI")
                             .font(.custom("Sarina-Regular", size: 35))
                             .foregroundColor(Color("PrimaryColor"))
+                            .padding(.top)
                         
                         Spacer().frame(height: 40)
                         
@@ -38,6 +39,7 @@ struct ClientHairIDScreenView: View {
                             Text("Hair Thickness")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
+                                .foregroundColor(.black)
                             
                             HStack(spacing: 10) {
                                 Button(action: {
@@ -62,6 +64,7 @@ struct ClientHairIDScreenView: View {
                             Text("Hair Type")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
+                                .foregroundColor(.black)
                             
                             HStack(spacing: 10) {
                                 Button(action: {
@@ -87,13 +90,17 @@ struct ClientHairIDScreenView: View {
                             Text("Color History")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
+                                .foregroundColor(.black)
                             
                             TextEditor(text: $viewModel.hairProfile.colorHist)
-                                .frame(height: 90)
+                                .frame(height: 150)
                                 .padding(4)
-                                .background(Color.white.opacity(0.7))
+                                .background(Color.white)
                                 .cornerRadius(10.0)
-                                .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
+                                .foregroundColor(.black)
+                                .environment(\.colorScheme, .light)  // Force light mode
+
+
                         }
                         .padding(.horizontal)
                         
@@ -114,11 +121,16 @@ struct ClientHairIDScreenView: View {
                         .alert(isPresented: $showingAlert) {
                             Alert(title: Text("Error"), message: Text("Please fill in all fields."), dismissButton: .default(Text("OK")))
                         }
+                        .animation(.easeInOut, value: viewModel.hairProfile.isValid())
                         
                         NavigationLink("", destination: ClientCurlPatternScreenView().navigationBarHidden(true), isActive: $navigateToCurlPatternScreen)
                         NavigationLink("", destination: ClientPreferenceScreenView().navigationBarHidden(true), isActive: $navigateToPreferenceScreen)
                     }
                     .padding()
+                }
+                .onTapGesture
+                {
+                    hideKeyboard()  // Call to dismiss the keyboard
                 }
             }
         }
@@ -163,4 +175,8 @@ private func HairTypeButton(_ text: String, _ imageName: String, isSelected: Boo
             .frame(width: 60, height: 60)
         HorizontalButtonText(text, isSelected: isSelected)
     }
+}
+
+private func hideKeyboard() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 }

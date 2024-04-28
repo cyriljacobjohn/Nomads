@@ -28,7 +28,7 @@ class UserRegistrationViewModel: ObservableObject {
     @Published var address: Address = Address()
 
     func signUp(completion: @escaping (Bool) -> Void) {
-        guard let url = URL(string: "http://127.0.0.1:5000/client/signup-user") else {
+        guard let url = URL(string: "https://umi-jkck.onrender.com/client/signup-user") else {
             completion(false)
             return
         }
@@ -79,7 +79,7 @@ class UserRegistrationViewModel: ObservableObject {
 //    func createClientAccount(completion: @escaping (Bool) -> Void) {
 //        print(UserSessionManager.shared.uid)  // This should be the only uid you use.
 //        
-//        guard let url = URL(string: "http://127.0.0.1:5000/client/create-client"),
+//        guard let url = URL(string: "https://umi-jkck.onrender.com/client/create-client"),
 //              let uid = UserSessionManager.shared.uid, !uid.isEmpty else {
 //            DispatchQueue.main.async {
 //                print("Error: Invalid URL or empty UID")
@@ -133,7 +133,7 @@ class UserRegistrationViewModel: ObservableObject {
 //        // Ensure URL is valid and UID is not empty
 //        print("UID: \(UserSessionManager.shared.uid!)")
 //        print(uid)
-//        guard let url = URL(string: "http://127.0.0.1:5000/client/create-client"), !uid.isEmpty else {
+//        guard let url = URL(string: "https://umi-jkck.onrender.com/client/create-client"), !uid.isEmpty else {
 //            DispatchQueue.main.async {
 //                print("Error: Invalid URL or empty UID")
 //                completion(false)
@@ -213,7 +213,7 @@ class UserRegistrationViewModel: ObservableObject {
     
     
     func createClientAccount(completion: @escaping (Bool) -> Void) {
-        let urlString = "http://127.0.0.1:5000/client/create-client"
+        let urlString = "https://umi-jkck.onrender.com/client/create-client"
         guard let url = URL(string: urlString), let uid = UserSessionManager.shared.uid, !uid.isEmpty else {
             DispatchQueue.main.async {
                 print("Error: Invalid URL or empty UID")
@@ -308,7 +308,7 @@ class UserRegistrationViewModel: ObservableObject {
     }
     
     func createStylistAccount(completion: @escaping (Bool) -> Void) {
-        let urlString = "http://127.0.0.1:5000/stylist/create-stylist"
+        let urlString = "https://umi-jkck.onrender.com/stylist/create-stylist"
         guard let url = URL(string: urlString), let uid = UserSessionManager.shared.uid, !uid.isEmpty else {
             DispatchQueue.main.async {
                 print("Error: Invalid URL or empty UID")
@@ -395,7 +395,7 @@ class UserRegistrationViewModel: ObservableObject {
 
 
 //    func createStylistAccount(completion: @escaping (Bool) -> Void) {
-//        let urlString = "http://127.0.0.1:5000/stylist/create-stylist"
+//        let urlString = "https://umi-jkck.onrender.com/stylist/create-stylist"
 //        guard let url = URL(string: urlString), !uid.isEmpty else {
 //            DispatchQueue.main.async {
 //                print("Error: Invalid URL or empty UID")
@@ -485,7 +485,7 @@ class UserRegistrationViewModel: ObservableObject {
     
     // signIn function
     func signIn(completion: @escaping (Bool, String, String) -> Void) {
-           guard let url = URL(string: "http://127.0.0.1:5000/client/signin-user") else {
+           guard let url = URL(string: "https://umi-jkck.onrender.com/client/signin-user") else {
                completion(false, "", "")
                return
            }

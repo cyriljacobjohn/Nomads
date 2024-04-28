@@ -36,8 +36,9 @@ struct SignUpScreenView: View {
                             Text("Email")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
+                                .foregroundColor(.black)
                             
-                            TextField("Enter Email", text: $viewModel.email)
+                            TextField("", text: $viewModel.email)
                                 .font(.title3)
                                 .padding()
                                 .frame(maxWidth: .infinity)
@@ -45,12 +46,14 @@ struct SignUpScreenView: View {
                                 .cornerRadius(50.0)
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                                 .padding(.bottom, 20)
+                                .foregroundColor(.black)
 
                             Text("Password")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
+                                .foregroundColor(.black)
                             
-                            SecureField("Enter Password", text: $viewModel.password)
+                            SecureField("", text: $viewModel.password)
                                 .font(.title3)
                                 .padding()
                                 .frame(maxWidth: .infinity)
@@ -59,16 +62,19 @@ struct SignUpScreenView: View {
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                                 .padding(.bottom, 20)
                                 .textContentType(.newPassword)
+                                .foregroundColor(.black)
 
                             Text("Confirm Password")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
+                                .foregroundColor(.black)
                             
-                            SecureField("Confirm Password", text: $confirmPassword)
+                            SecureField("", text: $confirmPassword)
                                 .font(.title3)
                                 .padding()
                                 .frame(maxWidth: .infinity)
                                 .background(Color.white)
+                                .foregroundColor(.black)
                                 .cornerRadius(50.0)
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                                 .padding(.bottom, 20)
@@ -92,6 +98,7 @@ struct SignUpScreenView: View {
                         .alert(isPresented: $showingAlert) {
                             Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                         }
+                        .animation(.easeInOut, value: viewModel.email.isEmpty || viewModel.password.isEmpty || confirmPassword.isEmpty)
                         
                         NavigationLink(destination: SignInScreenView().navigationBarHidden(true)) {
                             Text("Have An Account? ")
@@ -104,6 +111,10 @@ struct SignUpScreenView: View {
                         NavigationLink("", destination: AccountTypeSelectionView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
                     .padding()
+                }
+                .onTapGesture
+                {
+                    hideKeyboard()  // Call to dismiss the keyboard
                 }
             }
         }
@@ -129,7 +140,7 @@ struct SignUpScreenView: View {
                     shouldNavigateToNextScreen = true
                 } else {
                     // Handle errors, e.g., show an alert
-                    alertMessage = "Please ensure password length is more than 6 characters or email is not taken"
+                    alertMessage = "User Registration failed."
                     showingAlert = true
                 }
             }
@@ -141,4 +152,8 @@ struct SignUpScreenView_Previews: PreviewProvider {
     static var previews: some View {
         SignUpScreenView().environmentObject(UserRegistrationViewModel())
     }
+}
+
+private func hideKeyboard() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 }

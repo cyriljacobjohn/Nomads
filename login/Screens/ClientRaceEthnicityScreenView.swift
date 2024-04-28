@@ -47,17 +47,23 @@ struct ClientRaceEthnicityScreenView: View {
                         Text("UMI")
                             .font(.custom("Sarina-Regular", size: 35))
                             .foregroundColor(Color("PrimaryColor"))
+                            .padding(.top)
                         
-                        Spacer().frame(height: 20)
+                        Spacer().frame(height: 40)
                         
                         VStack(alignment: .leading) {
-                            Text("Race And Ethnicity")
+                            Text("Race And")
+                                .font(.custom("Sansita-BoldItalic", size: 50))
+                                .foregroundColor(Color("TitleTextColor"))
+                            
+                            Text("Ethnicity")
                                 .font(.custom("Sansita-BoldItalic", size: 50))
                                 .foregroundColor(Color("TitleTextColor"))
                                 .padding(.bottom, 20)
                             
                             Text("Select all that apply:")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
+                                .foregroundColor(.black)
                             
                             LazyVGrid(columns: columns, spacing: 15) {
                                 ForEach(races.indices, id: \.self) { index in

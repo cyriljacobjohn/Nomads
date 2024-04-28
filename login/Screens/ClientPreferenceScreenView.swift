@@ -5,7 +5,6 @@
 //  Created by Cyril John on 3/30/24.
 //
 
-
 import SwiftUI
 
 struct ClientPreferenceScreenView: View {
@@ -15,11 +14,11 @@ struct ClientPreferenceScreenView: View {
     @State private var showingAlert = false
 
     let preferences = [
-        "Fades",
-        "Long Haircuts",
-        "Color Services",
-        "Braids",
-        "Alt Cuts"
+        ("Fades", 19),
+        ("Long Haircuts", 20),
+        ("Color Services", 21),
+        ("Braids", 22),
+        ("Alt Cuts", 23)
     ]
 
     private var columns: [GridItem] {
@@ -30,28 +29,35 @@ struct ClientPreferenceScreenView: View {
         NavigationView {
             ZStack {
                 Color("BgColor").edgesIgnoringSafeArea(.all)
+                
+                ScrollView {
+                    VStack {
+                        Text("UMI")
+                            .font(.custom("Sarina-Regular", size: 35))
+                            .foregroundColor(Color("PrimaryColor"))
+                            .padding(.top)
 
-                VStack {
-                    Text("UMI")
-                        .font(.custom("Sarina-Regular", size: 35))
-                        .foregroundColor(Color("PrimaryColor"))
-                        .padding(.top, 20)
+                        Spacer().frame(height: 40)
+                        
+                        VStack(alignment: .leading) {
+                            Text("I'm Looking")
+                                .font(.custom("Sansita-BoldItalic", size: 50))
+                                .foregroundColor(Color("TitleTextColor"))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            Text("For")
+                                .font(.custom("Sansita-BoldItalic", size: 50))
+                                .foregroundColor(Color("TitleTextColor"))
+                                .padding(.bottom, 20)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            Text("Select all that apply:")
+                                .font(.custom("Poppins-SemiBoldItalic", size: 20))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.bottom, 10)
+                                .foregroundColor(.black)
+                        }
 
-                    Spacer()
-
-                    VStack(alignment: .leading) {
-                        Text("I'm Looking")
-                            .font(.custom("Sansita-BoldItalic", size: 50))
-                            .foregroundColor(Color("TitleTextColor"))
-                        
-                        Text("For")
-                            .font(.custom("Sansita-BoldItalic", size: 50))
-                            .foregroundColor(Color("TitleTextColor"))
-                            .padding(.bottom, 20)
-                        
-                        Text("Select all that apply:")
-                            .font(.custom("Poppins-SemiBoldItalic", size: 20))
-                        
                         LazyVGrid(columns: columns, spacing: 15) {
                             ForEach(preferences.indices, id: \.self) { index in
                                 Button(action: {
@@ -59,13 +65,13 @@ struct ClientPreferenceScreenView: View {
                                         self.selectedPreferences[index].toggle()
                                     }
                                 }) {
-                                    buttonText(preferences[index], isSelected: self.selectedPreferences[index])
+                                    buttonText(preferences[index].0, isSelected: self.selectedPreferences[index])
                                 }
-                                .padding(.bottom, 5)
+                                .padding(.bottom)
                             }
                         }
                         .padding(.horizontal)
-                        
+
                         Button(action: continueAction) {
                             Text("Continue")
                                 .font(.title3)
@@ -81,9 +87,10 @@ struct ClientPreferenceScreenView: View {
                         .alert(isPresented: $showingAlert) {
                             Alert(title: Text("Error"), message: Text("Please make a selection."), dismissButton: .default(Text("OK")))
                         }
-                        NavigationLink("", destination: ClientColorLevelScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
                     .padding()
+                    
+                    NavigationLink("", destination: ClientColorLevelScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                 }
             }
         }
@@ -123,5 +130,5 @@ private func buttonText(_ text: String, isSelected: Bool) -> some View {
         .background(isSelected ? Color("PrimaryColor") : Color.white.opacity(0.7))
         .cornerRadius(50.0)
         .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
-        .padding(.vertical, 5)
 }
+

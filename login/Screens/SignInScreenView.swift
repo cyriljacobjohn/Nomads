@@ -30,7 +30,11 @@ struct SignInScreenView: View {
                         Spacer().frame(height: 40)
 
                         VStack(alignment: .leading) {
-                            Text("Account Sign In")
+                            Text("Account")
+                                .font(.custom("Sansita-BoldItalic", size: 50))
+                                .foregroundColor(Color("TitleTextColor"))
+                            
+                            Text("Sign In")
                                 .font(.custom("Sansita-BoldItalic", size: 50))
                                 .foregroundColor(Color("TitleTextColor"))
                                 .padding(.bottom, 20)
@@ -38,8 +42,9 @@ struct SignInScreenView: View {
                             Text("Email")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
+                                .foregroundColor(.black)
                             
-                            TextField("Enter Email", text: $email)
+                            TextField("", text: $email)
                                 .font(.title3)
                                 .padding()
                                 .frame(maxWidth: .infinity)
@@ -47,16 +52,19 @@ struct SignInScreenView: View {
                                 .cornerRadius(50.0)
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                                 .padding(.bottom, 20)
+                                .foregroundColor(.black)
 
                             Text("Password")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
+                                .foregroundColor(.black)
                             
-                            SecureField("Enter Password", text: $password)
+                            SecureField("", text: $password)
                                 .font(.title3)
                                 .padding()
                                 .frame(maxWidth: .infinity)
                                 .background(Color.white)
+                                .foregroundColor(.black)
                                 .cornerRadius(50.0)
                                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                                 .padding(.bottom, 20)
@@ -80,6 +88,8 @@ struct SignInScreenView: View {
                         .alert(isPresented: $showingAlert) {
                             Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                         }
+                        .animation(.easeInOut, value: email.isEmpty || password.isEmpty)
+
 
                         NavigationLink(destination: SignUpScreenView().navigationBarHidden(true)) {
                             Text("New Here? ")
@@ -97,6 +107,10 @@ struct SignInScreenView: View {
                         }
                     }
                     .padding()
+                }
+                .onTapGesture
+                {
+                    hideKeyboard()  // Call to dismiss the keyboard
                 }
             }
         }
@@ -130,4 +144,8 @@ struct SignInScreenView_Previews: PreviewProvider {
     static var previews: some View {
         SignInScreenView()
     }
+}
+
+private func hideKeyboard() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 }

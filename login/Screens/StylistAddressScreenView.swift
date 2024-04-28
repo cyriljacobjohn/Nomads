@@ -33,11 +33,16 @@ struct StylistAddressScreenView: View {
                                 .foregroundColor(Color("TitleTextColor"))
                                 .padding(.bottom, 20)
 
-                            addressField(label: "Street", placeholder: "123 Main Street", text: $viewModel.address.street)
-                            addressField(label: "City", placeholder: "New York", text: $viewModel.address.city)
-                            addressField(label: "State", placeholder: "NY", text: $viewModel.address.state)
-                            addressField(label: "Zip Code", placeholder: "10001", text: $viewModel.address.zipCode)
-                            addressField(label: "Country", placeholder: "USA", text: $viewModel.address.country)
+                            addressField(label: "Street", placeholder: "", text: $viewModel.address.street)
+                                .foregroundColor(.black)
+                            addressField(label: "City", placeholder: "", text: $viewModel.address.city)
+                                .foregroundColor(.black)
+                            addressField(label: "State", placeholder: "", text: $viewModel.address.state)
+                                .foregroundColor(.black)
+                            addressField(label: "Zip Code", placeholder: "", text: $viewModel.address.zipCode)
+                                .foregroundColor(.black)
+                            addressField(label: "Country", placeholder: "", text: $viewModel.address.country)
+                                .foregroundColor(.black)
                         }
                         .padding(.horizontal)
 
@@ -55,10 +60,15 @@ struct StylistAddressScreenView: View {
                         .alert(isPresented: $showingAlert) {
                             Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                         }
+                        .animation(.easeInOut, value: viewModel.address.isEmpty())
 
                         NavigationLink("", destination: StylistPriceScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
                     .padding()
+                }
+                .onTapGesture
+                {
+                    hideKeyboard()  // Call to dismiss the keyboard
                 }
             }
         }
@@ -103,6 +113,7 @@ struct StylistAddressScreenView: View {
                 .cornerRadius(50.0)
                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                 .padding(.top, -8)
+                .foregroundColor(.black)
                 .padding(.bottom, 20)
         }
     }
@@ -112,4 +123,8 @@ struct StylistAddressScreenView_Previews: PreviewProvider {
     static var previews: some View {
         StylistAddressScreenView().environmentObject(UserRegistrationViewModel())
     }
+}
+
+private func hideKeyboard() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 }

@@ -37,7 +37,7 @@ struct StylistAdditionalInformationScreenView: View {
                                     .padding(.bottom, 10)
                                 
                                 TextEditor(text: $viewModel.stylistsShouldKnow)
-                                    .frame(height: 200)
+                                    .frame(height: 300)
                                     .padding(4)
                                     .background(Color.white.opacity(0.7))
                                     .cornerRadius(10.0)
@@ -61,12 +61,18 @@ struct StylistAdditionalInformationScreenView: View {
                         }
                         .padding(.vertical)
                         .alert(isPresented: $showingAlert) {
-                            Alert(title: Text("Error"), message: Text("Please provide the requested information."), dismissButton: .default(Text("OK")))
+                            Alert(title: Text("Error"), message: Text("Could not create stylist account."), dismissButton: .default(Text("OK")))
                         }
+                        .animation(.easeInOut, value: !viewModel.stylistsShouldKnow.isEmpty)
+
                         
                         NavigationLink("", destination: StylistTabView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
                     .padding()
+                }
+                .onTapGesture
+                {
+                    hideKeyboard()  // Call to dismiss the keyboard
                 }
             }
         }
@@ -93,4 +99,8 @@ struct StylistAdditionalInformationScreenView_Previews: PreviewProvider {
     static var previews: some View {
         StylistAdditionalInformationScreenView().environmentObject(UserRegistrationViewModel())
     }
+}
+
+private func hideKeyboard() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 }

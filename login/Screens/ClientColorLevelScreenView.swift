@@ -21,6 +21,7 @@ struct ClientColorLevelScreenView: View {
                     Text("UMI")
                         .font(.custom("Sarina-Regular", size: 35))
                         .foregroundColor(Color("PrimaryColor"))
+                        .padding(.top)
 
                     Spacer().frame(height: 40)
                     
@@ -33,6 +34,7 @@ struct ClientColorLevelScreenView: View {
                         Text("Select hair color level: \n1 (darkest) to 10 (lightest)")
                             .font(.custom("Poppins-SemiBoldItalic", size: 20))
                             .padding(.bottom, 10)
+                            .foregroundColor(.black)
                         
                         Slider(value: $colorLevel, in: 1...10, step: 1)
                             .padding(.bottom, 10)
@@ -40,6 +42,7 @@ struct ClientColorLevelScreenView: View {
                         Text("My hair is a \(Int(colorLevel)).")
                             .font(.custom("Poppins-Italic", size: 18))
                             .padding(.bottom, 20)
+                            .foregroundColor(.black)
                     }
                     .padding(.horizontal)
                     

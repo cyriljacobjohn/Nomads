@@ -18,53 +18,56 @@ struct AccountTypeSelectionView: View {
             ZStack {
                 Color("BgColor").edgesIgnoringSafeArea(.all)
                 
-                VStack {
-                    Text("UMI")
-                        .font(.custom("Sarina-Regular", size: 35))
-                        .foregroundColor(Color("PrimaryColor"))
-
-                    Spacer().frame(height: 40)
-                    
-                    Text("What's Your Account Type?")
-                        .font(.custom("Sansita-BoldItalic", size: 50))
-                        .foregroundColor(Color("TitleTextColor"))
-                    
-                    Button(action: { selectAccountType(1) }) {
-                        buttonText("Client", isSelected: self.selectAccountType == 1)
-                    }
-                    .padding(.bottom, -15)
-                    
-                    Button(action: { selectAccountType(2) }) {
-                        buttonText("Stylist", isSelected: self.selectAccountType == 2)
-                    }
-                    .padding(.bottom, -15)
-
-                    Spacer()
-                    
-                    Button(action: continueAction) {
-                        Text("Continue")
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(selectAccountType == nil ? Color("PrimaryColor") : Color.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(selectAccountType == nil ? Color.white : Color("PrimaryColor"))
-                            .cornerRadius(50.0)
-                            .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
-                    }
-                    .padding(.vertical)
-                    .alert(isPresented: $showingAlert) {
-                        Alert(title: Text("Error"), message: Text("Please make a selection."), dismissButton: .default(Text("OK")))
-                    }
-
-                    // Conditional NavigationLink based on account type selection
-                    if selectAccountType == 1 {
-                        NavigationLink(destination: ClientNameEntryScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen) {
-                            EmptyView()
+                    VStack {
+                        Text("UMI")
+                            .font(.custom("Sarina-Regular", size: 35))
+                            .foregroundColor(Color("PrimaryColor"))
+                            .padding(.top)
+                        
+                        Spacer().frame(height: 40)
+                        
+                        VStack(alignment: .leading) {
+                        Text("What's Your Account Type?")
+                            .font(.custom("Sansita-BoldItalic", size: 50))
+                            .foregroundColor(Color("TitleTextColor"))
+                        
+                        Button(action: { selectAccountType(1) }) {
+                            buttonText("Client", isSelected: self.selectAccountType == 1)
                         }
-                    } else if selectAccountType == 2 {
-                        NavigationLink(destination: StylistNameEntryScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen) {
-                            EmptyView()
+                        .padding(.bottom, -15)
+                        
+                        Button(action: { selectAccountType(2) }) {
+                            buttonText("Stylist", isSelected: self.selectAccountType == 2)
+                        }
+                        .padding(.bottom, -15)
+                        
+                        Spacer()
+                        
+                        Button(action: continueAction) {
+                            Text("Continue")
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundColor(selectAccountType == nil ? Color("PrimaryColor") : Color.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(selectAccountType == nil ? Color.white : Color("PrimaryColor"))
+                                .cornerRadius(50.0)
+                                .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
+                        }
+                        .padding(.vertical)
+                        .alert(isPresented: $showingAlert) {
+                            Alert(title: Text("Error"), message: Text("Please make a selection."), dismissButton: .default(Text("OK")))
+                        }
+                        
+                        // Conditional NavigationLink based on account type selection
+                        if selectAccountType == 1 {
+                            NavigationLink(destination: ClientNameEntryScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen) {
+                                EmptyView()
+                            }
+                        } else if selectAccountType == 2 {
+                            NavigationLink(destination: StylistNameEntryScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen) {
+                                EmptyView()
+                            }
                         }
                     }
                 }

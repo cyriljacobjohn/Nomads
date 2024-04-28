@@ -34,7 +34,7 @@ struct StylistHairGenderSelectionScreenView: View {
                     Spacer().frame(height: 40)
                     
                     VStack(alignment: .leading) {
-                        Text("I Can Cut...")
+                        Text("I Can Cut")
                             .font(.custom("Sansita-BoldItalic", size: 50))
                             .foregroundColor(Color("TitleTextColor"))
                         

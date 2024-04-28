@@ -17,6 +17,7 @@ struct UMIApp: App {
             WelcomeScreenView()
                 .environmentObject(userRegistrationViewModel)  // Existing ViewModel
                 .environmentObject(sessionManager)             // Session Manager
+                .environment(\.colorScheme, .light) // always light mode
             // ContentView() // Uncomment this if you switch back to the ContentView in the future
         }
     }

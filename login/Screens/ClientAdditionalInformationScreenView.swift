@@ -24,6 +24,7 @@ struct ClientAdditionalInformationScreenView: View {
                         Text("UMI")
                             .font(.custom("Sarina-Regular", size: 35))
                             .foregroundColor(Color("PrimaryColor"))
+                            .padding(.top)
                         
                         Spacer().frame(height: 40)
                         
@@ -36,13 +37,15 @@ struct ClientAdditionalInformationScreenView: View {
                             Text("Let us know your preferences and any accessibility needs you have")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
+                                .foregroundColor(.black)
                             
                             TextEditor(text: $viewModel.stylistsShouldKnow)
-                                .frame(height: 200)
+                                .frame(height: 300)
                                 .padding(4)
-                                .background(Color.white.opacity(0.7))
+                                .background(Color.white)
                                 .cornerRadius(10.0)
-                                .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
+                                .foregroundColor(.black)
+                                .environment(\.colorScheme, .light)
                         }
                         .padding(.horizontal)
                         
@@ -63,11 +66,16 @@ struct ClientAdditionalInformationScreenView: View {
                         .alert(isPresented: $showingAlert) {
                             Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                         }
+                        .animation(.easeInOut, value: !viewModel.stylistsShouldKnow.isEmpty)
                         
                         NavigationLink("", destination: MainTabView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                         
                     }
                     .padding()
+                }
+                .onTapGesture
+                {
+                    hideKeyboard()  // Call to dismiss the keyboard
                 }
             }
         }
@@ -83,7 +91,7 @@ struct ClientAdditionalInformationScreenView: View {
                     if success {
                         shouldNavigateToNextScreen = true
                     } else {
-                        alertMessage = "An error occurred while creating the client account."
+                        alertMessage = "Could not create client account."
                         showingAlert = true
                     }
                 }
@@ -96,4 +104,8 @@ struct ClientAdditionalInformationScreenView_Previews: PreviewProvider {
     static var previews: some View {
         ClientAdditionalInformationScreenView().environmentObject(UserRegistrationViewModel())
     }
+}
+
+private func hideKeyboard() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 }

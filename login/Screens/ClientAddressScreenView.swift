@@ -26,8 +26,9 @@ struct ClientAddressScreenView: View {
                         Text("UMI")
                             .font(.custom("Sarina-Regular", size: 35))
                             .foregroundColor(Color("PrimaryColor"))
+                            .padding(.top)
                         
-                        Spacer().frame(height: 20)
+                        Spacer().frame(height: 40)
                         
                         VStack(alignment: .leading) {
                             Text("What's your address?")
@@ -35,21 +36,28 @@ struct ClientAddressScreenView: View {
                                 .foregroundColor(Color("TitleTextColor"))
                                 .padding(.bottom, 20)
 
-                            addressField(label: "Street", placeholder: "123 Main Street", text: $viewModel.address.street)
-                            addressField(label: "City", placeholder: "New York", text: $viewModel.address.city)
-                            addressField(label: "State", placeholder: "NY", text: $viewModel.address.state)
-                            addressField(label: "Zip Code", placeholder: "10001", text: $viewModel.address.zipCode)
-                            addressField(label: "Country", placeholder: "USA", text: $viewModel.address.country)
+                            addressField(label: "Street", placeholder: "", text: $viewModel.address.street)
+                                .foregroundColor(.black)
+                            addressField(label: "City", placeholder: "", text: $viewModel.address.city)
+                                .foregroundColor(.black)
+                            addressField(label: "State", placeholder: "", text: $viewModel.address.state)
+                                .foregroundColor(.black)
+                            addressField(label: "Zip Code", placeholder: "", text: $viewModel.address.zipCode)
+                                .foregroundColor(.black)
+                            addressField(label: "Country", placeholder: "", text: $viewModel.address.country)
+                                .foregroundColor(.black)
                             
                             Text("Distance Preferences")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.top)
                                 .padding(.bottom, 10)
+                                .foregroundColor(.black)
                             
                             Slider(value: $distance, in: 1...100, step: 1)
                             Text("\(Int(distance)) mile(s) from my address")
                                 .font(.custom("Poppins-Italic", size: 18))
                                 .padding(.bottom, 20)
+                                .foregroundColor(.black)
                         }
                         .padding(.horizontal)
 
@@ -67,10 +75,16 @@ struct ClientAddressScreenView: View {
                         .alert(isPresented: $showingAlert) {
                             Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                         }
+                        .animation(.easeInOut, value: viewModel.address.isEmpty())
+
 
                         NavigationLink("", destination: ClientRaceEthnicityScreenView().navigationBarHidden(true), isActive: $shouldNavigateToNextScreen)
                     }
                     .padding()
+                }
+                .onTapGesture
+                {
+                    hideKeyboard()  // Call to dismiss the keyboard
                 }
             }
         }
@@ -117,6 +131,7 @@ struct ClientAddressScreenView: View {
                 .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0, y: 16)
                 .padding(.top, -8)
                 .padding(.bottom, 20)
+                .foregroundColor(.black)
         }
     }
 }
@@ -132,4 +147,8 @@ struct ClientAddressScreenView_Previews: PreviewProvider {
     static var previews: some View {
         ClientAddressScreenView().environmentObject(UserRegistrationViewModel())
     }
+}
+
+private func hideKeyboard() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 }

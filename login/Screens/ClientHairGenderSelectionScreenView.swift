@@ -28,6 +28,7 @@ struct ClientHairGenderSelectionScreenView: View {
                     Text("UMI")
                         .font(.custom("Sarina-Regular", size: 35))
                         .foregroundColor(Color("PrimaryColor"))
+                        .padding(.top)
 
                     Spacer().frame(height: 40)
                     

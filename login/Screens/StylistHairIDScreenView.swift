@@ -30,7 +30,7 @@ struct StylistHairIDScreenView: View {
                         Spacer().frame(height: 40)
                         
                         VStack(alignment: .leading) {
-                            Text("Hair I can Work on...")
+                            Text("Hair I can Work on")
                                 .font(.custom("Sansita-BoldItalic", size: 50))
                                 .foregroundColor(Color("TitleTextColor"))
                                 .padding(.bottom, 20)
@@ -38,6 +38,7 @@ struct StylistHairIDScreenView: View {
                             Text("Hair Thickness")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
+                                .foregroundColor(.black)
                             
                             HStack(spacing: 10) {
                                 ForEach(1...3, id: \.self) { number in
@@ -52,6 +53,7 @@ struct StylistHairIDScreenView: View {
                             Text("Hair Type")
                                 .font(.custom("Poppins-SemiBoldItalic", size: 20))
                                 .padding(.bottom, 10)
+                                .foregroundColor(.black)
                             
                             HStack(spacing: 10) {
                                 ForEach(4...6, id: \.self) { number in
