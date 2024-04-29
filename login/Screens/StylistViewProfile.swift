@@ -433,7 +433,7 @@ struct StylistViewProfile: View {
             isLoading = true
             errorMessage = nil
             
-            let urlString = "http://127.0.0.1:5000/stylist/read-stylist/\(stylistId)"
+            let urlString = "https://umi-jkck.onrender.com/stylist/read-stylist/\(stylistId)"
             guard let url = URL(string: urlString) else {
                 self.isLoading = false
                 self.errorMessage = "Invalid URL"

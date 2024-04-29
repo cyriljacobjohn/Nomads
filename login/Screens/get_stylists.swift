@@ -372,7 +372,7 @@ class ClientViewModel: ObservableObject {
         
         
         self.isLoading = true
-        guard let url = URL(string: "http://127.0.0.1:5000/stylist/mina/\(clientId)") else {
+        guard let url = URL(string: "https://umi-jkck.onrender.com/stylist/mina/\(clientId)") else {
             DispatchQueue.main.async {
                 self.isLoading = false
                 self.errorMessage = "Invalid URL"
@@ -511,7 +511,7 @@ class ClientViewModel: ObservableObject {
     func fetchStylistProfileById(stylistId: Int, completion: @escaping (Result<StylistProfile, Error>) -> Void) {
         print("Fetching stylist profile for ID: \(stylistId)")
         self.isLoading = true
-        guard let url = URL(string: "http://127.0.0.1:5000/stylist/read-stylist/\(stylistId)") else {
+        guard let url = URL(string: "https://umi-jkck.onrender.com/stylist/read-stylist/\(stylistId)") else {
             DispatchQueue.main.async {
                 self.isLoading = false
                 self.errorMessage = "Invalid URL"
@@ -607,7 +607,7 @@ class ClientViewModel: ObservableObject {
             }
         
         
-        let urlString = "http://127.0.0.1:5000/client/add-to-favourites/\(clientId)"
+        let urlString = "https://umi-jkck.onrender.com/client/add-to-favourites/\(clientId)"
         
         guard let url = URL(string: urlString) else {
             DispatchQueue.main.async {
@@ -680,7 +680,7 @@ class ClientViewModel: ObservableObject {
                 return
             }
         
-        let urlString = "http://127.0.0.1:5000/client/remove-from-favourites/\(clientId)"
+        let urlString = "https://umi-jkck.onrender.com/client/remove-from-favourites/\(clientId)"
         guard let url = URL(string: urlString) else {
             DispatchQueue.main.async {
                 self.errorMessage = "Invalid URL"
@@ -736,7 +736,7 @@ class ClientViewModel: ObservableObject {
                 return
             }
         
-        let urlString = "http://127.0.0.1:5000/client/get-all-favs/\(clientId)"
+        let urlString = "https://umi-jkck.onrender.com/client/get-all-favs/\(clientId)"
         
         guard let url = URL(string: urlString) else {
             DispatchQueue.main.async {
@@ -805,7 +805,7 @@ class ClientViewModel: ObservableObject {
     
     
     func getStylistRatings(stylistId: Int, completion: @escaping (Bool) -> Void) {
-        let urlString = "http://127.0.0.1:5000/stylist/get-ratings/\(stylistId)"
+        let urlString = "https://umi-jkck.onrender.com/stylist/get-ratings/\(stylistId)"
         
         guard let url = URL(string: urlString) else {
             DispatchQueue.main.async {
@@ -879,7 +879,7 @@ class ClientViewModel: ObservableObject {
     
     func postReview(clientId: Int, stylistId: Int, rating: Int, comment: String, completion: @escaping (Bool, String) -> Void) {
             // URL and request setup
-            guard let url = URL(string: "http://127.0.0.1:5000/client/create-rating") else {
+            guard let url = URL(string: "https://umi-jkck.onrender.com/client/create-rating") else {
                 completion(false, "Invalid URL")
                 return
             }
@@ -940,7 +940,7 @@ class ClientViewModel: ObservableObject {
         print("Fetching client profile for clientId: \(clientId)")
         
         self.isLoading = true
-        let urlString = "http://127.0.0.1:5000/client/read-client/\(clientId)"
+        let urlString = "https://umi-jkck.onrender.com/client/read-client/\(clientId)"
         print("URL: \(urlString)")
         
         guard let url = URL(string: urlString) else {
@@ -1001,7 +1001,7 @@ class ClientViewModel: ObservableObject {
     //___________________________UPDATE PROFILE_________________________________________
     
     func updateClientAddress(clientId: Int, address: ClientProfile.Address, completion: @escaping (Bool, String) -> Void) {
-        guard let url = URL(string: "http://127.0.0.1:5000/client/update-address/\(clientId)") else {
+        guard let url = URL(string: "https://umi-jkck.onrender.com/client/update-address/\(clientId)") else {
             completion(false, "Invalid URL")
             return
         }
@@ -1059,7 +1059,7 @@ class ClientViewModel: ObservableObject {
     //___________________STYLISTS SHOULD KNOW_______________________
     
     func updateStylistsShouldKnow(clientId: Int, text: String, completion: @escaping (Bool, String) -> Void) {
-            guard let url = URL(string: "http://127.0.0.1:5000/client/update-stylists-should-know/\(clientId)") else {
+            guard let url = URL(string: "https://umi-jkck.onrender.com/client/update-stylists-should-know/\(clientId)") else {
                 completion(false, "Invalid URL")
                 return
             }
@@ -1092,7 +1092,7 @@ class ClientViewModel: ObservableObject {
     //______________________INTERESTS___________________________
     
     func updateClientInterests(clientId: Int, interests: [String], completion: @escaping (Bool, String) -> Void) {
-        guard let url = URL(string: "http://127.0.0.1:5000/client/update-interests/\(clientId)") else {
+        guard let url = URL(string: "https://umi-jkck.onrender.com/client/update-interests/\(clientId)") else {
             completion(false, "Invalid URL")
             return
         }
@@ -1148,7 +1148,7 @@ class ClientViewModel: ObservableObject {
 
     
     func updateComfortRadius(clientId: Int, comfortRadius: Double, completion: @escaping (Bool, String) -> Void) {
-        guard let url = URL(string: "http://127.0.0.1:5000/client/change-radius/\(clientId)") else {
+        guard let url = URL(string: "https://umi-jkck.onrender.com/client/change-radius/\(clientId)") else {
             completion(false, "Invalid URL")
             return
         }
@@ -1178,7 +1178,7 @@ class ClientViewModel: ObservableObject {
     
     
     func updateStylistAddress(stylistId: Int, address: Address, completion: @escaping (Bool, String) -> Void) {
-        guard let url = URL(string: "http://127.0.0.1:5000/stylist/update-address/\(stylistId)") else {
+        guard let url = URL(string: "https://umi-jkck.onrender.com/stylist/update-address/\(stylistId)") else {
             completion(false, "Invalid URL")
             return
         }
